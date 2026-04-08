@@ -4,172 +4,245 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AL-FAYROUZ | الفخامة العقارية</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --gold: #d4af37;
-            --dark: #080808;
-            --card-bg: #111111;
-            --border: rgba(212, 175, 55, 0.1);
+            --gold: #c5a059;
+            --gold-light: #e2c275;
+            --dark-bg: #0a0a0a;
+            --card-bg: #151515;
+            --text-gray: #a0a0a0;
+            --border: rgba(197, 160, 89, 0.2);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
+
+        * { box-sizing: border-box; }
 
         body {
             font-family: 'Cairo', sans-serif;
-            background: var(--dark);
-            color: #fff;
+            background: var(--dark-bg);
+            color: #ffffff;
             margin: 0;
-            padding-bottom: 50px;
+            line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        /* هيدر بسيط وفخم */
+        /* هيدر سينمائي */
         header {
-            padding: 60px 20px;
+            padding: 80px 20px;
             text-align: center;
-            border-bottom: 1px solid var(--border);
+            background: radial-gradient(circle at center, #1a1a1a 0%, #0a0a0a 100%);
+            position: relative;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 25%;
+            width: 50%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
         }
 
         .logo {
-            font-size: 3rem;
+            font-size: clamp(2.5rem, 8vw, 4rem);
             font-weight: 900;
-            letter-spacing: 10px;
+            letter-spacing: 12px;
             margin: 0;
-            color: #fff;
+            background: linear-gradient(to bottom, #fff 30%, var(--gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
         }
 
-        .container { max-width: 1100px; margin: auto; padding: 0 20px; }
+        .sub-logo {
+            color: var(--gold);
+            letter-spacing: 4px;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            display: block;
+        }
 
-        /* منطقة اختيار المدن (بدل الزراير الوحشة) */
+        .container { max-width: 1200px; margin: auto; padding: 40px 20px; }
+
+        /* اختيار المدن بطريقة عصرية */
         .city-selector {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 20px;
-            margin: -30px auto 40px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
         }
 
         .selector-item {
             background: var(--card-bg);
             border: 1px solid var(--border);
-            padding: 20px;
-            text-align: center;
+            padding: 15px 30px;
+            border-radius: 4px;
             cursor: pointer;
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            overflow: hidden;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .selector-item i { font-size: 2rem; display: block; margin-bottom: 10px; opacity: 0.5; }
-        .selector-item span { font-size: 0.9rem; font-weight: 400; letter-spacing: 1px; color: #888; }
+        .selector-item:hover { border-color: var(--gold); background: #1a1a1a; }
 
         .selector-item.active {
+            background: var(--gold);
             border-color: var(--gold);
-            background: rgba(212, 175, 55, 0.05);
-            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(197, 160, 89, 0.2);
         }
 
-        .selector-item.active span { color: var(--gold); font-weight: 700; }
-        .selector-item.active i { opacity: 1; color: var(--gold); }
+        .selector-item.active span { color: #000; font-weight: 700; }
+        .selector-item span { color: #fff; transition: var(--transition); }
 
-        /* المشاريع الفرعية - بتصميم راقي */
+        /* فلاتر المشروعات */
         .project-filter {
             display: none;
             justify-content: center;
-            flex-wrap: wrap;
             gap: 10px;
             margin-bottom: 40px;
-            padding: 10px;
-            border-top: 1px solid var(--border);
-            animation: fadeIn 0.6s ease;
+            flex-wrap: wrap;
+            animation: slideDown 0.4s ease;
         }
 
         .project-chip {
-            padding: 8px 20px;
-            font-size: 0.8rem;
+            padding: 6px 18px;
+            font-size: 0.85rem;
             background: transparent;
-            color: #666;
+            color: var(--text-gray);
             border: 1px solid var(--border);
+            border-radius: 50px;
             cursor: pointer;
-            transition: 0.3s;
+            transition: var(--transition);
+            font-family: 'Cairo';
         }
 
         .project-chip.active {
-            background: var(--gold);
-            color: #000;
             border-color: var(--gold);
+            color: var(--gold);
+            background: rgba(197, 160, 89, 0.1);
         }
 
-        /* كروت العقارات */
+        /* شبكة العقارات */
         .property-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
         }
 
         .prop-card {
             background: var(--card-bg);
-            padding: 35px;
+            border-radius: 8px;
+            overflow: hidden;
             border: 1px solid var(--border);
-            transition: 0.4s;
+            transition: var(--transition);
+            position: relative;
         }
 
-        .prop-card:hover { border-color: var(--gold); box-shadow: 0 10px 40px rgba(0,0,0,0.6); }
+        .prop-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--gold);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
 
-        .prop-card h3 { font-size: 1.5rem; margin: 0 0 20px; font-weight: 700; }
-        
+        .card-header {
+            padding: 25px 25px 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .ref-no { font-size: 10px; color: var(--gold); letter-spacing: 1px; margin-bottom: 5px; }
+
+        .prop-card h3 { 
+            margin: 0; 
+            font-size: 1.3rem; 
+            color: #fff; 
+            font-weight: 700;
+        }
+
+        .card-body { padding: 20px 25px; }
+
         .prop-info {
             display: flex;
             justify-content: space-between;
             margin-bottom: 12px;
-            font-size: 0.85rem;
-            color: #666;
-            border-bottom: 1px solid rgba(255,255,255,0.03);
-            padding-bottom: 8px;
+            font-size: 0.9rem;
+            color: var(--text-gray);
         }
 
-        .prop-info b { color: #ccc; }
+        .prop-info b { color: #eee; font-weight: 600; }
 
-        .price-box {
+        .card-footer {
+            padding: 20px 25px 30px;
             text-align: center;
-            margin-top: 30px;
         }
 
-        .price-tag { font-size: 1.8rem; font-weight: 900; color: var(--gold); margin-bottom: 20px; }
+        .price-tag { 
+            font-size: 1.6rem; 
+            font-weight: 900; 
+            color: var(--gold); 
+            margin-bottom: 15px;
+            display: block;
+        }
 
         .contact-btn {
-            background: transparent;
-            color: #fff;
-            border: 1px solid #fff;
-            padding: 12px;
+            background: linear-gradient(45deg, var(--gold), var(--gold-light));
+            color: #000;
+            border: none;
+            padding: 14px;
             width: 100%;
-            font-family: 'Cairo';
+            border-radius: 4px;
             font-weight: 700;
             cursor: pointer;
-            transition: 0.3s;
+            transition: var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .contact-btn:hover { background: #fff; color: #000; }
+        .contact-btn:hover {
+            filter: brightness(1.1);
+            transform: scale(1.02);
+        }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        #loading { text-align: center; padding: 100px; color: var(--gold); letter-spacing: 5px; font-weight: 200; }
+        /* شاشة التحميل */
+        #loading {
+            text-align: center;
+            padding: 100px;
+            font-size: 1.2rem;
+            color: var(--gold);
+            letter-spacing: 4px;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 600px) {
+            .logo { letter-spacing: 5px; }
+            .city-selector { flex-direction: column; }
+            .selector-item { justify-content: center; }
+        }
     </style>
 </head>
 <body>
 
 <header>
     <h1 class="logo">AL-FAYROUZ</h1>
+    <span class="sub-logo">REAL ESTATE LUXURY | الفخامة العقارية</span>
 </header>
 
 <div class="container">
     <div class="city-selector">
         <div class="selector-item active" onclick="mainFilter('الكل', this)">
-            <i>🌐</i>
             <span>الكل</span>
         </div>
         <div class="selector-item" onclick="mainFilter('المنصورة الجديدة', this)">
-            <i>🏙️</i>
             <span>المنصورة الجديدة</span>
         </div>
         <div class="selector-item" onclick="mainFilter('دمياط الجديدة', this)">
-            <i>🌊</i>
             <span>دمياط الجديدة</span>
         </div>
     </div>
@@ -186,11 +259,12 @@
         <button class="project-chip" onclick="subFilter('دار مصر', this)">دار مصر</button>
     </div>
 
-    <div id="loading">COLLECTING DATA...</div>
+    <div id="loading">جاري تحميل الوحدات الفاخرة...</div>
     <div id="data" class="property-grid"></div>
 </div>
 
 <script>
+// نفس الرابط الخاص بك
 const URL = "https://script.google.com/macros/s/AKfycbxiPcSexC05MJVeFohzNaNex4oDW0rVylIjAXSsV9BD1QP7v9Esg3xO8CtUh_yOOV6g/exec";
 let allData = [];
 let currentCity = "الكل";
@@ -206,15 +280,19 @@ function render(list) {
     list.forEach((row, i) => {
         html += `
         <div class="prop-card">
-            <div style="font-size:10px; color:#333; margin-bottom:10px;">REF: ${i+101}</div>
-            <h3>عمارة ${row[2]} | وحدة ${row[3]}</h3>
-            <div class="prop-info">الموقع <b>${row[0]}</b></div>
-            <div class="prop-info">المشروع <b>${row[1]}</b></div>
-            <div class="prop-info">المساحة <b>${row[5]} م²</b></div>
-            <div class="prop-info">الطابق <b>${row[4]}</b></div>
-            <div class="price-box">
-                <div class="price-tag">${row[7] || 'REQUEST'}</div>
-                <button class="contact-btn" onclick="contact('${row[1]}','${row[7]}','${row[2]}','${row[3]}')">CONTACT AGENT</button>
+            <div class="card-header">
+                <div class="ref-no">REF #AF-${i+101}</div>
+                <h3>عمارة ${row[2]} | وحدة ${row[3]}</h3>
+            </div>
+            <div class="card-body">
+                <div class="prop-info"><span>الموقع:</span> <b>${row[0]}</b></div>
+                <div class="prop-info"><span>المشروع:</span> <b>${row[1]}</b></div>
+                <div class="prop-info"><span>المساحة:</span> <b>${row[5]} م²</b></div>
+                <div class="prop-info"><span>الطابق:</span> <b>${row[4]}</b></div>
+            </div>
+            <div class="card-footer">
+                <span class="price-tag">${row[7] || 'اتصل للسعر'}</span>
+                <button class="contact-btn" onclick="contact('${row[1]}','${row[7]}','${row[2]}','${row[3]}')">تواصل الآن</button>
             </div>
         </div>`;
     });
@@ -226,8 +304,9 @@ function mainFilter(city, el) {
     document.querySelectorAll('.selector-item').forEach(item => item.classList.remove('active'));
     el.classList.add('active');
     
-    document.getElementById('filterMansoura').style.display = 'none';
-    document.getElementById('filterDamietta').style.display = 'none';
+    // إخفاء وإظهار الفلاتر الفرعية
+    document.querySelectorAll('.project-filter').forEach(f => f.style.display = 'none');
+    document.querySelectorAll('.project-chip').forEach(c => c.classList.remove('active'));
 
     if(city === 'الكل') {
         render(allData);
@@ -245,7 +324,7 @@ function subFilter(proj, btn) {
 }
 
 function contact(p, s, b, u){
-    let msg = ` Inquiry: AL-FAYROUZ ESTATE \n Project: ${p} \n Building: ${b} | Unit: ${u} \n Price: ${s}`;
+    let msg = `استفسار عن عقار في الفيروز:\nالمشروع: ${p}\nالعمارة: ${b} | الوحدة: ${u}\nالسعر: ${s}`;
     window.open("https://wa.me/201212229797?text=" + encodeURIComponent(msg));
 }
 </script>
