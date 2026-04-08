@@ -3,165 +3,190 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AL-FAYROUZ | الفيروز للعقارات الفاخرة</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <title>AL-FAYROUZ LUXURY</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #c5a059;
-            --dark-bg: #0a0b0d;
-            --card-bg: #141619;
-            --border: rgba(255, 255, 255, 0.05);
+            --gold: #d4af37;
+            --dark: #050505;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.08);
         }
 
         body {
             font-family: 'Cairo', sans-serif;
-            background-color: var(--dark-bg);
-            color: #e0e0e0;
+            background: var(--dark);
+            color: #fff;
             margin: 0;
-            padding-bottom: 50px;
+            overflow-x: hidden;
         }
 
+        /* هيدر سينمائي ضخم */
         header {
-            padding: 50px 20px;
+            height: 50vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(rgba(0,0,0,0.6), var(--dark)), 
+                        url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1600') center/cover;
             text-align: center;
-            background: radial-gradient(circle at top, #1c1f24 0%, #0a0b0d 100%);
-            border-bottom: 1px solid var(--border);
         }
 
-        .logo {
-            font-size: 3.5rem;
+        .logo-text {
+            font-size: clamp(3rem, 10vw, 5rem);
             font-weight: 900;
-            letter-spacing: 5px;
-            background: linear-gradient(to bottom, #fff, var(--primary));
+            letter-spacing: 15px;
+            margin: 0;
+            background: linear-gradient(to bottom, #fff, #888);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin: 0;
         }
 
-        /* حاوية الفلاتر */
-        .filter-container {
-            max-width: 1000px;
-            margin: -30px auto 40px;
-            text-align: center;
-            z-index: 100;
-            position: relative;
-        }
-
-        .filter-group {
-            margin-bottom: 15px;
+        /* حاوية الفلاتر - شكل مودرن */
+        .main-nav {
+            max-width: 900px;
+            margin: -50px auto 40px;
+            padding: 20px;
+            background: rgba(20, 20, 20, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
             display: flex;
             justify-content: center;
-            flex-wrap: wrap;
             gap: 10px;
+            flex-wrap: wrap;
         }
 
-        .tab-btn {
-            background: var(--card-bg);
-            color: #888;
-            border: 1px solid var(--border);
+        .nav-btn {
+            background: transparent;
+            color: #666;
+            border: 1px solid transparent;
             padding: 10px 25px;
             cursor: pointer;
             font-family: 'Cairo';
-            font-weight: 600;
-            transition: 0.3s;
-            border-radius: 4px;
-        }
-
-        .tab-btn.active {
-            background: var(--primary);
-            color: #000;
-            border-color: var(--primary);
-            box-shadow: 0 0 15px rgba(197, 160, 89, 0.3);
-        }
-
-        .sub-filter {
-            background: rgba(255,255,255,0.02);
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px dashed var(--border);
-            display: none; /* مخفي افتراضياً */
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: auto;
-            padding: 0 20px;
-        }
-
-        #data {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 25px;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            padding: 30px;
+            font-weight: 400;
             transition: 0.4s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-btn.active {
+            color: var(--gold);
+            border-bottom: 2px solid var(--gold);
+        }
+
+        /* الفلاتر الفرعية - مظهر زجاجي */
+        .sub-nav {
+            display: none;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        /* كروت العقارات */
+        .container { max-width: 1200px; margin: auto; padding: 20px; }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .property-card {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            padding: 40px 30px;
+            transition: 0.5s cubic-bezier(0.2, 1, 0.2, 1);
             position: relative;
         }
 
-        .card:hover {
-            border-color: var(--primary);
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        .property-card:hover {
+            background: rgba(255,255,255,0.06);
+            border-color: var(--gold);
+            transform: translateY(-10px);
         }
 
-        .card h3 { color: #fff; margin: 0 0 15px 0; border-bottom: 1px solid var(--border); padding-bottom: 10px; font-size: 1.4rem;}
-        .specs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 14px; color: #aaa; margin: 20px 0; }
-        .specs div span { color: var(--primary); font-weight: 700; }
-        
-        .price { font-size: 1.8rem; color: #fff; font-weight: 900; text-align: center; margin: 20px 0; }
-        
-        .contact-btn {
+        .property-card h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 0 0 20px 0;
+            color: #fff;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+            padding: 12px 0;
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        .detail-item span { color: #ccc; font-weight: 700; }
+
+        .price-section {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .price-value {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--gold);
+            margin-bottom: 20px;
+        }
+
+        .action-btn {
             background: transparent;
-            color: var(--primary);
-            border: 1px solid var(--primary);
-            padding: 14px;
+            color: #fff;
+            border: 1px solid #fff;
+            padding: 15px 40px;
             width: 100%;
             cursor: pointer;
-            font-weight: 700;
             font-family: 'Cairo';
+            font-weight: 700;
             transition: 0.3s;
-            text-transform: uppercase;
         }
 
-        .contact-btn:hover { background: var(--primary); color: #000; }
+        .action-btn:hover {
+            background: #fff;
+            color: #000;
+        }
 
-        #loading { text-align: center; padding: 50px; color: var(--primary); letter-spacing: 2px; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        #loading { text-align: center; color: var(--gold); padding: 100px; letter-spacing: 5px; }
     </style>
 </head>
 <body>
 
 <header>
-    <h1 class="logo">AL-FAYROUZ</h1>
-    <p style="color: #666; letter-spacing: 2px; font-weight: 300;">PREMIUM REAL ESTATE</p>
+    <div class="logo-text">AL-FAYROUZ</div>
+    <div style="color:var(--gold); font-weight:200; letter-spacing:5px;">REAL ESTATE</div>
 </header>
 
-<div class="filter-container">
-    <div class="filter-group">
-        <button class="tab-btn active" onclick="mainFilter('الكل', this)">الكل</button>
-        <button class="tab-btn" onclick="mainFilter('المنصورة الجديدة', this)">المنصورة الجديدة</button>
-        <button class="tab-btn" onclick="mainFilter('دمياط الجديدة', this)">دمياط الجديدة</button>
-    </div>
+<div class="main-nav">
+    <button class="nav-btn active" onclick="mainFilter('الكل', this)">الكل</button>
+    <button class="nav-btn" onclick="mainFilter('المنصورة الجديدة', this)">المنصورة الجديدة</button>
+    <button class="nav-btn" onclick="mainFilter('دمياط الجديدة', this)">دمياط الجديدة</button>
+</div>
 
-    <div id="subFilterMansoura" class="filter-group sub-filter">
-        <button class="tab-btn" onclick="subFilter('جنة', this)">جنة</button>
-        <button class="tab-btn" onclick="subFilter('سكن مصر', this)">سكن مصر</button>
-        <button class="tab-btn" onclick="subFilter('إسكان ساحلي', this)">إسكان ساحلي</button>
-    </div>
+<div id="subMansoura" class="sub-nav">
+    <button class="nav-btn" onclick="subFilter('جنة', this)">جنة</button>
+    <button class="nav-btn" onclick="subFilter('سكن مصر', this)">سكن مصر</button>
+    <button class="nav-btn" onclick="subFilter('إسكان ساحلي', this)">إسكان ساحلي</button>
+</div>
 
-    <div id="subFilterDamietta" class="filter-group sub-filter">
-        <button class="tab-btn" onclick="subFilter('جنة', this)">جنة</button>
-        <button class="tab-btn" onclick="subFilter('سكن مصر', this)">سكن مصر</button>
-        <button class="tab-btn" onclick="subFilter('دار مصر', this)">دار مصر</button>
-    </div>
+<div id="subDamietta" class="sub-nav">
+    <button class="nav-btn" onclick="subFilter('جنة', this)">جنة</button>
+    <button class="nav-btn" onclick="subFilter('سكن مصر', this)">سكن مصر</button>
+    <button class="nav-btn" onclick="subFilter('دار مصر', this)">دار مصر</button>
 </div>
 
 <div class="container">
-    <div id="loading">⏳ يتم الآن تحميل الوحدات الحصرية...</div>
-    <div id="data"></div>
+    <div id="loading">LOADING COLLECTION...</div>
+    <div id="data" class="grid"></div>
 </div>
 
 <script>
@@ -169,71 +194,59 @@ const URL = "https://script.google.com/macros/s/AKfycbxiPcSexC05MJVeFohzNaNex4oD
 let allData = [];
 let currentCity = "الكل";
 
-fetch(URL)
-.then(res => res.json())
-.then(data => {
+fetch(URL).then(res => res.json()).then(data => {
     allData = data.filter(row => row[1] && row[1] !== "المشروع");
     document.getElementById("loading").style.display = "none";
-    renderCards(allData);
+    render(allData);
 });
 
-function renderCards(filteredData) {
+function render(list) {
     let html = "";
-    filteredData.forEach((row, i) => {
+    list.forEach((row, i) => {
         html += `
-        <div class="card">
-            <p style="font-size:10px; color:#444;">PROPERTY REF: AF-${i+100}</p>
+        <div class="property-card">
+            <div style="font-size:10px; color:#444; margin-bottom:10px;">ID: F-2026-${i+1}</div>
             <h3>عمارة ${row[2]} | وحدة ${row[3]}</h3>
-            <div class="specs">
-                <div>📍 المدينة: <br><span>${row[0]}</span></div>
-                <div>🏛️ المشروع: <br><span>${row[1]}</span></div>
-                <div>📐 المساحة: <br><span>${row[5]} م²</span></div>
-                <div>🏢 الدور: <br><span>${row[4]}</span></div>
+            <div class="detail-item">الموقع <span>${row[0]}</span></div>
+            <div class="detail-item">المشروع <span>${row[1]}</span></div>
+            <div class="detail-item">المساحة <span>${row[5]} m²</span></div>
+            <div class="detail-item">الطابق <span>${row[4]}</span></div>
+            <div class="price-section">
+                <div class="price-value">${row[7] || 'REQUEST PRICE'}</div>
+                <button class="action-btn" onclick="contact('${row[1]}','${row[7]}','${row[2]}','${row[3]}')">CONTACT AGENT</button>
             </div>
-            <div class="price">${row[7] || 'اتصل للسعر'}</div>
-            <button class="contact-btn" onclick="contact('${row[1]}','${row[7]}','${row[2]}','${row[3]}')">طلب معاينة خاصة</button>
         </div>`;
     });
-    document.getElementById("data").innerHTML = html || '<p style="text-align:center; width:100%; color:#555;">نعتذر، لا توجد وحدات متوفرة بهذا الفلتر حالياً.</p>';
+    document.getElementById("data").innerHTML = html;
 }
 
 function mainFilter(city, btn) {
     currentCity = city;
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.main-nav .nav-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
+    
+    document.getElementById('subMansoura').style.display = 'none';
+    document.getElementById('subDamietta').style.display = 'none';
 
-    // إخفاء كل الفلاتر الفرعية أولاً
-    document.getElementById('subFilterMansoura').style.display = 'none';
-    document.getElementById('subFilterDamietta').style.display = 'none';
-
-    if (city === 'الكل') {
-        renderCards(allData);
+    if(city === 'الكل') {
+        render(allData);
     } else {
-        // إظهار الفلتر الفرعي المناسب
-        if (city === 'المنصورة الجديدة') {
-            document.getElementById('subFilterMansoura').style.display = 'flex';
-        } else if (city === 'دمياط الجديدة') {
-            document.getElementById('subFilterDamietta').style.display = 'flex';
-        }
-        const filtered = allData.filter(row => row[0].includes(city));
-        renderCards(filtered);
+        const targetSub = city === 'المنصورة الجديدة' ? 'subMansoura' : 'subDamietta';
+        document.getElementById(targetSub).style.display = 'flex';
+        render(allData.filter(r => r[0].includes(city)));
     }
 }
 
-function subFilter(project, btn) {
-    // تمييز زر المشروع المختار
-    btn.parentElement.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+function subFilter(proj, btn) {
+    document.querySelectorAll('.sub-nav .nav-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-
-    const filtered = allData.filter(row => row[0].includes(currentCity) && row[1].includes(project));
-    renderCards(filtered);
+    render(allData.filter(r => r[0].includes(currentCity) && r[1].includes(proj)));
 }
 
-function contact(project, price, build, unit){
-    let msg = `تحية طيبة، الفيروز للعقارات..\nأرغب في الاستفسار عن الوحدة:\n🏢 مشروع: ${project}\n🏠 عمارة: ${build} | وحدة: ${unit}\n💰 السعر: ${price}`;
+function contact(p, s, b, u){
+    let msg = ` Inquiry: AL-FAYROUZ ESTATE \n Project: ${p} \n Building: ${b} | Unit: ${u} \n Price: ${s}`;
     window.open("https://wa.me/201212229797?text=" + encodeURIComponent(msg));
 }
 </script>
 </body>
 </html>
-
