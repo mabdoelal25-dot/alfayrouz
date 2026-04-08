@@ -1,134 +1,199 @@
 <!DOCTYPE html>
 <html dir="rtl" lang="ar">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AL-FAYROUZ | الفيروز للعقارات</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AL-FAYROUZ | الفيروز للعقارات</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #c5a059; /* ذهبي ملكي */
+            --dark: #0a0b0d;
+            --card-bg: #141619;
+            --text-main: #e0e0e0;
+        }
 
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700;900&display=swap" rel="stylesheet">
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: var(--dark);
+            color: var(--text-main);
+            margin: 0;
+            overflow-x: hidden;
+        }
 
-<style>
-body {
-    font-family: 'Cairo', sans-serif;
-    background: #0f1113;
-    color: #fff;
-    margin: 0;
-}
+        /* هيدر سينمائي */
+        header {
+            text-align: center;
+            padding: 80px 20px;
+            background: radial-gradient(circle at center, #1c1f24 0%, #0a0b0d 100%);
+            border-bottom: 1px solid rgba(197, 160, 89, 0.2);
+        }
 
-header {
-    text-align: center;
-    padding: 40px;
-}
+        .logo {
+            font-size: 50px;
+            font-weight: 900;
+            letter-spacing: 5px;
+            margin: 0;
+            background: linear-gradient(to bottom, #fff, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+        }
 
-.logo {
-    font-size: 40px;
-    font-weight: 900;
-    color: gold;
-}
+        .container {
+            max-width: 1200px;
+            margin: -40px auto 50px;
+            padding: 0 20px;
+        }
 
-.container {
-    max-width: 1000px;
-    margin: auto;
-    padding: 20px;
-}
+        .section-title {
+            text-align: center;
+            font-weight: 300;
+            letter-spacing: 2px;
+            color: var(--primary);
+            margin-bottom: 40px;
+        }
 
-.card {
-    background: #1a1c20;
-    padding: 20px;
-    margin: 15px 0;
-    border: 1px solid #333;
-    transition: 0.3s;
-}
+        /* شبكة الكروت */
+        #data {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+        }
 
-.card:hover {
-    transform: scale(1.03);
-}
+        .card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 4px; /* زوايا حادة للفخامة */
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
 
-button {
-    background: gold;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-    width: 100%;
-}
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+        }
 
-#loading {
-    text-align: center;
-    margin-top: 20px;
-}
-</style>
+        .card h3 {
+            margin: 0 0 15px 0;
+            font-size: 22px;
+            color: #fff;
+            border-bottom: 1px solid rgba(197, 160, 89, 0.3);
+            padding-bottom: 10px;
+        }
+
+        .card p {
+            margin: 8px 0;
+            font-size: 15px;
+            color: #aaa;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .card p span { color: #fff; font-weight: 700; }
+
+        .price {
+            font-size: 24px;
+            color: var(--primary);
+            font-weight: 900;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        button {
+            background: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            padding: 12px;
+            margin-top: 20px;
+            cursor: pointer;
+            font-family: 'Cairo';
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: var(--primary);
+            color: #000;
+        }
+
+        /* لودنج فخم */
+        #loading {
+            text-align: center;
+            font-size: 20px;
+            margin-top: 50px;
+            color: var(--primary);
+            letter-spacing: 2px;
+        }
+    </style>
 </head>
-
 <body>
 
 <header>
-<h1 class="logo">AL-FAYROUZ</h1>
-<p>عقارات فاخرة</p>
+    <h1 class="logo">AL-FAYROUZ</h1>
+    <p style="letter-spacing: 3px; font-weight: 300; color: #666;">PREMIUM REAL ESTATE PROPERTIES</p>
 </header>
 
 <div class="container">
-<h2>الوحدات المتاحة</h2>
-
-<div id="loading">⏳ جاري تحميل البيانات...</div>
-<div id="data"></div>
-
+    <h2 class="section-title">الوحدات الحصرية المتاحة</h2>
+    <div id="loading">⏳ يتم الآن تجهيز المحفظة العقارية...</div>
+    <div id="data"></div>
 </div>
 
 <script>
-
 const URL = "https://script.google.com/macros/s/AKfycbxiPcSexC05MJVeFohzNaNex4oDW0rVylIjAXSsV9BD1QP7v9Esg3xO8CtUh_yOOV6g/exec";
 
 fetch(URL)
-.then(function(res){
-    return res.json();
-})
-.then(function(data){
-
+.then(res => res.json())
+.then(data => {
     document.getElementById("loading").style.display = "none";
-
     let html = "";
 
-    for(let i = 1; i < data.length; i++){
-
+    // بدأت من i=0 لأن البيانات أحياناً بتبدأ من أول صف لو ممسحتش العناوين
+    for(let i = 0; i < data.length; i++){
         let row = data[i];
+        if(!row[1]) continue; // تخطي الصفوف الفاضية
 
-        html += "<div class='card'>";
-
-        html += "<h3>" + row[1] + "</h3>";
-        html += "<p>📍 المدينة: " + row[0] + "</p>";
-        html += "<p>📐 المساحة: " + row[2] + "</p>";
-        html += "<p>🏢 الدور: " + row[3] + "</p>";
-        html += "<p>💰 السعر: " + row[4] + "</p>";
-
-        html += "<button onclick="contact('" + row[1] + "','" + row[4] + "','" + row[0] + "')">";
-        html += "تواصل واتساب";
-        html += "</button>";
-
-        html += "</div>";
+        html += `
+        <div class="card">
+            <div>
+                <p style="font-size:10px; color:#444; margin:0">REF: AF-00${i+1}</p>
+                <h3>${row[1]}</h3>
+                <p>📍 المدينة: <span>${row[0]}</span></p>
+                <p>📐 المساحة: <span>${row[5] || '---'} م²</span></p>
+                <p>🏢 الدور: <span>${row[4] || '---'}</span></p>
+                <p>🏛️ المشروع: <span>${row[1]}</span></p>
+            </div>
+            <div>
+                <div class="price">${row[7] || 'اتصل للسعر'}</div>
+                <button onclick="contact('${row[1]}','${row[7]}','${row[0]}')">طلب معاينة الوحدة</button>
+            </div>
+        </div>`;
     }
-
     document.getElementById("data").innerHTML = html;
-
 })
-.catch(function(error){
-    document.getElementById("loading").innerText = "❌ حصل خطأ في تحميل البيانات";
-    console.log(error);
+.catch(error => {
+    document.getElementById("loading").innerText = "❌ عذراً، حدث خطأ في الاتصال بالخادم";
 });
 
 function contact(name, price, city){
-
-    let msg = "السلام عليكم 👋\n";
-    msg += "مهتم بوحدة:\n\n";
-    msg += "🏠 " + name + "\n";
-    msg += "📍 " + city + "\n";
-    msg += "💰 " + price;
+    let msg = "تحية طيبة، الفيروز للعقارات..\n\n";
+    msg += "أرغب في الاستفسار عن الوحدة التالية:\n";
+    msg += "🏠 المشروع: " + name + "\n";
+    msg += "📍 الموقع: " + city + "\n";
+    msg += "💰 السعر المعلن: " + price + "\n\n";
+    msg += "يرجى تزويدي بموعد للمعاينة.";
 
     let url = "https://wa.me/201212229797?text=" + encodeURIComponent(msg);
-
     window.open(url);
 }
-
 </script>
-
 </body>
 </html>
