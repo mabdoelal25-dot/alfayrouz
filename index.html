@@ -29,7 +29,7 @@
 
         /* هيدر سينمائي */
         header {
-            padding: 80px 20px;
+            padding: 60px 20px;
             text-align: center;
             background: radial-gradient(circle at center, #1a1a1a 0%, #0a0a0a 100%);
             position: relative;
@@ -38,10 +38,7 @@
         header::after {
             content: '';
             position: absolute;
-            bottom: 0;
-            left: 25%;
-            width: 50%;
-            height: 1px;
+            bottom: 0; left: 25%; width: 50%; height: 1px;
             background: linear-gradient(90deg, transparent, var(--gold), transparent);
         }
 
@@ -60,13 +57,31 @@
             color: var(--gold);
             letter-spacing: 4px;
             font-size: 0.9rem;
-            margin-top: 10px;
+            margin: 10px 0 20px;
             display: block;
+        }
+
+        /* زر إضافة وحدة */
+        .add-property-btn {
+            background: transparent;
+            color: var(--gold);
+            border: 1px solid var(--gold);
+            padding: 10px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Cairo';
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        .add-property-btn:hover {
+            background: var(--gold);
+            color: #000;
+            box-shadow: 0 0 15px rgba(197, 160, 89, 0.4);
         }
 
         .container { max-width: 1200px; margin: auto; padding: 40px 20px; }
 
-        /* اختيار المدن بطريقة عصرية */
+        /* اختيار المدن */
         .city-selector {
             display: flex;
             justify-content: center;
@@ -82,12 +97,7 @@
             border-radius: 4px;
             cursor: pointer;
             transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
-
-        .selector-item:hover { border-color: var(--gold); background: #1a1a1a; }
 
         .selector-item.active {
             background: var(--gold);
@@ -96,7 +106,6 @@
         }
 
         .selector-item.active span { color: #000; font-weight: 700; }
-        .selector-item span { color: #fff; transition: var(--transition); }
 
         /* فلاتر المشروعات */
         .project-filter {
@@ -126,7 +135,7 @@
             background: rgba(197, 160, 89, 0.1);
         }
 
-        /* شبكة العقارات */
+        /* كروت العقارات */
         .property-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -136,10 +145,8 @@
         .prop-card {
             background: var(--card-bg);
             border-radius: 8px;
-            overflow: hidden;
             border: 1px solid var(--border);
             transition: var(--transition);
-            position: relative;
         }
 
         .prop-card:hover {
@@ -148,103 +155,56 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
 
-        .card-header {
-            padding: 25px 25px 10px;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .ref-no { font-size: 10px; color: var(--gold); letter-spacing: 1px; margin-bottom: 5px; }
-
-        .prop-card h3 { 
-            margin: 0; 
-            font-size: 1.3rem; 
-            color: #fff; 
-            font-weight: 700;
-        }
-
+        .card-header { padding: 25px 25px 10px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .ref-no { font-size: 10px; color: var(--gold); letter-spacing: 1px; }
         .card-body { padding: 20px 25px; }
-
-        .prop-info {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 12px;
-            font-size: 0.9rem;
-            color: var(--text-gray);
-        }
-
-        .prop-info b { color: #eee; font-weight: 600; }
-
-        .card-footer {
-            padding: 20px 25px 30px;
-            text-align: center;
-        }
-
-        .price-tag { 
-            font-size: 1.6rem; 
-            font-weight: 900; 
-            color: var(--gold); 
-            margin-bottom: 15px;
-            display: block;
-        }
+        .prop-info { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 0.9rem; color: var(--text-gray); }
+        .prop-info b { color: #eee; }
+        .card-footer { padding: 0 25px 30px; text-align: center; }
+        .price-tag { font-size: 1.6rem; font-weight: 900; color: var(--gold); margin-bottom: 15px; display: block; }
 
         .contact-btn {
             background: linear-gradient(45deg, var(--gold), var(--gold-light));
-            color: #000;
-            border: none;
-            padding: 14px;
-            width: 100%;
-            border-radius: 4px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: var(--transition);
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            color: #000; border: none; padding: 14px; width: 100%; border-radius: 4px;
+            font-weight: 700; cursor: pointer; transition: var(--transition);
         }
 
-        .contact-btn:hover {
-            filter: brightness(1.1);
-            transform: scale(1.02);
+        /* Modal */
+        .modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(5px);
         }
+        .modal-content {
+            background: var(--card-bg); padding: 30px; border-radius: 10px; width: 90%; max-width: 450px;
+            border: 1px solid var(--gold); position: relative;
+        }
+        .close-modal { position: absolute; top: 10px; left: 15px; font-size: 25px; cursor: pointer; color: var(--text-gray); }
+        .form-group { margin-bottom: 15px; text-align: right; }
+        .form-group label { display: block; margin-bottom: 5px; font-size: 0.9rem; color: var(--gold); }
+        .form-group input, .form-group select {
+            width: 100%; padding: 12px; background: #000; border: 1px solid var(--border); color: #fff; border-radius: 4px; font-family: 'Cairo';
+        }
+        .submit-form { background: var(--gold); color: #000; border: none; width: 100%; padding: 14px; font-weight: 700; cursor: pointer; border-radius: 4px; margin-top: 10px; }
 
-        /* شاشة التحميل */
-        #loading {
-            text-align: center;
-            padding: 100px;
-            font-size: 1.2rem;
-            color: var(--gold);
-            letter-spacing: 4px;
-        }
+        #loading { text-align: center; padding: 100px; color: var(--gold); letter-spacing: 4px; }
 
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @media (max-width: 600px) {
-            .logo { letter-spacing: 5px; }
-            .city-selector { flex-direction: column; }
-            .selector-item { justify-content: center; }
-        }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        @media (max-width: 600px) { .city-selector { flex-direction: column; } }
     </style>
 </head>
 <body>
 
 <header>
     <h1 class="logo">AL-FAYROUZ</h1>
-    <span class="sub-logo">REAL ESTATE LUXURY | الفخامة العقارية</span>
+    <span class="sub-logo">الفخامة العقارية | LUXURY REAL ESTATE</span>
+    <button class="add-property-btn" onclick="toggleModal(true)">+ اعرض وحدتك معنا</button>
 </header>
 
 <div class="container">
     <div class="city-selector">
-        <div class="selector-item active" onclick="mainFilter('الكل', this)">
-            <span>الكل</span>
-        </div>
-        <div class="selector-item" onclick="mainFilter('المنصورة الجديدة', this)">
-            <span>المنصورة الجديدة</span>
-        </div>
-        <div class="selector-item" onclick="mainFilter('دمياط الجديدة', this)">
-            <span>دمياط الجديدة</span>
-        </div>
+        <div class="selector-item active" onclick="mainFilter('الكل', this)"><span>الكل</span></div>
+        <div class="selector-item" onclick="mainFilter('المنصورة الجديدة', this)"><span>المنصورة الجديدة</span></div>
+        <div class="selector-item" onclick="mainFilter('دمياط الجديدة', this)"><span>دمياط الجديدة</span></div>
     </div>
 
     <div id="filterMansoura" class="project-filter">
@@ -259,16 +219,37 @@
         <button class="project-chip" onclick="subFilter('دار مصر', this)">دار مصر</button>
     </div>
 
-    <div id="loading">جاري تحميل الوحدات الفاخرة...</div>
+    <div id="loading">جاري تحميل الوحدات...</div>
     <div id="data" class="property-grid"></div>
 </div>
 
+<div id="propertyModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="toggleModal(false)">&times;</span>
+        <h2 style="color: var(--gold); margin-top:0;">اعرض وحدتك</h2>
+        <form id="sellForm" onsubmit="sendToWhatsApp(event)">
+            <div class="form-group">
+                <label>المدينة</label>
+                <select id="userCity">
+                    <option value="المنصورة الجديدة">المنصورة الجديدة</option>
+                    <option value="دمياط الجديدة">دمياط الجديدة</option>
+                </select>
+            </div>
+            <div class="form-group"><label>المشروع</label><input type="text" id="userProject" placeholder="مثال: جنة" required></div>
+            <div class="form-group"><label>رقم العمارة والوحدة</label><input type="text" id="userUnit" required></div>
+            <div class="form-group"><label>المساحة</label><input type="number" id="userSpace" required></div>
+            <div class="form-group"><label>السعر المطلوب</label><input type="text" id="userPrice" required></div>
+            <button type="submit" class="submit-form">إرسال للتواصل</button>
+        </form>
+    </div>
+</div>
+
 <script>
-// نفس الرابط الخاص بك
 const URL = "https://script.google.com/macros/s/AKfycbxiPcSexC05MJVeFohzNaNex4oDW0rVylIjAXSsV9BD1QP7v9Esg3xO8CtUh_yOOV6g/exec";
 let allData = [];
 let currentCity = "الكل";
 
+// جلب البيانات من Google Sheets
 fetch(URL).then(r => r.json()).then(d => {
     allData = d.filter(row => row[1] && row[1] !== "المشروع");
     document.getElementById("loading").style.display = "none";
@@ -285,10 +266,10 @@ function render(list) {
                 <h3>عمارة ${row[2]} | وحدة ${row[3]}</h3>
             </div>
             <div class="card-body">
-                <div class="prop-info"><span>الموقع:</span> <b>${row[0]}</b></div>
-                <div class="prop-info"><span>المشروع:</span> <b>${row[1]}</b></div>
-                <div class="prop-info"><span>المساحة:</span> <b>${row[5]} م²</b></div>
-                <div class="prop-info"><span>الطابق:</span> <b>${row[4]}</b></div>
+                <div class="prop-info">الموقع: <b>${row[0]}</b></div>
+                <div class="prop-info">المشروع: <b>${row[1]}</b></div>
+                <div class="prop-info">المساحة: <b>${row[5]} م²</b></div>
+                <div class="prop-info">الطابق: <b>${row[4]}</b></div>
             </div>
             <div class="card-footer">
                 <span class="price-tag">${row[7] || 'اتصل للسعر'}</span>
@@ -303,16 +284,11 @@ function mainFilter(city, el) {
     currentCity = city;
     document.querySelectorAll('.selector-item').forEach(item => item.classList.remove('active'));
     el.classList.add('active');
-    
-    // إخفاء وإظهار الفلاتر الفرعية
     document.querySelectorAll('.project-filter').forEach(f => f.style.display = 'none');
-    document.querySelectorAll('.project-chip').forEach(c => c.classList.remove('active'));
-
-    if(city === 'الكل') {
-        render(allData);
-    } else {
-        const filterId = city === 'المنصورة الجديدة' ? 'filterMansoura' : 'filterDamietta';
-        document.getElementById(filterId).style.display = 'flex';
+    if(city === 'الكل') { render(allData); } 
+    else {
+        const id = city === 'المنصورة الجديدة' ? 'filterMansoura' : 'filterDamietta';
+        document.getElementById(id).style.display = 'flex';
         render(allData.filter(r => r[0].includes(city)));
     }
 }
@@ -327,6 +303,25 @@ function contact(p, s, b, u){
     let msg = `استفسار عن عقار في الفيروز:\nالمشروع: ${p}\nالعمارة: ${b} | الوحدة: ${u}\nالسعر: ${s}`;
     window.open("https://wa.me/201212229797?text=" + encodeURIComponent(msg));
 }
+
+// وظائف المودال (النافذة المنبثقة)
+function toggleModal(show) { document.getElementById('propertyModal').style.display = show ? 'flex' : 'none'; }
+
+function sendToWhatsApp(e) {
+    e.preventDefault();
+    const city = document.getElementById('userCity').value;
+    const project = document.getElementById('userProject').value;
+    const unit = document.getElementById('userUnit').value;
+    const space = document.getElementById('userSpace').value;
+    const price = document.getElementById('userPrice').value;
+    
+    const msg = `طلب عرض وحدة جديدة:\n📍 المدينة: ${city}\n🏗️ المشروع: ${project}\n🏢 التفاصيل: ${unit}\n📐 المساحة: ${space}م\n💰 السعر: ${price}`;
+    window.open("https://wa.me/201212229797?text=" + encodeURIComponent(msg));
+    toggleModal(false);
+}
+
+window.onclick = function(e) { if (e.target.className == 'modal') toggleModal(false); }
 </script>
+
 </body>
 </html>
