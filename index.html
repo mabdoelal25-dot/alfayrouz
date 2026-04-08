@@ -22,47 +22,64 @@
         }
 
         header {
-            padding: 60px 20px;
+            padding: 50px 20px;
             text-align: center;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.8), var(--dark-bg));
+            background: radial-gradient(circle at top, #1c1f24 0%, #0a0b0d 100%);
             border-bottom: 1px solid var(--border);
         }
 
         .logo {
-            font-size: 3rem;
+            font-size: 3.5rem;
             font-weight: 900;
             letter-spacing: 5px;
             background: linear-gradient(to bottom, #fff, var(--primary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            margin: 0;
         }
 
-        /* نظام الفلترة الجديد */
-        .filter-tabs {
+        /* حاوية الفلاتر */
+        .filter-container {
+            max-width: 1000px;
+            margin: -30px auto 40px;
+            text-align: center;
+            z-index: 100;
+            position: relative;
+        }
+
+        .filter-group {
+            margin-bottom: 15px;
             display: flex;
             justify-content: center;
-            gap: 15px;
-            margin: -25px auto 40px;
-            position: relative;
-            z-index: 100;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .tab-btn {
             background: var(--card-bg);
-            color: #fff;
+            color: #888;
             border: 1px solid var(--border);
-            padding: 12px 30px;
+            padding: 10px 25px;
             cursor: pointer;
             font-family: 'Cairo';
             font-weight: 600;
             transition: 0.3s;
-            border-radius: 2px;
+            border-radius: 4px;
         }
 
         .tab-btn.active {
             background: var(--primary);
             color: #000;
             border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(197, 160, 89, 0.3);
+        }
+
+        .sub-filter {
+            background: rgba(255,255,255,0.02);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px dashed var(--border);
+            display: none; /* مخفي افتراضياً */
         }
 
         .container {
@@ -73,7 +90,7 @@
 
         #data {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 25px;
         }
 
@@ -88,60 +105,76 @@
         .card:hover {
             border-color: var(--primary);
             transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        .card h3 { color: #fff; margin-top: 0; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+        .card h3 { color: #fff; margin: 0 0 15px 0; border-bottom: 1px solid var(--border); padding-bottom: 10px; font-size: 1.4rem;}
         .specs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 14px; color: #aaa; margin: 20px 0; }
-        .specs span { color: #fff; font-weight: 600; }
+        .specs div span { color: var(--primary); font-weight: 700; }
         
-        .price { font-size: 1.8rem; color: var(--primary); font-weight: 900; text-align: center; margin: 20px 0; }
+        .price { font-size: 1.8rem; color: #fff; font-weight: 900; text-align: center; margin: 20px 0; }
         
         .contact-btn {
             background: transparent;
             color: var(--primary);
             border: 1px solid var(--primary);
-            padding: 12px;
+            padding: 14px;
             width: 100%;
             cursor: pointer;
             font-weight: 700;
             font-family: 'Cairo';
             transition: 0.3s;
+            text-transform: uppercase;
         }
 
         .contact-btn:hover { background: var(--primary); color: #000; }
 
-        #loading { text-align: center; padding: 50px; color: var(--primary); }
+        #loading { text-align: center; padding: 50px; color: var(--primary); letter-spacing: 2px; }
     </style>
 </head>
 <body>
 
 <header>
     <h1 class="logo">AL-FAYROUZ</h1>
-    <p style="color: var(--primary); letter-spacing: 2px;">PREMIUM ESTATE</p>
+    <p style="color: #666; letter-spacing: 2px; font-weight: 300;">PREMIUM REAL ESTATE</p>
 </header>
 
-<div class="filter-tabs">
-    <button class="tab-btn active" onclick="filterData('الكل', this)">الكل</button>
-    <button class="tab-btn" onclick="filterData('المنصورة الجديدة', this)">المنصورة الجديدة</button>
-    <button class="tab-btn" onclick="filterData('دمياط الجديدة', this)">دمياط الجديدة</button>
+<div class="filter-container">
+    <div class="filter-group">
+        <button class="tab-btn active" onclick="mainFilter('الكل', this)">الكل</button>
+        <button class="tab-btn" onclick="mainFilter('المنصورة الجديدة', this)">المنصورة الجديدة</button>
+        <button class="tab-btn" onclick="mainFilter('دمياط الجديدة', this)">دمياط الجديدة</button>
+    </div>
+
+    <div id="subFilterMansoura" class="filter-group sub-filter">
+        <button class="tab-btn" onclick="subFilter('جنة', this)">جنة</button>
+        <button class="tab-btn" onclick="subFilter('سكن مصر', this)">سكن مصر</button>
+        <button class="tab-btn" onclick="subFilter('إسكان ساحلي', this)">إسكان ساحلي</button>
+    </div>
+
+    <div id="subFilterDamietta" class="filter-group sub-filter">
+        <button class="tab-btn" onclick="subFilter('جنة', this)">جنة</button>
+        <button class="tab-btn" onclick="subFilter('سكن مصر', this)">سكن مصر</button>
+        <button class="tab-btn" onclick="subFilter('دار مصر', this)">دار مصر</button>
+    </div>
 </div>
 
 <div class="container">
-    <div id="loading">⏳ جاري تحميل التحف العقارية...</div>
+    <div id="loading">⏳ يتم الآن تحميل الوحدات الحصرية...</div>
     <div id="data"></div>
 </div>
 
 <script>
 const URL = "https://script.google.com/macros/s/AKfycbxiPcSexC05MJVeFohzNaNex4oDW0rVylIjAXSsV9BD1QP7v9Esg3xO8CtUh_yOOV6g/exec";
 let allData = [];
+let currentCity = "الكل";
 
-// جلب البيانات
 fetch(URL)
 .then(res => res.json())
 .then(data => {
-    allData = data.filter(row => row[1] && row[1] !== "المشروع"); // تنظيف البيانات
+    allData = data.filter(row => row[1] && row[1] !== "المشروع");
     document.getElementById("loading").style.display = "none";
-    renderCards(allData); // عرض الكل عند الدخول
+    renderCards(allData);
 });
 
 function renderCards(filteredData) {
@@ -149,39 +182,58 @@ function renderCards(filteredData) {
     filteredData.forEach((row, i) => {
         html += `
         <div class="card">
-            <p style="font-size:10px; color:#444;">ID: AF-${i+100}</p>
+            <p style="font-size:10px; color:#444;">PROPERTY REF: AF-${i+100}</p>
             <h3>عمارة ${row[2]} | وحدة ${row[3]}</h3>
             <div class="specs">
-                <div>📍 المدينة: <span>${row[0]}</span></div>
-                <div>🏛️ المشروع: <span>${row[1]}</span></div>
-                <div>📐 المساحة: <span>${row[5]} م²</span></div>
-                <div>🏢 الدور: <span>${row[4]}</span></div>
+                <div>📍 المدينة: <br><span>${row[0]}</span></div>
+                <div>🏛️ المشروع: <br><span>${row[1]}</span></div>
+                <div>📐 المساحة: <br><span>${row[5]} م²</span></div>
+                <div>🏢 الدور: <br><span>${row[4]}</span></div>
             </div>
             <div class="price">${row[7] || 'اتصل للسعر'}</div>
-            <button class="contact-btn" onclick="contact('${row[1]}','${row[7]}','${row[0]}')">طلب معاينة</button>
+            <button class="contact-btn" onclick="contact('${row[1]}','${row[7]}','${row[2]}','${row[3]}')">طلب معاينة خاصة</button>
         </div>`;
     });
-    document.getElementById("data").innerHTML = html || '<p style="text-align:center; width:100%;">لا توجد وحدات متاحة في هذا القسم حالياً.</p>';
+    document.getElementById("data").innerHTML = html || '<p style="text-align:center; width:100%; color:#555;">نعتذر، لا توجد وحدات متوفرة بهذا الفلتر حالياً.</p>';
 }
 
-function filterData(city, btn) {
-    // تغيير شكل الزراير
+function mainFilter(city, btn) {
+    currentCity = city;
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
 
-    // الفلترة
+    // إخفاء كل الفلاتر الفرعية أولاً
+    document.getElementById('subFilterMansoura').style.display = 'none';
+    document.getElementById('subFilterDamietta').style.display = 'none';
+
     if (city === 'الكل') {
         renderCards(allData);
     } else {
+        // إظهار الفلتر الفرعي المناسب
+        if (city === 'المنصورة الجديدة') {
+            document.getElementById('subFilterMansoura').style.display = 'flex';
+        } else if (city === 'دمياط الجديدة') {
+            document.getElementById('subFilterDamietta').style.display = 'flex';
+        }
         const filtered = allData.filter(row => row[0].includes(city));
         renderCards(filtered);
     }
 }
 
-function contact(name, price, city){
-    let msg = `تحية طيبة، الفيروز للعقارات..\nأرغب في الاستفسار عن:\n🏠 المشروع: ${name}\n📍 الموقع: ${city}\n💰 السعر: ${price}`;
+function subFilter(project, btn) {
+    // تمييز زر المشروع المختار
+    btn.parentElement.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const filtered = allData.filter(row => row[0].includes(currentCity) && row[1].includes(project));
+    renderCards(filtered);
+}
+
+function contact(project, price, build, unit){
+    let msg = `تحية طيبة، الفيروز للعقارات..\nأرغب في الاستفسار عن الوحدة:\n🏢 مشروع: ${project}\n🏠 عمارة: ${build} | وحدة: ${unit}\n💰 السعر: ${price}`;
     window.open("https://wa.me/201212229797?text=" + encodeURIComponent(msg));
 }
 </script>
 </body>
 </html>
+
