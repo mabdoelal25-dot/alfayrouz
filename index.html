@@ -3,185 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AL-FAYROUZ | Real Estate</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;400;600;800&display=swap" rel="stylesheet">
+    <title>AL-FAYROUZ | العقارات المميزة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --main-text: #111;
-            --sub-text: #666;
-            --bg: #ffffff;
-            --border: #e5e5e5;
+            --primary: #1a73e8; /* أزرق براندات */
+            --dark: #202124;
+            --gray: #5f6368;
+            --bg: #f8f9fa;
+            --border: #dadce0;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Cairo', sans-serif; background: var(--bg); color: var(--dark); padding-bottom: 50px; }
 
-        body {
-            font-family: 'Cairo', sans-serif;
-            background-color: var(--bg);
-            color: var(--main-text);
-            padding: 0 40px;
-        }
+        /* Navigation */
+        nav { background: #fff; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); sticky: top; z-index: 100; }
+        .logo { font-weight: 900; font-size: 1.5rem; color: var(--primary); }
+        .add-btn { background: var(--primary); color: #fff; border: none; padding: 10px 20px; border-radius: 6px; font-weight: 700; cursor: pointer; font-family: 'Cairo'; }
 
-        /* Nav */
-        nav {
-            height: 120px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border);
-        }
+        /* Filter Section */
+        .filter-bar { background: #fff; padding: 20px 5%; border-bottom: 1px solid var(--border); display: flex; gap: 15px; overflow-x: auto; }
+        .f-item { padding: 8px 18px; border: 1px solid var(--border); border-radius: 20px; font-size: 0.9rem; cursor: pointer; white-space: nowrap; transition: 0.2s; }
+        .f-item.active { background: var(--primary); color: #fff; border-color: var(--primary); }
 
-        .logo {
-            font-size: 1.4rem;
-            font-weight: 800;
-            letter-spacing: 6px;
-            text-transform: uppercase;
-        }
+        /* Hero */
+        .hero { padding: 40px 5%; background: #fff; }
+        .hero h1 { font-size: 1.8rem; margin-bottom: 10px; }
 
-        .nav-link {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            cursor: pointer;
-            border-bottom: 1px solid var(--main-text);
-            padding-bottom: 5px;
-        }
-
-        /* Filters */
-        .filter-section {
-            padding: 60px 0;
-            display: flex;
-            gap: 50px;
-            align-items: center;
-        }
-
-        .filter-btn {
-            font-size: 0.9rem;
-            font-weight: 400;
-            color: var(--sub-text);
-            cursor: pointer;
-            transition: 0.2s;
-            position: relative;
-        }
-
-        .filter-btn.active {
-            color: var(--main-text);
-            font-weight: 600;
-        }
-
-        .filter-btn.active::after {
-            content: '';
-            position: absolute;
-            bottom: -5px; right: 0; width: 20px; height: 1px;
-            background: var(--main-text);
-        }
-
-        .sub-filter-row {
-            padding-bottom: 40px;
-            display: none;
-            gap: 20px;
-            animation: fadeIn 0.5s ease;
-        }
-
-        .chip {
-            font-size: 0.75rem;
-            padding: 5px 15px;
-            border: 1px solid var(--border);
-            cursor: pointer;
-        }
-
-        .chip.active { background: var(--main-text); color: #fff; border-color: var(--main-text); }
-
-        /* Grid */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            border-top: 1px solid var(--border);
-        }
-
-        .card {
-            border-bottom: 1px solid var(--border);
-            border-left: 1px solid var(--border);
-            padding: 40px;
-            transition: 0.3s;
-        }
-
-        .card:nth-child(3n) { border-left: none; } /* إزالة الحدود الجانبية لكل ثالث عنصر */
-
-        .card:hover { background-color: #f9f9f9; }
-
-        .card-loc { font-size: 0.7rem; letter-spacing: 2px; color: var(--sub-text); text-transform: uppercase; margin-bottom: 10px; }
-        .card-title { font-size: 1.5rem; font-weight: 600; margin-bottom: 30px; line-height: 1.2; }
+        /* Property Grid */
+        .container { padding: 20px 5%; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
         
-        .card-meta { margin-bottom: 40px; }
-        .meta-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f0f0f0; font-size: 0.85rem; }
-        .meta-item span { color: var(--sub-text); }
-
-        .card-footer { display: flex; justify-content: space-between; align-items: flex-end; }
-        .price { font-size: 1.2rem; font-weight: 800; }
-        .inquiry { font-size: 0.75rem; font-weight: 600; text-decoration: underline; cursor: pointer; }
+        .card { background: #fff; border-radius: 12px; border: 1px solid var(--border); overflow: hidden; transition: 0.3s; cursor: pointer; }
+        .card:hover { transform: translateY(-4px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        
+        .card-img { width: 100%; height: 180px; background: #eee; display: flex; align-items: center; justify-content: center; color: #ccc; font-weight: 900; }
+        .card-body { padding: 20px; }
+        .card-price { font-size: 1.4rem; font-weight: 800; color: var(--primary); margin-bottom: 10px; }
+        .card-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 15px; height: 50px; overflow: hidden; }
+        
+        .card-info { display: flex; gap: 15px; border-top: 1px solid #eee; padding-top: 15px; color: var(--gray); font-size: 0.85rem; }
+        .card-info span { display: flex; align-items: center; gap: 5px; }
 
         /* Modal */
-        .modal {
-            display: none; position: fixed; top:0; left:0; width:100%; height:100%;
-            background: #fff; z-index: 2000; flex-direction: column; justify-content: center; align-items: center;
-        }
-        .modal input { width: 300px; padding: 15px; border: none; border-bottom: 1px solid #000; margin-bottom: 30px; font-family: 'Cairo'; font-size: 1.2rem; }
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; }
+        .modal-content { background: #fff; padding: 30px; border-radius: 15px; width: 90%; max-width: 450px; }
+        .modal h2 { margin-bottom: 20px; }
+        .modal input, .modal select { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid var(--border); border-radius: 8px; font-family: 'Cairo'; }
+        
+        #loading { text-align: center; padding: 50px; font-weight: 700; color: var(--primary); }
 
-        #loading { padding: 100px 0; font-size: 0.8rem; letter-spacing: 5px; color: #ccc; }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        @media (max-width: 768px) {
-            body { padding: 0 20px; }
-            .grid { grid-template-columns: 1fr; }
-            .card { border-left: none; padding: 30px 0; }
-            .filter-section { gap: 20px; overflow-x: auto; }
-        }
+        @media (max-width: 600px) { .hero h1 { font-size: 1.4rem; } }
     </style>
 </head>
 <body>
 
 <nav>
-    <div class="logo">Al-Fayrouz</div>
-    <div class="nav-link" onclick="toggleModal(true)">Sell Property</div>
+    <div class="logo">AL-FAYROUZ</div>
+    <button class="add-btn" onclick="toggleModal(true)">+ اعرض شقتك</button>
 </nav>
 
-<div class="filter-section">
-    <div class="filter-btn active" onclick="mainFilter('الكل', this)">All Locations</div>
-    <div class="filter-btn" onclick="mainFilter('المنصورة الجديدة', this)">New Mansoura</div>
-    <div class="filter-btn" onclick="mainFilter('دمياط الجديدة', this)">New Damietta</div>
+<div class="hero">
+    <h1>العقارات المتاحة للبيع</h1>
+    <p style="color: var(--gray)">تصفح أفضل الوحدات المختارة بعناية في المنصورة ودمياط الجديدة</p>
 </div>
 
-<div id="filterMansoura" class="sub-filter-row">
-    <div class="chip" onclick="subFilter('جنة', this)">JANNA</div>
-    <div class="chip" onclick="subFilter('سكن مصر', this)">SAKAN MISR</div>
+<div class="filter-bar">
+    <div class="f-item active" onclick="mainFilter('الكل', this)">الكل</div>
+    <div class="f-item" onclick="mainFilter('المنصورة الجديدة', this)">المنصورة الجديدة</div>
+    <div class="f-item" onclick="mainFilter('دمياط الجديدة', this)">دمياط الجديدة</div>
 </div>
 
-<div id="filterDamietta" class="sub-filter-row">
-    <div class="chip" onclick="subFilter('جنة', this)">JANNA</div>
-    <div class="chip" onclick="subFilter('دار مصر', this)">DAR MISR</div>
+<div class="container">
+    <div id="loading">جاري تحميل البيانات...</div>
+    <div id="data" class="grid"></div>
 </div>
-
-<div id="loading">FETCHING DATABASE...</div>
-<div id="data" class="grid"></div>
 
 <div id="modal" class="modal">
-    <div style="position: absolute; top: 40px; left: 40px; cursor: pointer;" onclick="toggleModal(false)">CLOSE</div>
-    <form onsubmit="sendListing(event)">
-        <input type="text" id="mCity" placeholder="City" required><br>
-        <input type="text" id="mUnit" placeholder="Unit Details" required><br>
-        <input type="text" id="mPrice" placeholder="Price" required><br>
-        <button type="submit" style="background: #000; color: #fff; padding: 15px 40px; border: none; cursor: pointer;">SUBMIT LISTING</button>
-    </form>
+    <div class="modal-content">
+        <h2>إضافة وحدة</h2>
+        <form onsubmit="sendToWhatsApp(event)">
+            <select id="mCity"><option>المنصورة الجديدة</option><option>دمياط الجديدة</option></select>
+            <input type="text" id="mProject" placeholder="المشروع (مثال: جنة)" required>
+            <input type="text" id="mDetails" placeholder="عمارة - وحدة" required>
+            <input type="text" id="mSpace" placeholder="المساحة" required>
+            <input type="text" id="mPrice" placeholder="السعر المطلوب" required>
+            <button type="submit" class="add-btn" style="width: 100%;">إرسال للإدارة</button>
+            <button type="button" onclick="toggleModal(false)" style="width: 100%; background: none; color: var(--gray); margin-top: 10px; border: none; cursor: pointer;">إلغاء</button>
+        </form>
+    </div>
 </div>
 
 <script>
-    const SHEET_URL = "https://script.google.com/macros/s/AKfycbxiPcSexC05MJVeFohzNaNex4oDW0rVylIjAXSsV9BD1QP7v9Esg3xO8CtUh_yOOV6g/exec";
+    const URL = "https://script.google.com/macros/s/AKfycbxiPcSexC05MJVeFohzNaNex4oDW0rVylIjAXSsV9BD1QP7v9Esg3xO8CtUh_yOOV6g/exec";
     let properties = [];
-    let currentCity = "الكل";
 
-    fetch(SHEET_URL).then(r => r.json()).then(data => {
+    fetch(URL).then(r => r.json()).then(data => {
         properties = data.filter(row => row[1] && row[1] !== "المشروع");
         document.getElementById('loading').style.display = 'none';
         render(properties);
@@ -191,13 +109,41 @@
         let html = "";
         list.forEach(row => {
             html += `
-            <div class="card">
-                <div class="card-loc">${row[0]} / ${row[1]}</div>
-                <div class="card-title">عمارة ${row[2]} - وحدة ${row[3]}</div>
-                <div class="card-meta">
-                    <div class="meta-item"><span>الطابق</span><b>${row[4]}</b></div>
-                    <div class="meta-item"><span>المساحة</span><b>${row[5]} m²</b></div>
+            <div class="card" onclick="contact('${row[1]}','${row[7]}','${row[2]}','${row[3]}')">
+                <div class="card-img">AL-FAYROUZ</div>
+                <div class="card-body">
+                    <div class="card-price">${row[7] || 'اتصل للسعر'}</div>
+                    <div class="card-title">${row[1]} - عمارة ${row[2]} وحدة ${row[3]}</div>
+                    <div class="card-info">
+                        <span>📏 ${row[5]} م²</span>
+                        <span>🏢 الدور ${row[4]}</span>
+                        <span>📍 ${row[0].split(' ')[0]}</span>
+                    </div>
                 </div>
-                <div class="card-footer">
-                    <div class="price">${row[7] || 'Upon Request'}</div>
-                    <div class
+            </div>`;
+        });
+        document.getElementById('data').innerHTML = html;
+    }
+
+    function mainFilter(city, el) {
+        document.querySelectorAll('.f-item').forEach(i => i.classList.remove('active'));
+        el.classList.add('active');
+        if(city === 'الكل') render(properties);
+        else render(properties.filter(p => p[0].includes(city)));
+    }
+
+    function toggleModal(s) { document.getElementById('modal').style.display = s ? 'flex' : 'none'; }
+
+    function contact(p, s, b, u){
+        window.open("https://wa.me/201212229797?text=" + encodeURIComponent(`استفسار عن ${p}\nعمارة ${b} وحدة ${u}`));
+    }
+
+    function sendToWhatsApp(e) {
+        e.preventDefault();
+        const text = `طلب عرض وحدة:\nالمدينة: ${document.getElementById('mCity').value}\nالمشروع: ${document.getElementById('mProject').value}\nالوحدة: ${document.getElementById('mDetails').value}\nالمساحة: ${document.getElementById('mSpace').value}\nالسعر: ${document.getElementById('mPrice').value}`;
+        window.open("https://wa.me/201212229797?text=" + encodeURIComponent(text));
+        toggleModal(false);
+    }
+</script>
+</body>
+</html>
