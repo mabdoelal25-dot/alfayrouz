@@ -1,33 +1,123 @@
+<!DOCTYPE html>
+<html dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الفيروز للتسويق العقاري</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #006064; --secondary: #b59410; --bg-dark: #121212; --glass: rgba(255, 255, 255, 0.08); }
+        
+        body { 
+            font-family: 'Cairo', sans-serif; margin: 0; padding: 0; color: #eceff1; 
+            background: var(--bg-dark); line-height: 1.6; overflow-x: hidden;
+        }
+
+        .header-bar { padding: 25px 10px; text-align: center; }
+        .company-name { font-size: 30px; font-weight: 800; color: white; margin: 0; }
+        .company-subtitle { font-size: 14px; color: var(--secondary); font-weight: 700; }
+
+        .container { max-width: 800px; margin: auto; padding: 15px; display: flex; flex-direction: column; align-items: center; min-height: 60vh; }
+        
+        /* تصميم المدن (كبار وتحت بعض) */
+        .city-box { display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 500px; }
+        .city-card { 
+            background: linear-gradient(145deg, #1a1a1a, #222); border-radius: 15px; padding: 30px 20px; 
+            cursor: pointer; text-align: center; border: 1px solid rgba(255,255,255,0.1); transition: 0.3s; 
+        }
+
+        /* تصميم المشاريع (2 جنب بعض) */
+        .project-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; }
+        .project-card { 
+            background: var(--glass); border-radius: 12px; padding: 20px 10px; 
+            cursor: pointer; text-align: center; border: 1px solid rgba(255,255,255,0.1); transition: 0.3s;
+        }
+
+        .city-card:hover, .project-card:hover { border-color: var(--secondary); background: rgba(255,255,255,0.15); }
+        h3 { margin: 0; font-size: 20px; color: #fff; }
+        p { margin: 5px 0 0; font-size: 12px; color: var(--secondary); }
+
+        /* تصميم الشقق */
+        .apt-grid { display: grid; grid-template-columns: 1fr; gap: 15px; width: 100%; }
+        .apt-card { background: #1a1a1a; border-radius: 12px; padding: 20px; border-right: 4px solid var(--primary); text-align: right; border: 1px solid rgba(255,255,255,0.05); }
+        
+        .btn-inquire { 
+            margin-top: 15px; background: var(--primary); color: white; border: none; 
+            padding: 12px; border-radius: 8px; text-decoration: none; display: block; text-align: center; font-weight: 700; 
+        }
+
+        .btn-back { margin-top: 25px; background: transparent; color: #888; border: 1px solid #444; padding: 8px 25px; border-radius: 20px; cursor: pointer; font-family: 'Cairo', sans-serif; }
+        .hidden { display: none !important; }
+        .section-title { font-size: 18px; color: var(--secondary); margin-bottom: 15px; font-weight: 700; text-align: center; }
+
+        .floating-contact { position: fixed; left: 15px; bottom: 15px; display: flex; flex-direction: column; gap: 10px; z-index: 1000; }
+        .contact-circle { width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        
+        /* تحسينات لعدم اختفاء العناصر */
+        #apartmentList { width: 100%; }
+    </style>
+</head>
+<body>
+
+    <div class="floating-contact">
+        <a href="tel:+201212229797" class="contact-circle" style="background: var(--primary);"><img src="https://img.icons8.com/ios-filled/50/ffffff/phone.png" width="20"></a>
+        <a href="https://wa.me/201212229797" class="contact-circle" style="background: #25d366;"><img src="https://img.icons8.com/color/48/000000/whatsapp--v1.png" width="22"></a>
+    </div>
+
+    <div class="header-bar">
+        <div class="company-name">Al-Fayrouz</div>
+        <div class="company-subtitle">للتسويق العقاري</div>
+    </div>
+
+    <div class="container">
+        <div id="step1" class="step-div" style="width:100%;">
+            <h2 class="section-title">اختر الوجهة</h2>
+            <div class="city-box">
+                <div class="city-card" onclick="goToStep2('المنصورة الجديدة')"><h3>المنصورة الجديدة</h3><p>فخامة السكن الساحلي</p></div>
+                <div class="city-card" onclick="goToStep2('دمياط الجديدة')"><h3>دمياط الجديدة</h3><p>الرقي والهدوء</p></div>
+            </div>
+        </div>
+
+        <div id="step2" class="step-div hidden" style="width:100%;">
+            <h2 id="cityTitle" class="section-title"></h2>
+            <div id="projectButtons" class="project-grid"></div>
+            <div style="text-align:center;"><button class="btn-back" onclick="goBack(1)">رجوع للمدن</button></div>
+        </div>
+
+        <div id="step3" class="step-div hidden" style="width:100%;">
+            <h2 id="projectTitle" class="section-title"></h2>
+            <div id="apartmentList" class="apt-grid"></div>
+            <div style="text-align:center;"><button class="btn-back" onclick="goBack(2)">رجوع للمشاريع</button></div>
+        </div>
+    </div>
+
     <script>
         const API_URL = "https://script.google.com/macros/s/AKfycbxQsS6y6NgU_HdYXZOKsiV7xyzh7EBvYWLUeOacsqf7ERu93gnVyiOnNDUxqG6UUzcA/exec";
         let allData = [];
         let currentCity = "";
-        let isDataLoading = false;
+        let isFetching = false;
 
         async function prefetchData() {
-            if (isDataLoading) return;
-            isDataLoading = true;
+            if (isFetching) return;
+            isFetching = true;
             try {
                 const response = await fetch(API_URL);
                 const data = await response.json();
-                allData = data.slice(1);
-                console.log("تم جلب البيانات بنجاح");
-                
-                // إذا كان المستخدم واقفا داخل مشروع والبيانات وصلت الآن، قم بتحديث الشاشة فوراً
-                if (!document.getElementById('step3').classList.contains('hidden')) {
-                    const currentKeyword = document.getElementById('projectTitle').innerText;
-                    showUnits(currentKeyword);
+                if (data && data.length > 1) {
+                    allData = data.slice(1);
+                    console.log("Data loaded");
+                    // إذا كان المستخدم دخل صفحة الوحدات والبيانات لسه واصلة، حدثها فوراً
+                    if (!document.getElementById('step3').classList.contains('hidden')) {
+                        updateUnitsUI(document.getElementById('projectTitle').innerText);
+                    }
                 }
-            } catch (e) { 
-                console.error("خطأ في الاتصال بالسيرفر");
-            } finally {
-                isDataLoading = false;
-            }
+            } catch (e) { console.error("Fetch error"); }
+            finally { isFetching = false; }
         }
 
         function goToStep2(city) {
             currentCity = city;
-            document.getElementById('step1').classList.add('hidden');
+            document.querySelectorAll('.step-div').forEach(el => el.classList.add('hidden'));
             document.getElementById('step2').classList.remove('hidden');
             document.getElementById('cityTitle').innerText = city;
 
@@ -39,66 +129,69 @@
                 html += `<div class="project-card" onclick="showUnits('${p}')"><h3>${p}</h3><p>عرض الوحدات</p></div>`;
             });
             document.getElementById('projectButtons').innerHTML = html;
+            window.scrollTo(0,0);
         }
 
         function showUnits(keyword) {
-            window.scrollTo(0,0);
-            document.getElementById('step2').classList.add('hidden');
+            document.querySelectorAll('.step-div').forEach(el => el.classList.add('hidden'));
             document.getElementById('step3').classList.remove('hidden');
             document.getElementById('projectTitle').innerText = keyword;
+            updateUnitsUI(keyword);
+            window.scrollTo(0,0);
+        }
+
+        function updateUnitsUI(keyword) {
+            const listContainer = document.getElementById('apartmentList');
             
-            // حالة 1: البيانات لسه موصلتش من السيرفر
             if (allData.length === 0) {
-                document.getElementById('apartmentList').innerHTML = "<h3 style='text-align:center; width:100%; color:#b59410;'>✨ جاري جلب أحدث الوحدات... لحظات</h3>";
-                prefetchData(); // التأكد من تشغيل الجلب
+                listContainer.innerHTML = `
+                    <div style="text-align:center; padding:40px 0; width:100%;">
+                        <h3 style="color:var(--secondary);">✨ جاري تحضير أفخم العروض لك...</h3>
+                    </div>`;
+                prefetchData();
                 return;
             }
 
-            // حالة 2: البيانات موجودة، ابدأ الفلترة
             let filtered = allData.filter(row => {
-                let rowCity = row[0] ? row[0].toString().trim() : "";
-                let rowProject = row[1] ? row[1].toString().trim() : "";
-                return rowCity === currentCity && rowProject.includes(keyword);
+                let rCity = row[0] ? row[0].toString().trim() : "";
+                let rProj = row[1] ? row[1].toString().trim() : "";
+                return rCity === currentCity && rProj.includes(keyword);
             });
 
-            let html = '';
-            const formatNum = (num) => (num === "" || isNaN(num)) ? "--" : Number(num).toLocaleString('ar-EG');
-
             if (filtered.length === 0) {
-                html = "<h3 style='text-align:center; width:100%;'>لا توجد وحدات متاحة حالياً في " + keyword + "</h3>";
-            } else {
-                filtered.forEach(row => {
-                    let msg = `استفسار من موقع الفيروز:\nالمدينة: ${currentCity}\nالمشروع: ${row[1]}\nعمارة: ${row[2]}\nشقة: ${row[3]}`;
-                    let waLink = `https://api.whatsapp.com/send?phone=201212229797&text=${encodeURIComponent(msg)}`;
-                    html += `
-                    <div class="apt-card">
-                        <div style="color:white; font-weight:700; font-size:18px;">عمارة ${row[2] || '--'} - شقة ${row[3] || '--'}</div>
-                        <div style="font-size:13px; color:#aaa; margin-top:5px;">📍 الدور: ${row[4] || '--'} | الاتجاه: ${row[5] || '--'}</div>
-                        <div style="margin-top:10px; border-top:1px solid #333; padding-top:10px;">
-                            <div style="display:flex; justify-content:space-between;">
-                                <span>المدفوع:</span> <span style="color:var(--secondary); font-weight:bold;">${formatNum(row[6])} ج.م</span>
-                            </div>
-                            <div style="display:flex; justify-content:space-between;">
-                                <span>الأوفر:</span> <span style="color:#ef5350; font-weight:bold;">${formatNum(row[7])} ج.م</span>
-                            </div>
-                        </div>
-                        <a href="${waLink}" target="_blank" class="btn-inquire">استفسار واتساب</a>
-                    </div>`;
-                });
+                listContainer.innerHTML = `<h3 style='text-align:center; padding:20px; width:100%;'>لا توجد وحدات متاحة حالياً في ${keyword}</h3>`;
+                return;
             }
-            document.getElementById('apartmentList').innerHTML = html;
+
+            const formatNum = (n) => (n === "" || isNaN(n)) ? "--" : Number(n).toLocaleString('ar-EG');
+
+            let html = '';
+            filtered.forEach(row => {
+                let waMsg = encodeURIComponent(`استفسار من موقع الفيروز:\nالمدينة: ${currentCity}\nالمشروع: ${row[1]}\nعمارة: ${row[2]}\nشقة: ${row[3]}`);
+                html += `
+                <div class="apt-card">
+                    <div style="color:white; font-weight:700; font-size:18px;">عمارة ${row[2] || '--'} - شقة ${row[3] || '--'}</div>
+                    <div style="font-size:13px; color:#aaa; margin-top:5px;">📍 الدور: ${row[4] || '--'} | الاتجاه: ${row[5] || '--'}</div>
+                    <div style="margin-top:10px; border-top:1px solid #333; padding-top:10px;">
+                        <div style="display:flex; justify-content:space-between;"><span>المدفوع:</span> <span style="color:var(--secondary); font-weight:800;">${formatNum(row[6])} ج.م</span></div>
+                        <div style="display:flex; justify-content:space-between;"><span>الأوفر:</span> <span style="color:#ef5350; font-weight:800;">${formatNum(row[7])} ج.م</span></div>
+                    </div>
+                    <a href="https://wa.me/201212229797?text=${waMsg}" target="_blank" class="btn-inquire">استفسار واتساب</a>
+                </div>`;
+            });
+            listContainer.innerHTML = html;
         }
 
         function goBack(step) {
-            if (step === 1) {
-                document.getElementById('step2').classList.add('hidden');
-                document.getElementById('step1').classList.remove('hidden');
-            } else {
-                document.getElementById('step3').classList.add('hidden');
-                document.getElementById('step2').classList.remove('hidden');
-            }
+            document.querySelectorAll('.step-div').forEach(el => el.classList.add('hidden'));
+            if (step === 1) document.getElementById('step1').classList.remove('hidden');
+            else document.getElementById('step2').classList.remove('hidden');
+            window.scrollTo(0,0);
         }
 
         window.onload = prefetchData;
     </script>
+</body>
+</html>
+
 
