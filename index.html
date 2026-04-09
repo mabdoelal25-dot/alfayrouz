@@ -2,177 +2,150 @@
 <html dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Al-Fayrouz</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;900&family=Montserrat:wght@900&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الفيروز للتسويق العقاري</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #00838f; --secondary: #c5a012; --bg-dark: #0f1214; --card-bg: #1c2226; }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        :root { --primary: #006064; --secondary: #b59410; --bg-dark: #121212; --text-light: #eceff1; --glass: rgba(255, 255, 255, 0.05); --sold: #ef5350; }
+        body { font-family: 'Cairo', sans-serif; margin: 0; padding: 0; color: var(--text-light); background-color: var(--bg-dark); background-image: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.95)), url('https://images.unsplash.com/photo-1582407947304-fd86f028f716?q=80&w=1600'); background-attachment: fixed; background-size: cover; background-position: center; }
+        
+        .header-bar { padding: 40px 20px; text-align: center; }
+        .company-name { font-family: 'Playfair Display', serif; font-size: 38px; font-weight: 700; color: white; margin: 0; }
+        .company-subtitle { font-size: 16px; color: var(--secondary); margin-top: 5px; font-weight: 600; letter-spacing: 2px; }
+        
+        .container { max-width: 1200px; margin: auto; padding: 0 20px 100px 20px; }
+        .section-title { font-size: 22px; font-weight: 700; color: white; margin-bottom: 30px; text-align: center; border-bottom: 2px solid var(--secondary); display: inline-block; padding-bottom: 8px; }
+        
+        .main-box { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .card { background: var(--glass); backdrop-filter: blur(15px); border-radius: 20px; padding: 30px; cursor: pointer; transition: 0.4s; border: 1px solid rgba(255,255,255,0.1); text-align: center; }
+        .card:hover { transform: translateY(-5px); border-color: var(--secondary); }
 
-        body { 
-            font-family: 'Cairo', sans-serif; margin: 0; padding: 0; color: #f0f0f0; 
-            background: var(--bg-dark); overflow-x: hidden; width: 100%;
-        }
+        .apt-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
+        .apt-card { background: rgba(0,0,0,0.6); border-radius: 15px; padding: 25px; text-align: right; border-right: 5px solid var(--primary); border: 1px solid rgba(255,255,255,0.05); position: relative; overflow: hidden; }
+        
+        /* تصميم علامة تم البيع */
+        .sold-badge { position: absolute; top: 15px; left: -35px; background: var(--sold); color: white; padding: 8px 40px; transform: rotate(-45deg); font-weight: 900; font-size: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.5); z-index: 5; }
+        .sold-overlay { filter: grayscale(1) opacity(0.6); pointer-events: none; }
+        .sold-text { color: var(--sold) !important; font-weight: 900; text-align: center; display: block; margin-top: 10px; border: 1px solid var(--sold); border-radius: 10px; padding: 5px; }
 
-        /* الهيدر المحدث بكلمة Al-Fayrouz فقط */
-        .header-bar { 
-            padding: 45px 10px 25px; text-align: center; 
-            background: linear-gradient(to bottom, #161d21, var(--bg-dark));
-        }
-        .company-name { 
-            font-family: 'Montserrat', sans-serif; /* خط إنجليزي فخم للبراند */
-            font-size: 38px; font-weight: 900; color: #fff; margin: 0; 
-            letter-spacing: 2px; text-transform: uppercase; 
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-        .company-subtitle { 
-            font-size: 16px; color: var(--secondary); font-weight: 700; 
-            margin-top: 5px; letter-spacing: 1px;
-        }
+        .tag { background: rgba(0, 96, 100, 0.3); color: #80deea; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: bold; }
+        .apt-title { font-size: 19px; color: white; margin: 12px 0; font-weight: 700; }
+        .specs-list { font-size: 14px; color: #b0bec5; line-height: 1.8; }
+        
+        .price-row { margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1); }
+        .price-item { display: flex; justify-content: space-between; margin-bottom: 8px; }
+        .highlight { color: var(--secondary); font-weight: 900; font-size: 18px; }
+        
+        .btn-wa { display: block; background: #25d366; color: white; text-align: center; padding: 12px; border-radius: 12px; text-decoration: none; font-weight: bold; margin-top: 15px; transition: 0.3s; }
+        .btn-wa:hover { background: #1ebd5b; transform: scale(1.02); }
 
-        .container { width: 100%; max-width: 500px; margin: auto; padding: 15px; }
-
-        .top-nav { display: flex; align-items: center; margin-bottom: 20px; animation: fadeIn 0.5s; }
-        .btn-back-top { 
-            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff;
-            padding: 8px 16px; border-radius: 12px; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 8px;
-        }
-
-        .section-title { font-size: 19px; color: #fff; font-weight: 800; flex-grow: 1; text-align: center; margin: 0; }
-
-        .grid-box { display: flex; flex-direction: column; gap: 15px; width: 100%; }
-        .card-city { 
-            background: linear-gradient(135deg, #1c2226 0%, #252d33 100%);
-            border-radius: 20px; padding: 35px 20px; text-align: center;
-            border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-
-        .project-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; }
-        .card-project { 
-            background: var(--card-bg); border-radius: 18px; padding: 25px 10px; 
-            text-align: center; border: 1px solid rgba(255,255,255,0.05);
-        }
-
-        h3 { margin: 0; font-size: 19px; font-weight: 800; }
-        p { margin: 6px 0 0; font-size: 12px; color: var(--secondary); font-weight: 600; }
-
-        .apt-card { 
-            background: #1c2226; border-radius: 15px; padding: 20px; margin-bottom: 15px;
-            border-right: 4px solid var(--primary); text-align: right;
-        }
-        .apt-info { display: flex; justify-content: space-between; margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.05); }
-        .price-label { font-size: 11px; color: #aaa; display: block; }
-        .price-val { font-size: 15px; font-weight: 800; color: var(--secondary); }
-
-        .btn-wa { 
-            margin-top: 15px; background: #25d366; color: #fff; text-align: center;
-            padding: 12px; border-radius: 10px; text-decoration: none; display: block;
-            font-weight: 800; font-size: 15px;
-        }
-
-        .hidden { display: none !important; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .hidden { display: none; }
+        .btn-back { margin-top: 30px; padding: 12px 30px; background: none; color: var(--secondary); border: 1px solid var(--secondary); border-radius: 30px; cursor: pointer; }
+        #loader { text-align: center; padding: 80px; color: var(--secondary); }
     </style>
 </head>
 <body>
 
     <div class="header-bar">
-        <h1 class="company-name">Al-Fayrouz</h1>
-        <div class="company-subtitle">الفيروز للعقارات</div>
+        <h1 class="company-name">Al-Fayrouz Real Estate</h1>
+        <div class="company-subtitle">الفيروز للتسويق العقاري</div>
     </div>
 
     <div class="container">
-        <div id="step1">
-            <h2 class="section-title" style="margin-bottom:25px;">اختر وجهتك العقارية</h2>
-            <div class="grid-box">
-                <div class="card-city" onclick="goToStep2('المنصورة الجديدة')"><h3>المنصورة الجديدة</h3><p>وجهة الفخامة الساحلية</p></div>
-                <div class="card-city" onclick="goToStep2('دمياط الجديدة')"><h3>دمياط الجديدة</h3><p>الهدوء والسكن الراقي</p></div>
-            </div>
+        <div id="loader">✨ جاري فحص الوحدات المتاحة...</div>
+
+        <div id="step1" class="hidden">
+            <div style="text-align:center"><h2 class="section-title">اختر المدينة</h2></div>
+            <div class="main-box" id="cityButtons"></div>
         </div>
 
         <div id="step2" class="hidden">
-            <div class="top-nav">
-                <button class="btn-back-top" onclick="goBack(1)"><span>→</span> رجوع</button>
-                <h2 id="cityTitle" class="section-title"></h2>
-            </div>
-            <div id="projectButtons" class="project-grid"></div>
+            <div style="text-align:center"><h2 id="cityTitle" class="section-title"></h2></div>
+            <div id="regionButtons" class="main-box"></div>
+            <div style="text-align:center"><button class="btn-back" onclick="goBack(1)">العودة للمدن</button></div>
         </div>
 
         <div id="step3" class="hidden">
-            <div class="top-nav">
-                <button class="btn-back-top" onclick="goBack(2)"><span>→</span> رجوع</button>
-                <h2 id="projectTitle" class="section-title"></h2>
-            </div>
-            <div id="apartmentList"></div>
+            <div style="text-align:center"><h2 id="regionTitle" class="section-title"></h2></div>
+            <div id="apartmentList" class="apt-grid"></div>
+            <div style="text-align:center"><button class="btn-back" onclick="goBack(2)">العودة للمناطق</button></div>
         </div>
     </div>
 
     <script>
         const API_URL = "https://script.google.com/macros/s/AKfycbxQsS6y6NgU_HdYXZOKsiV7xyzh7EBvYWLUeOacsqf7ERu93gnVyiOnNDUxqG6UUzcA/exec";
         let allData = [];
-        let curCity = "";
+        let currentCity = "";
 
-        async function fetchD() {
+        async function loadData() {
             try {
-                const r = await fetch(API_URL);
-                const d = await r.json();
-                allData = d.slice(1);
-            } catch(e) {}
+                const response = await fetch(API_URL);
+                allData = await response.json();
+                document.getElementById('loader').style.display = 'none';
+                showCities();
+            } catch (e) { document.getElementById('loader').innerText = "⚠️ خطأ في الاتصال بالبيانات."; }
         }
 
-        function goToStep2(c) {
-            curCity = c;
-            switchStep('step2');
-            document.getElementById('cityTitle').innerText = c;
-            let projects = (c === 'المنصورة الجديدة') ? ['جنة', 'سكن مصر', 'زاهية', 'إسكان ساحلي'] : ['جنة', 'دار مصر'];
+        function showCities() {
+            document.getElementById('step1').classList.remove('hidden');
+            let cities = [...new Set(allData.slice(1).map(row => row[0]).filter(c => c))];
             let html = '';
-            projects.forEach(p => {
-                html += `<div class="card-project" onclick="showU('${p}')"><h3>${p}</h3><p>عرض الوحدات</p></div>`;
-            });
-            document.getElementById('projectButtons').innerHTML = html;
+            cities.forEach(c => { html += `<div class="card" onclick="goToStep2('${c}')"><h3>${c}</h3><p>استعراض المناطق</p></div>`; });
+            document.getElementById('cityButtons').innerHTML = html;
         }
 
-        function showU(kw) {
-            switchStep('step3');
-            document.getElementById('projectTitle').innerText = kw;
-            render(kw);
+        function goToStep2(city) {
+            currentCity = city;
+            document.getElementById('step1').classList.add('hidden');
+            document.getElementById('step2').classList.remove('hidden');
+            document.getElementById('cityTitle').innerText = city;
+            let regions = [...new Set(allData.slice(1).filter(row => row[0] === city).map(row => row[1]).filter(r => r))];
+            let html = '';
+            regions.forEach(r => { html += `<div class="card" onclick="showUnits('${r}')"><h3>${r}</h3><p>الوحدات المتاحة</p></div>`; });
+            document.getElementById('regionButtons').innerHTML = html;
         }
 
-        function render(kw) {
-            const list = document.getElementById('apartmentList');
-            if (allData.length === 0) {
-                list.innerHTML = `<div style="text-align:center; padding:30px; color:var(--secondary);">جاري تحضير العروض...</div>`;
-                fetchD().then(() => render(kw)); return;
-            }
-            let filtered = allData.filter(r => (r[0]||"").toString().trim() === curCity && (r[1]||"").toString().includes(kw));
-            if (filtered.length === 0) { list.innerHTML = `<div style="text-align:center; padding:30px;">لا توجد وحدات متاحة حالياً</div>`; return; }
-            let h = '';
-            filtered.forEach(r => {
-                let msg = encodeURIComponent(`استفسار من الموقع:\nالمدينة: ${curCity}\nالمشروع: ${r[1]}\nعمارة: ${r[2]}\nشقة: ${r[3]}`);
-                h += `
-                <div class="apt-card">
-                    <div style="font-size:18px; font-weight:800;">عمارة ${r[2]} • شقة ${r[3]}</div>
-                    <div style="font-size:13px; color:#aaa; margin-top:5px;">📍 ${r[4]} | ${r[5]}</div>
-                    <div class="apt-info">
-                        <div><span class="price-label">المدفوع</span><span class="price-val">${r[6]}</span></div>
-                        <div><span class="price-label">الأوفر</span><span class="price-val" style="color:#ef5350">${r[7]}</span></div>
+        function showUnits(region) {
+            document.getElementById('step2').classList.add('hidden');
+            document.getElementById('step3').classList.remove('hidden');
+            document.getElementById('regionTitle').innerText = region;
+            
+            let filtered = allData.filter(row => row[0] == currentCity && row[1] == region);
+            let html = '';
+            
+            filtered.forEach(row => {
+                const formatNum = (num) => isNaN(num) || num === "" ? num : Number(num).toLocaleString();
+                
+                // فحص خانة L (رقم 11 في البرمجة)
+                let isSold = (row[11] && row[11].toString().includes("تم البيع"));
+                
+                html += `
+                <div class="apt-card ${isSold ? 'sold-overlay' : ''}">
+                    ${isSold ? '<div class="sold-badge">تم البيع</div>' : ''}
+                    <span class="tag">${row[5] || 'مميزة'}</span>
+                    <div class="apt-title">عمارة ${row[2]} - شقة ${row[3]}</div>
+                    <div class="specs-list">
+                        📍 الدور: ${row[4]} | 🧭 الاتجاه: ${row[5]}<br>
+                        📅 قسط: ${row[9]} سنوات | 💸 الدفعة: ${formatNum(row[10])}
                     </div>
-                    <a href="https://wa.me/201212229797?text=${msg}" class="btn-wa">تواصل واتساب</a>
+                    <div class="price-row">
+                        <div class="price-item"><span>المدفوع:</span> <span class="highlight">${formatNum(row[6])} ج.م</span></div>
+                        <div class="price-item"><span>الأوفر:</span> <span style="color:#ef5350; font-weight:bold">${formatNum(row[7])} ج.م</span></div>
+                    </div>
+                    ${isSold ? 
+                        '<span class="sold-text">تم بيع هذه الوحدة بنجاح 🎉</span>' : 
+                        `<a href="https://wa.me/201212229797?text=استفسار عن عمارة ${row[2]} شقة ${row[3]} في ${region}" class="btn-wa">تواصل للحجز الآن</a>`
+                    }
                 </div>`;
             });
-            list.innerHTML = h;
+            document.getElementById('apartmentList').innerHTML = html;
         }
 
-        function switchStep(id) {
-            ['step1','step2','step3'].forEach(s => document.getElementById(s).classList.add('hidden'));
-            document.getElementById(id).classList.remove('hidden');
-            window.scrollTo(0,0);
+        function goBack(step) {
+            if (step === 1) { document.getElementById('step2').classList.add('hidden'); document.getElementById('step1').classList.remove('hidden'); }
+            else { document.getElementById('step3').classList.add('hidden'); document.getElementById('step2').classList.remove('hidden'); }
         }
-        function goBack(s) { switchStep('step' + s); }
-        window.onload = fetchD;
+        window.onload = loadData;
     </script>
 </body>
 </html>
-
-
-
