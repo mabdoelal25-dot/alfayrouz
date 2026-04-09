@@ -1,45 +1,65 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AL-FAYROUZ Real Estate | الفيروز للعقارات</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-</head>
-<body>
+const mySheet = "https://script.google.com/macros/s/AKfycbxiPcSexC05MJVeFohzNaNex4oDW0rVylIjAXSsV9BD1QP7v9Esg3xO8CtUh_yOOV6g/exec"
+async function getSheetsData() {
+    const response = await fetch(mySheet);
+    const data = await response.text();
+    const rows = data.split('\n').slice(1);
+    const gallery = document.getElementById('apartments-gallery');
+    
+    gallery.innerHTML = ''; 
 
-    <header class="main-header">
-        <div class="overlay"></div>
-        <div class="logo-area">
-            <h1 class="logo-en">AL-FAYROUZ</h1>
-            <h2 class="logo-en-sub">REAL ESTATE</h2>
-            <div class="hr-line"></div>
-            <p class="logo-ar">الفيروز للتسويق العقاري</p>
-        </div>
-        <div class="scroll-down">↓</div>
-    </header>
+    rows.forEach(row => {
+        // تقسيم السطر بناءً على الفاصلة مع مراعاة النصوص الطويلة
+        const col = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/); 
+        
+        if(col.length < 11) return; // تأكد إن الصف مش فاضي
 
-    <section class="filters-container">
-        <div class="filter-group cities">
-            <h3>اختر المدينة:</h3>
-            <label class="custom-check"><input type="checkbox" value="mansoura"><span>المنصورة الجديدة</span></label>
-            <label class="custom-check"><input type="checkbox" value="domiat"><span>دمياط الجديدة</span></label>
-        </div>
-        <div class="filter-group types" id="types-filter">
-            <h3>اختر النوع:</h3>
-            <label class="custom-check"><input type="checkbox" value="janna"><span>جنة</span></label>
-            <label class="custom-check"><input type="checkbox" value="sakan"><span>سكن</span></label>
-            <label class="custom-check"><input type="checkbox" value="zahia"><span>زاهية</span></label>
+        // الترتيب حسب ما أنت حددت بالظبط:
+        const city = col[0];      // A: المدينة
+        const project = col[1];   // B: المشروع
+        const bldg = col[2];      // C: عمارة
+        const apt = col[3];       // D: شقة
+        const floor = col[4];     // E: الدور
+        const area = col[5];      // F: المساحة
+        const price = col[6];     // G: السعر
+        const total = col[7];     // H: الإجمالي
+        const over = col[8];      // I: الأوفر
+        const details = col[9];   // J: التفاصيل
+        const special = col[10];  // K: مميز
+        const image = col[11];    // L: الصور
+
+        gallery.innerHTML += `
+            <div class="property-card" data-city="${city}" data-project="${project}">
+                <div class="card-img-container">
+                    <img src="${image}" alt="صورة العقار">
+                    ${special ? `<span class="badge">${special}</span>` : ''}
+                </div>
+                <div class="info-content">
+                    <h3>${project} - ${city}</h3>
+                    <p class="details-text">${details}</p>
+                    <div class="specs">
+                        <span>🏢 عمارة: ${bldg}</span>
+                        <span>🔑 شقة: ${apt}</span>
+                        <span>🔼 ${floor}</span>
+                        <span>📏 ${area} م²</span>
+                    </div>
+                    <div class="pricing">
+                        <div class="total-price">الإجمالي: ${total}</div>
+                        <div class="over-price">الأوفر: ${over}</div>
+                    </div>
+                    <button class="wa-contact-btn" onclick="contactWA('${project}', '${city}', '${apt}')">
+                        تواصل للاستفسار
+                    </button>
+                </div>
             </div>
-    </section>
+        `;
+    });
+}
 
-    <section class="gallery-container">
-        <div class="masonry-grid" id="apartments-gallery">
-            </div>
-    </section>
+// دالة التواصل بالواتساب مع رسالة تجهز تلقائياً
+function contactWA(project, city, apt) {
+    const phone = "201212229797"; // حط رقمك هنا
+    const msg = `السلام عليكم، استفسار بخصوص شقة رقم ${apt} في مشروع ${project} بـ ${city}`;
+    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`);
+}
 
-    <script src="script.js"></script>
-</body>
-</html>
-
+window.onload = getSheetsData;
