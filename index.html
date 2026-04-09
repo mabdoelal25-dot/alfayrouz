@@ -1,163 +1,45 @@
 <!DOCTYPE html>
-<html dir="rtl" lang="ar">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AL-FAYROUZ | الفيروز للعقارات</title>
-    <link href="https://script.google.com/macros/s/AKfycbxiPcSexC05MJVeFohzNaNex4oDW0rVylIjAXSsV9BD1QP7v9Esg3xO8CtUh_yOOV6g/exec" rel="stylesheet">
-    <style>
-        :root { --gold: #D4AF37; --dark-bg: #050505; --card-bg: #111; --text: #eee; }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { font-family: 'Cairo', sans-serif; background: var(--dark-bg); color: var(--text); margin: 0; overflow-x: hidden; }
-
-        /* Navbar */
-        nav { background: rgba(0,0,0,0.9); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222; position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(10px); }
-        .logo { font-weight: 900; font-size: 1.4rem; color: #fff; letter-spacing: 1px; }
-        .logo span { color: var(--gold); }
-        .add-unit-btn { background: var(--gold); color: #000; border: none; padding: 8px 16px; border-radius: 5px; font-weight: 700; font-size: 0.9rem; cursor: pointer; }
-
-        /* Grid */
-        .container { padding: 20px; max-width: 1200px; margin: auto; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100%, 1fr)); gap: 20px; }
-        @media (min-width: 768px) { .grid { grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); } }
-
-        /* Card Design - فخامة على الموبايل */
-        .card { background: var(--card-bg); border-radius: 12px; overflow: hidden; border: 1px solid #222; position: relative; }
-        .card-img { width: 100%; height: 250px; background: #1a1a1a; object-fit: cover; }
-        .card-tag { position: absolute; top: 15px; left: 15px; background: var(--gold); color: #000; padding: 4px 12px; border-radius: 4px; font-weight: 700; font-size: 0.8rem; }
-        .card-content { padding: 15px; }
-        .card-price { font-size: 1.5rem; font-weight: 900; color: var(--gold); margin-bottom: 5px; }
-        .card-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; color: #fff; }
-        .card-specs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.85rem; color: #aaa; margin-bottom: 15px; }
-        .contact-btn { width: 100%; padding: 12px; background: transparent; border: 1px solid var(--gold); color: var(--gold); border-radius: 6px; font-weight: 700; cursor: pointer; transition: 0.3s; }
-        .contact-btn:hover { background: var(--gold); color: #000; }
-
-        /* Form Modal */
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 2000; padding: 20px; overflow-y: auto; }
-        .modal-content { background: #111; padding: 25px; border-radius: 15px; border: 1px solid var(--gold); max-width: 500px; margin: auto; }
-        h2 { text-align: center; color: var(--gold); margin-top: 0; }
-        label { display: block; margin: 10px 0 5px; font-size: 0.9rem; color: var(--gold); }
-        input, select { width: 100%; padding: 12px; background: #1a1a1a; border: 1px solid #333; color: #fff; border-radius: 6px; margin-bottom: 10px; font-family: 'Cairo'; }
-        .btn-submit { width: 100%; padding: 15px; background: var(--gold); border: none; border-radius: 6px; font-weight: 900; font-size: 1rem; margin-top: 10px; cursor: pointer; }
-
-        /* Loading */
-        #loader { text-align: center; padding: 50px; color: var(--gold); font-weight: 700; }
-    </style>
+    <title>AL-FAYROUZ Real Estate | الفيروز للعقارات</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Cairo:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<nav>
-    <div class="logo">AL-FAYROUZ <span>ESTATE</span></div>
-    <button class="add-unit-btn" onclick="openModal()">+ اعرض عقارك</button>
-</nav>
+    <header class="main-header">
+        <div class="overlay"></div>
+        <div class="logo-area">
+            <h1 class="logo-en">AL-FAYROUZ</h1>
+            <h2 class="logo-en-sub">REAL ESTATE</h2>
+            <div class="hr-line"></div>
+            <p class="logo-ar">الفيروز للتسويق العقاري</p>
+        </div>
+        <div class="scroll-down">↓</div>
+    </header>
 
-<div class="container">
-    <div id="loader">جارٍ تحميل وحدات الفخامة...</div>
-    <div id="dataGrid" class="grid"></div>
-</div>
-
-<div id="addModal" class="modal">
-    <div class="modal-content">
-        <h2>إضافة وحدة جديدة</h2>
-        <form id="propertyForm">
-            <label>صورة الوحدة</label>
-            <input type="file" id="uFile" accept="image/*" required>
-            
-            <input type="text" id="uName" placeholder="اسمك الثنائي" required>
-            <input type="tel" id="uPhone" placeholder="رقم موبايلك (لن يظهر للعلن)" required>
-            
-            <select id="uCity"><option>المنصورة الجديدة</option><option>دمياط الجديدة</option></select>
-            <input type="text" id="uProj" placeholder="المشروع (جنة / سكن مصر)" required>
-            
-            <div style="display:flex; gap:10px">
-                <input type="number" id="uSpace" placeholder="المساحة م²" required>
-                <select id="uDir"><option>بحري</option><option>قبلي</option><option>شرقي</option><option>غربي</option></select>
+    <section class="filters-container">
+        <div class="filter-group cities">
+            <h3>اختر المدينة:</h3>
+            <label class="custom-check"><input type="checkbox" value="mansoura"><span>المنصورة الجديدة</span></label>
+            <label class="custom-check"><input type="checkbox" value="domiat"><span>دمياط الجديدة</span></label>
+        </div>
+        <div class="filter-group types" id="types-filter">
+            <h3>اختر النوع:</h3>
+            <label class="custom-check"><input type="checkbox" value="janna"><span>جنة</span></label>
+            <label class="custom-check"><input type="checkbox" value="sakan"><span>سكن</span></label>
+            <label class="custom-check"><input type="checkbox" value="zahia"><span>زاهية</span></label>
             </div>
+    </section>
 
-            <input type="number" id="uPrice" placeholder="إجمالي السعر المطلـوب" required>
-            
-            <button type="submit" class="btn-submit" id="submitBtn">تأكيد ونشر العرض</button>
-            <button type="button" onclick="closeModal()" style="width:100%; background:none; border:none; color:#666; margin-top:15px; font-family:'Cairo';">إلغاء</button>
-        </form>
-    </div>
-</div>
+    <section class="gallery-container">
+        <div class="masonry-grid" id="apartments-gallery">
+            </div>
+    </section>
 
-<script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbxiPcSexC05MJVeFohzNaNex4oDW0rVylIjAXSsV9BD1QP7v9Esg3xO8CtUh_yOOV6g/exec";
-    const IMGBB_KEY = "06760888915b4f65c589600e1654054a";
-
-    // جلب البيانات الأصلية
-    async function loadData() {
-        try {
-            const res = await fetch(API_URL);
-            const data = await res.json();
-            const cleanData = data.filter(row => row[1] && row[1] !== "المشروع");
-            render(cleanData);
-        } catch (e) {
-            document.getElementById('loader').innerText = "حدث خطأ في الاتصال بالشيت.";
-        }
-    }
-
-    function render(list) {
-        document.getElementById('loader').style.display = 'none';
-        let html = "";
-        list.forEach(row => {
-            const img = row[8] || 'https://via.placeholder.com/400x250/111/D4AF37?text=AL-FAYROUZ';
-            html += `
-            <div class="card">
-                <div class="card-tag">${row[0].split(' ')[0]}</div>
-                <img src="${img}" class="card-img" loading="lazy">
-                <div class="card-content">
-                    <div class="card-price">${Number(row[7]).toLocaleString()} ج.م</div>
-                    <div class="card-title">${row[1]} - عمارة ${row[2]}</div>
-                    <div class="card-specs">
-                        <span>📏 المساحة: ${row[5]} م²</span>
-                        <span>🏢 الدور: ${row[4]}</span>
-                        <span>🧭 الاتجاه: ${row[6] || 'بحري'}</span>
-                        <span>📍 الموقع: ${row[0]}</span>
-                    </div>
-                    <button class="contact-btn" onclick="window.open('https://wa.me/201212229797?text=استفسار عن ${row[1]}')">تواصـل الآن</button>
-                </div>
-            </div>`;
-        });
-        document.getElementById('dataGrid').innerHTML = html;
-    }
-
-    // رفع الصور والبيانات
-    document.getElementById('propertyForm').onsubmit = async (e) => {
-        e.preventDefault();
-        const btn = document.getElementById('submitBtn');
-        btn.innerText = "جاري الرفع... (انتظر)";
-        btn.disabled = true;
-
-        try {
-            // 1. رفع الصورة
-            const file = document.getElementById('uFile').files[0];
-            const formData = new FormData();
-            formData.append("image", file);
-            const imgRes = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_KEY}`, { method: "POST", body: formData });
-            const imgData = await imgRes.json();
-            const imgUrl = imgData.data.url;
-
-            // 2. إرسال البيانات (هنا التكة: ببعتها واتساب للإدارة فوراً عشان تضمن وصولها)
-            const msg = `🏠 *عرض جديد للمراجعة*\nالمالك: ${document.getElementById('uName').value}\nالموبايل: ${document.getElementById('uPhone').value}\nالموقع: ${document.getElementById('uCity').value} - ${document.getElementById('uProj').value}\nالمساحة: ${document.getElementById('uSpace').value}م\nالسعر: ${document.getElementById('uPrice').value}\nالصورة: ${imgUrl}`;
-            
-            window.open(`https://wa.me/201212229797?text=${encodeURIComponent(msg)}`);
-            
-            alert("تم الرفع! أرسل الرسالة على واتساب لتأكيد النشر في الشيت.");
-            location.reload();
-        } catch (err) {
-            alert("فشل الرفع، تأكد من جودة الصورة.");
-            btn.disabled = false;
-            btn.innerText = "تأكيد ونشر العرض";
-        }
-    };
-
-    function openModal() { document.getElementById('addModal').style.display = 'block'; }
-    function closeModal() { document.getElementById('addModal').style.display = 'none'; }
-    loadData();
-</script>
+    <script src="script.js"></script>
 </body>
 </html>
-
 
