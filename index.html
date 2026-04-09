@@ -1,220 +1,166 @@
 <!DOCTYPE html>
 <html dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>الفيروز للتسويق العقاري</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الفيروز للتسويق العقاري</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #006064; --secondary: #b59410; --bg-dark: #121212; --text-light: #eceff1; --glass: rgba(255, 255, 255, 0.05); }
+        body { font-family: 'Cairo', sans-serif; margin: 0; padding: 0; color: var(--text-light); background-color: var(--bg-dark); background-image: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.95)), url('https://images.unsplash.com/photo-1582407947304-fd86f028f716?q=80&w=1600'); background-attachment: fixed; background-size: cover; background-position: center; }
+        
+        .header-bar { padding: 40px 20px; text-align: center; }
+        .company-name { font-family: 'Playfair Display', serif; font-size: 38px; font-weight: 700; color: white; margin: 0; text-shadow: 2px 2px 10px rgba(0,0,0,0.5); }
+        .company-subtitle { font-size: 16px; color: var(--secondary); margin-top: 5px; font-weight: 600; letter-spacing: 2px; }
+        
+        .floating-contact { position: fixed; right: 20px; bottom: 20px; display: flex; flex-direction: column; gap: 12px; z-index: 1000; }
+        .contact-circle { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: 0.3s; border: 1px solid rgba(255,255,255,0.1); }
+        .call-btn { background: var(--primary); }
+        .wa-btn { background: #25d366; }
 
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+        .container { max-width: 1200px; margin: auto; padding: 0 20px 100px 20px; }
+        .section-title { font-size: 22px; font-weight: 700; color: white; margin-bottom: 30px; text-align: center; border-bottom: 2px solid var(--secondary); display: inline-block; padding-bottom: 8px; }
+        
+        .main-box { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .card { background: var(--glass); backdrop-filter: blur(15px); border-radius: 20px; padding: 30px; cursor: pointer; transition: 0.4s; border: 1px solid rgba(255,255,255,0.1); text-align: center; }
+        .card:hover { transform: translateY(-5px); border-color: var(--secondary); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+        .card h3 { font-size: 22px; margin-bottom: 10px; }
 
-<style>
-:root { --primary:#006064; --secondary:#b59410; --bg-dark:#121212; --text-light:#eceff1; --glass:rgba(255,255,255,0.05); }
-
-body {
-    font-family:'Cairo',sans-serif;
-    margin:0;
-    color:var(--text-light);
-    background:linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.95)),
-    url('https://images.unsplash.com/photo-1582407947304-fd86f028f716?q=80&w=1600');
-    background-size:cover;
-}
-
-.header-bar { padding:40px; text-align:center; }
-.company-name { font-size:38px; font-weight:700; }
-.company-subtitle { color:var(--secondary); }
-
-.container { max-width:1200px; margin:auto; padding:20px; }
-
-.card {
-    background:var(--glass);
-    padding:20px;
-    border-radius:15px;
-    cursor:pointer;
-    text-align:center;
-    transition:.3s;
-}
-.card:hover { transform:scale(1.05); }
-
-.main-box { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:15px; }
-
-.apt-card {
-    background:#000000a8;
-    padding:20px;
-    border-radius:15px;
-}
-
-.hidden { display:none; }
-
-#loader { text-align:center; padding:80px; color:gold; }
-
-.btn-back {
-    margin-top:20px;
-    padding:10px 20px;
-    border:1px solid gold;
-    background:none;
-    color:gold;
-    cursor:pointer;
-}
-</style>
+        .apt-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
+        .apt-card { background: rgba(0,0,0,0.6); border-radius: 15px; padding: 25px; text-align: right; border-right: 5px solid var(--primary); border: 1px solid rgba(255,255,255,0.05); }
+        .tag { background: rgba(0, 96, 100, 0.3); color: #80deea; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: bold; }
+        .apt-title { font-size: 19px; color: white; margin: 12px 0; font-weight: 700; }
+        .specs-list { font-size: 14px; color: #b0bec5; line-height: 1.8; margin-bottom: 15px; }
+        
+        .price-row { margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1); }
+        .price-item { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 15px; }
+        .highlight { color: var(--secondary); font-weight: 900; font-size: 18px; }
+        
+        .hidden { display: none; }
+        .btn-back { margin-top: 30px; padding: 12px 30px; background: none; color: var(--secondary); border: 1px solid var(--secondary); border-radius: 30px; cursor: pointer; font-weight: 700; transition: 0.3s; }
+        .btn-back:hover { background: var(--secondary); color: #121212; }
+        #loader { text-align: center; padding: 80px; color: var(--secondary); font-size: 1.2rem; }
+    </style>
 </head>
-
 <body>
 
-<div class="header-bar">
-<h1 class="company-name">Al-Fayrouz Real Estate</h1>
-<div class="company-subtitle">الفيروز للتسويق العقاري</div>
-</div>
+    <div class="floating-contact">
+        <a href="tel:+201212229797" class="contact-circle call-btn"><img src="https://img.icons8.com/ios-filled/50/ffffff/phone.png" width="24"></a>
+        <a href="https://wa.me/201212229797" class="contact-circle wa-btn"><img src="https://img.icons8.com/color/48/000000/whatsapp--v1.png" width="24"></a>
+    </div>
 
-<div class="container">
+    <div class="header-bar">
+        <h1 class="company-name">Al-Fayrouz Real Estate</h1>
+        <div class="company-subtitle">الفيروز للتسويق العقاري</div>
+    </div>
 
-<div id="loader">⏳ جاري تحميل البيانات...</div>
+    <div class="container">
+        <div id="loader">✨ جاري جلب أفخم العروض...</div>
 
-<div id="step1" class="hidden">
-<h2>اختر المدينة</h2>
-<div id="cityButtons" class="main-box"></div>
-</div>
+        <div id="step1" class="hidden">
+            <div style="text-align:center"><h2 class="section-title">اختر المدينة</h2></div>
+            <div class="main-box" id="cityButtons"></div>
+        </div>
 
-<div id="step2" class="hidden">
-<h2 id="cityTitle"></h2>
-<div id="regionButtons" class="main-box"></div>
-<button class="btn-back" onclick="goBack(1)">رجوع</button>
-</div>
+        <div id="step2" class="hidden">
+            <div style="text-align:center"><h2 id="cityTitle" class="section-title"></h2></div>
+            <div id="regionButtons" class="main-box"></div>
+            <div style="text-align:center"><button class="btn-back" onclick="goBack(1)">العودة للمدن</button></div>
+        </div>
 
-<div id="step3" class="hidden">
-<h2 id="regionTitle"></h2>
-<div id="apartmentList" class="main-box"></div>
-<button class="btn-back" onclick="goBack(2)">رجوع</button>
-</div>
+        <div id="step3" class="hidden">
+            <div style="text-align:center"><h2 id="regionTitle" class="section-title"></h2></div>
+            <div id="apartmentList" class="apt-grid"></div>
+            <div style="text-align:center"><button class="btn-back" onclick="goBack(2)">العودة للمناطق</button></div>
+        </div>
+    </div>
 
-</div>
+    <script>
+        // رابط الـ API الجديد بتاعك
+        const API_URL = "https://script.google.com/macros/s/AKfycbxQsS6y6NgU_HdYXZOKsiV7xyzh7EBvYWLUeOacsqf7ERu93gnVyiOnNDUxqG6UUzcA/exec";
+        let allData = [];
+        let currentCity = "";
 
-<script>
-
-const API_URL = "https://script.google.com/macros/s/AKfycbxQsS6y6NgU_HdYXZOKsiV7xyzh7EBvYWLUeOacsqf7ERu93gnVyiOnNDUxqG6UUzcA/exec";
-
-let allData = [];
-let currentCity = "";
-
-// تحميل البيانات
-async function loadData() {
-    try {
-        const res = await fetch(API_URL);
-
-        if (!res.ok) throw new Error("Fetch failed");
-
-        const data = await res.json();
-        console.log("DATA:", data);
-
-        // يدعم كل الأشكال
-        if (Array.isArray(data)) {
-            allData = data;
-        } else if (data.data) {
-            allData = data.data;
-        } else {
-            throw new Error("DATA FORMAT ERROR");
+        async function loadData() {
+            try {
+                const response = await fetch(API_URL);
+                allData = await response.json();
+                document.getElementById('loader').style.display = 'none';
+                showCities();
+            } catch (e) { 
+                document.getElementById('loader').innerText = "⚠️ خطأ في تحميل البيانات. تأكد من نشر الشيت بصلاحية Anyone."; 
+            }
         }
 
-        if (!allData.length) throw new Error("EMPTY DATA");
+        function showCities() {
+            document.getElementById('step1').classList.remove('hidden');
+            // استخراج المدن الفريدة من العمود A
+            let cities = [...new Set(allData.slice(1).map(row => row[0]).filter(c => c))];
+            let html = '';
+            cities.forEach(c => { 
+                html += `<div class="card" onclick="goToStep2('${c}')"><h3>${c}</h3><p>عرض تفاصيل المناطق</p></div>`; 
+            });
+            document.getElementById('cityButtons').innerHTML = html;
+        }
 
-        document.getElementById("loader").style.display = "none";
-        showCities();
+        function goToStep2(city) {
+            currentCity = city;
+            document.getElementById('step1').classList.add('hidden');
+            document.getElementById('step2').classList.remove('hidden');
+            document.getElementById('cityTitle').innerText = city;
+            
+            // استخراج المناطق الفريدة من العمود B للمدينة المختارة
+            let regions = [...new Set(allData.slice(1).filter(row => row[0] === city).map(row => row[1]).filter(r => r))];
+            let html = '';
+            regions.forEach(r => { 
+                html += `<div class="card" onclick="showUnits('${r}')"><h3>${r}</h3><p>عرض الوحدات المتاحة</p></div>`; 
+            });
+            document.getElementById('regionButtons').innerHTML = html;
+        }
 
-    } catch (err) {
-        console.error(err);
-        document.getElementById("loader").innerText =
-        "❌ فشل تحميل البيانات - تأكد من الرابط أو الصلاحيات";
-    }
-}
+        function showUnits(region) {
+            document.getElementById('step2').classList.add('hidden');
+            document.getElementById('step3').classList.remove('hidden');
+            document.getElementById('regionTitle').innerText = region;
+            
+            let filtered = allData.filter(row => row[0] == currentCity && row[1] == region);
+            let html = '';
+            
+            filtered.forEach(row => {
+                // تنسيق الأرقام عشان تظهر بالفواصل (مثلاً 1,000,000)
+                const formatNum = (num) => isNaN(num) || num === "" ? num : Number(num).toLocaleString();
 
-// عرض المدن
-function showCities() {
-    document.getElementById("step1").classList.remove("hidden");
+                html += `
+                <div class="apt-card">
+                    <span class="tag">${row[5] || 'جاهز'}</span>
+                    <div class="apt-title">عمارة ${row[2] || '--'} - شقة ${row[3] || '--'}</div>
+                    <div class="specs-list">
+                        📍 الدور: ${row[4] || '--'} | 🧭 الاتجاه: ${row[5] || '--'}<br>
+                        📅 سنوات التقسيط: ${row[9] || '0'} | 💸 دفعة القسط: ${formatNum(row[10])} ج.م
+                    </div>
+                    <div class="price-row">
+                        <div class="price-item"><span>المدفوع:</span> <span class="highlight">${formatNum(row[6])} ج.م</span></div>
+                        <div class="price-item"><span>الأوفر:</span> <span style="color:#ef5350; font-weight:bold">${formatNum(row[7])} ج.م</span></div>
+                        <div class="price-item"><span>سعر المتر:</span> <span>${formatNum(row[8])} ج.م</span></div>
+                    </div>
+                </div>`;
+            });
+            document.getElementById('apartmentList').innerHTML = html || "<h3 style='text-align:center; width:100%'>لا توجد وحدات متاحة حالياً</h3>";
+        }
 
-    let cities = [...new Set(
-        allData.slice(1).filter(r=>r && r.length).map(r=>r[0])
-    )];
+        function goBack(step) {
+            if (step === 1) { 
+                document.getElementById('step2').classList.add('hidden'); 
+                document.getElementById('step1').classList.remove('hidden'); 
+            } else { 
+                document.getElementById('step3').classList.add('hidden'); 
+                document.getElementById('step2').classList.remove('hidden'); 
+            }
+        }
 
-    let html = "";
-
-    cities.forEach(c=>{
-        html += `<div class="card" onclick="goToStep2(\`${c}\`)">
-        <h3>${c}</h3></div>`;
-    });
-
-    document.getElementById("cityButtons").innerHTML = html;
-}
-
-// عرض المناطق
-function goToStep2(city) {
-    currentCity = city;
-
-    step1.classList.add("hidden");
-    step2.classList.remove("hidden");
-
-    cityTitle.innerText = city;
-
-    let regions = [...new Set(
-        allData.filter(r=>r && r[0]===city).map(r=>r[1])
-    )];
-
-    let html="";
-
-    regions.forEach(r=>{
-        html += `<div class="card" onclick="showUnits(\`${r}\`)">
-        <h3>${r}</h3></div>`;
-    });
-
-    regionButtons.innerHTML = html;
-}
-
-// عرض الشقق
-function showUnits(region) {
-
-    step2.classList.add("hidden");
-    step3.classList.remove("hidden");
-
-    regionTitle.innerText = region;
-
-    let filtered = allData.filter(r=>r && r[0]===currentCity && r[1]===region);
-
-    let html="";
-
-    filtered.forEach(row=>{
-        if (!row) return;
-
-        const format = n => isNaN(n)?n:Number(n).toLocaleString();
-
-        html += `
-        <div class="apt-card">
-        <h3>عمارة ${row[2]||"-"} شقة ${row[3]||"-"}</h3>
-        <p>الدور: ${row[4]||"-"}</p>
-        <p>الاتجاه: ${row[5]||"-"}</p>
-        <p>سنوات: ${row[9]||"-"}</p>
-        <p>قسط: ${format(row[10])}</p>
-        <p>المدفوع: ${format(row[6])}</p>
-        <p>الأوفر: ${format(row[7])}</p>
-        <p>سعر المتر: ${format(row[8])}</p>
-        </div>
-        `;
-    });
-
-    apartmentList.innerHTML = html || "<h3>لا يوجد بيانات</h3>";
-}
-
-// رجوع
-function goBack(step){
-    if(step===1){
-        step2.classList.add("hidden");
-        step1.classList.remove("hidden");
-    }else{
-        step3.classList.add("hidden");
-        step2.classList.remove("hidden");
-    }
-}
-
-window.onload = loadData;
-
-</script>
-
+        window.onload = loadData;
+    </script>
 </body>
 </html>
+
+في أغلاط ؟ 
