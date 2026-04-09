@@ -1,5 +1,5 @@
 // استبدل الرابط اللي تحت ده برابط الـ CSV اللي خدته من جوجل شيت (Publish to web)
-const mySheet = "https://script.google.com/macros/s/AKfycbxiPcSexC05MJVeFohzNaNex4oDW0rVylIjAXSsV9BD1QP7v9Esg3xO8CtUh_yOOV6g/exec";
+const mySheet = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTkKf1gSkh0cYANVO4B3bTDtBCFyMuhVaUAas8sjeTR201JPYXebPsM_WWlCENnxatM0sOhH3WVIRXw/pub?output=csv";
 
 async function getSheetsData() {
     const response = await fetch(mySheet);
