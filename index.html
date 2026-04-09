@@ -6,7 +6,6 @@
     <title>الفيروز للتسويق العقاري</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <style>
-        /* الثيم الخاص بك كما هو بدون أي تغيير */
         :root { --primary: #006064; --secondary: #b59410; --bg-dark: #121212; --text-light: #eceff1; --glass: rgba(255, 255, 255, 0.05); }
         body { font-family: 'Cairo', sans-serif; margin: 0; padding: 0; color: var(--text-light); background-color: var(--bg-dark); background-image: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.95)), url('https://images.unsplash.com/photo-1582407947304-fd86f028f716?q=80&w=1600'); background-attachment: fixed; background-size: cover; background-position: center; }
         
@@ -25,7 +24,8 @@
         .main-box { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
         .card { background: var(--glass); backdrop-filter: blur(15px); border-radius: 20px; padding: 30px; cursor: pointer; transition: 0.4s; border: 1px solid rgba(255,255,255,0.1); text-align: center; }
         .card:hover { transform: translateY(-5px); border-color: var(--secondary); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
-        .card h3 { font-size: 22px; margin-bottom: 10px; }
+        .card h3 { font-size: 24px; margin-bottom: 10px; color: #fff; }
+        .card p { color: var(--secondary); font-size: 14px; margin: 0; }
 
         .apt-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
         .apt-card { background: rgba(0,0,0,0.6); border-radius: 15px; padding: 25px; text-align: right; border-right: 5px solid var(--primary); border: 1px solid rgba(255,255,255,0.05); }
@@ -38,7 +38,7 @@
         .highlight { color: var(--secondary); font-weight: 900; font-size: 18px; }
         
         .hidden { display: none; }
-        .btn-back { margin-top: 30px; padding: 12px 30px; background: none; color: var(--secondary); border: 1px solid var(--secondary); border-radius: 30px; cursor: pointer; font-weight: 700; transition: 0.3s; }
+        .btn-back { margin-top: 30px; padding: 12px 40px; background: none; color: var(--secondary); border: 1px solid var(--secondary); border-radius: 30px; cursor: pointer; font-weight: 700; transition: 0.3s; }
         .btn-back:hover { background: var(--secondary); color: #121212; }
         #loader { text-align: center; padding: 80px; color: var(--secondary); font-size: 1.2rem; }
     </style>
@@ -59,20 +59,29 @@
         <div id="loader">✨ جاري جلب أفخم العروض...</div>
 
         <div id="step1" class="hidden">
-            <div style="text-align:center"><h2 class="section-title">اختر المدينة</h2></div>
-            <div class="main-box" id="cityButtons"></div>
+            <div style="text-align:center"><h2 class="section-title">وجهتك العقارية القادمة</h2></div>
+            <div class="main-box">
+                <div class="card" onclick="goToStep2('المنصورة الجديدة', 'عروس النيل الجديدة')">
+                    <h3>المنصورة الجديدة</h3>
+                    <p>قلب الدلتا النابض بالفخامة</p>
+                </div>
+                <div class="card" onclick="goToStep2('دمياط الجديدة', 'مدينة المستقبل الساحلية')">
+                    <h3>دمياط الجديدة</h3>
+                    <p>الرقي والهدوء على الساحل</p>
+                </div>
+            </div>
         </div>
 
         <div id="step2" class="hidden">
             <div style="text-align:center"><h2 id="cityTitle" class="section-title"></h2></div>
-            <div id="regionButtons" class="main-box"></div>
+            <div id="projectButtons" class="main-box"></div>
             <div style="text-align:center"><button class="btn-back" onclick="goBack(1)">العودة للمدن</button></div>
         </div>
 
         <div id="step3" class="hidden">
-            <div style="text-align:center"><h2 id="regionTitle" class="section-title"></h2></div>
+            <div style="text-align:center"><h2 id="projectTitle" class="section-title"></h2></div>
             <div id="apartmentList" class="apt-grid"></div>
-            <div style="text-align:center"><button class="btn-back" onclick="goBack(2)">العودة للمناطق</button></div>
+            <div style="text-align:center"><button class="btn-back" onclick="goBack(2)">العودة للمشاريع</button></div>
         </div>
     </div>
 
@@ -85,72 +94,67 @@
             try {
                 const response = await fetch(API_URL);
                 const data = await response.json();
-                // استبعاد صف العناوين الأول وتخزين باقي الصفوف
                 allData = data.slice(1); 
                 document.getElementById('loader').style.display = 'none';
-                showCities();
+                document.getElementById('step1').classList.remove('hidden');
             } catch (e) { 
-                document.getElementById('loader').innerText = "⚠️ خطأ في تحميل البيانات. تأكد من نشر الشيت بصلاحية Anyone."; 
+                document.getElementById('loader').innerText = "⚠️ خطأ في الاتصال بالسيرفر."; 
             }
         }
 
-        function showCities() {
-            window.scrollTo(0,0);
-            document.getElementById('step1').classList.remove('hidden');
-            let cities = [...new Set(allData.map(row => row[0]).filter(c => c))];
-            let html = '';
-            cities.forEach(c => { 
-                html += `<div class="card" onclick="goToStep2('${c}')"><h3>${c}</h3><p>عرض تفاصيل المناطق</p></div>`; 
-            });
-            document.getElementById('cityButtons').innerHTML = html;
-        }
-
-        function goToStep2(city) {
+        function goToStep2(city, subtitle) {
             window.scrollTo(0,0);
             currentCity = city;
             document.getElementById('step1').classList.add('hidden');
             document.getElementById('step2').classList.remove('hidden');
             document.getElementById('cityTitle').innerText = city;
-            
-            let regions = [...new Set(allData.filter(row => row[0] === city).map(row => row[1]).filter(r => r))];
+
+            let projects = [];
+            if(city === 'المنصورة الجديدة') {
+                projects = ['جنة', 'سكن مصر', 'زاهية', 'إسكان ساحلي'];
+            } else if(city === 'دمياط الجديدة') {
+                projects = ['جنة', 'دار مصر'];
+            }
+
             let html = '';
-            regions.forEach(r => { 
-                html += `<div class="card" onclick="showUnits('${r}')"><h3>${r}</h3><p>عرض الوحدات المتاحة</p></div>`; 
+            projects.forEach(p => {
+                html += `
+                <div class="card" onclick="showUnits('${p}')">
+                    <h3>${p}</h3>
+                    <p>استعراض أفضل الوحدات في ${p}</p>
+                </div>`;
             });
-            document.getElementById('regionButtons').innerHTML = html;
+            document.getElementById('projectButtons').innerHTML = html;
         }
 
-        function showUnits(region) {
+        function showUnits(project) {
             window.scrollTo(0,0);
             document.getElementById('step2').classList.add('hidden');
             document.getElementById('step3').classList.remove('hidden');
-            document.getElementById('regionTitle').innerText = region;
+            document.getElementById('projectTitle').innerText = `مشروع ${project} - ${currentCity}`;
             
-            let filtered = allData.filter(row => row[0] == currentCity && row[1] == region);
+            // الفلترة بناءً على المدينة (عمود 0) والمشروع (عمود 1)
+            let filtered = allData.filter(row => row[0] == currentCity && row[1].includes(project));
+            
             let html = '';
-            
-            const formatNum = (num) => {
-                if (num === "" || num === undefined || num === null || isNaN(num)) return "--";
-                return Number(num).toLocaleString();
-            };
+            const formatNum = (num) => (num === "" || isNaN(num)) ? "--" : Number(num).toLocaleString();
 
             filtered.forEach(row => {
                 html += `
                 <div class="apt-card">
-                    <span class="tag">${row[5] || 'جاهز'}</span>
+                    <span class="tag">${row[5] || 'متاح'}</span>
                     <div class="apt-title">عمارة ${row[2] || '--'} - شقة ${row[3] || '--'}</div>
                     <div class="specs-list">
                         📍 الدور: ${row[4] || '--'} | 🧭 الاتجاه: ${row[5] || '--'}<br>
-                        📅 سنوات التقسيط: ${row[9] || '0'} | 💸 دفعة القسط: ${formatNum(row[10])} ج.م
+                        📅 سنوات التقسيط: ${row[9] || '0'} | 💸 القسط: ${formatNum(row[10])} ج.م
                     </div>
                     <div class="price-row">
                         <div class="price-item"><span>المدفوع:</span> <span class="highlight">${formatNum(row[6])} ج.م</span></div>
                         <div class="price-item"><span>الأوفر:</span> <span style="color:#ef5350; font-weight:bold">${formatNum(row[7])} ج.م</span></div>
-                        <div class="price-item"><span>سعر المتر:</span> <span>${formatNum(row[8])} ج.م</span></div>
                     </div>
                 </div>`;
             });
-            document.getElementById('apartmentList').innerHTML = html || "<h3 style='text-align:center; width:100%'>لا توجد وحدات متاحة حالياً</h3>";
+            document.getElementById('apartmentList').innerHTML = html || "<h3 style='text-align:center; width:100%'>قريباً.. جاري تحديث وحدات هذا المشروع</h3>";
         }
 
         function goBack(step) {
