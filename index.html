@@ -6,7 +6,6 @@
     <title>الفيروز للتسويق العقاري</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <style>
-        /* --- الثيم الأصلي الفخم --- */
         :root { --primary: #006064; --secondary: #b59410; --bg-dark: #121212; --text-light: #eceff1; --glass: rgba(255, 255, 255, 0.05); }
         body { font-family: 'Cairo', sans-serif; margin: 0; padding: 0; color: var(--text-light); background-color: var(--bg-dark); background-image: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.95)), url('https://images.unsplash.com/photo-1582407947304-fd86f028f716?q=80&w=1600'); background-attachment: fixed; background-size: cover; background-position: center; }
         
@@ -19,28 +18,40 @@
         .call-btn { background: var(--primary); }
         .wa-btn { background: #25d366; }
 
-        .container { max-width: 1200px; margin: auto; padding: 0 20px 100px 20px; }
-        .section-title { font-size: 22px; font-weight: 700; color: white; margin-bottom: 30px; text-align: center; border-bottom: 2px solid var(--secondary); display: inline-block; padding-bottom: 8px; }
+        .container { max-width: 1200px; margin: auto; padding: 0 20px 100px 20px; display: flex; flex-direction: column; align-items: center; }
+        .section-title { font-size: 22px; font-weight: 700; color: white; margin-bottom: 30px; text-align: center; border-bottom: 2px solid var(--secondary); display: inline-block; padding-bottom: 8px; width: fit-content; }
         
-        /* الكروت */
-        .main-box { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-        .card { background: var(--glass); backdrop-filter: blur(15px); border-radius: 20px; padding: 30px; cursor: pointer; transition: 0.4s; border: 1px solid rgba(255,255,255,0.1); text-align: center; }
+        /* ضبط شبكة المربعات لتكون متساوية وفي المنتصف */
+        .main-box { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 20px; 
+            width: 100%;
+            justify-content: center;
+        }
+        
+        .card { 
+            background: var(--glass); 
+            backdrop-filter: blur(15px); 
+            border-radius: 20px; 
+            padding: 35px 20px; 
+            cursor: pointer; 
+            transition: 0.4s; 
+            border: 1px solid rgba(255,255,255,0.1); 
+            text-align: center; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 150px;
+        }
         .card:hover { transform: translateY(-5px); border-color: var(--secondary); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
-        .card h3 { font-size: 24px; margin-bottom: 10px; color: #fff; }
-        .card p { color: var(--secondary); font-size: 14px; margin: 0; }
+        .card h3 { font-size: 24px; margin: 0 0 10px 0; color: #fff; width: 100%; text-align: center; }
+        .card p { color: var(--secondary); font-size: 14px; margin: 0; width: 100%; text-align: center; }
 
-        /* كروت الشقق */
-        .apt-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
-        .apt-card { background: rgba(0,0,0,0.6); border-radius: 15px; padding: 25px; text-align: right; border-right: 5px solid var(--primary); border: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; }
-        .tag { background: rgba(0, 96, 100, 0.3); color: #80deea; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: bold; width: fit-content; }
-        .apt-title { font-size: 19px; color: white; margin: 12px 0; font-weight: 700; }
-        .specs-list { font-size: 14px; color: #b0bec5; line-height: 1.8; margin-bottom: 15px; }
+        .apt-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; width: 100%; }
+        .apt-card { background: rgba(0,0,0,0.6); border-radius: 15px; padding: 25px; text-align: right; border-right: 5px solid var(--primary); border: 1px solid rgba(255,255,255,0.05); }
         
-        .price-row { margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1); }
-        .price-item { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 15px; }
-        .highlight { color: var(--secondary); font-weight: 900; font-size: 18px; }
-
-        /* زر الاستفسار الواتساب */
         .btn-inquire { 
             margin-top: 20px; background: linear-gradient(45deg, var(--primary), #00acc1);
             color: white; border: none; padding: 14px; border-radius: 12px;
@@ -48,12 +59,10 @@
             display: flex; align-items: center; justify-content: center; gap: 10px;
             transition: 0.3s; text-decoration: none; font-size: 16px;
         }
-        .btn-inquire:hover { transform: scale(1.02); filter: brightness(1.1); box-shadow: 0 5px 15px rgba(0, 96, 100, 0.4); }
         
         .hidden { display: none; }
         .btn-back { margin-top: 30px; padding: 12px 40px; background: none; color: var(--secondary); border: 1px solid var(--secondary); border-radius: 30px; cursor: pointer; font-weight: 700; transition: 0.3s; }
-        .btn-back:hover { background: var(--secondary); color: #121212; }
-        #loader { text-align: center; padding: 80px; color: var(--secondary); font-size: 1.2rem; }
+        #loader { text-align: center; padding: 80px; color: var(--secondary); font-size: 1.2rem; width: 100%; }
     </style>
 </head>
 <body>
@@ -71,7 +80,7 @@
     <div class="container">
         <div id="loader">✨ جاري جلب أفخم العروض...</div>
 
-        <div id="step1" class="hidden">
+        <div id="step1" class="hidden" style="width:100%">
             <div style="text-align:center"><h2 class="section-title">وجهتك العقارية القادمة</h2></div>
             <div class="main-box">
                 <div class="card" onclick="goToStep2('المنصورة الجديدة')">
@@ -85,13 +94,13 @@
             </div>
         </div>
 
-        <div id="step2" class="hidden">
+        <div id="step2" class="hidden" style="width:100%">
             <div style="text-align:center"><h2 id="cityTitle" class="section-title"></h2></div>
             <div id="projectButtons" class="main-box"></div>
             <div style="text-align:center"><button class="btn-back" onclick="goBack(1)">العودة للمدن</button></div>
         </div>
 
-        <div id="step3" class="hidden">
+        <div id="step3" class="hidden" style="width:100%">
             <div style="text-align:center"><h2 id="projectTitle" class="section-title"></h2></div>
             <div id="apartmentList" class="apt-grid"></div>
             <div style="text-align:center"><button class="btn-back" onclick="goBack(2)">العودة للمشاريع</button></div>
@@ -107,11 +116,11 @@
             try {
                 const response = await fetch(API_URL);
                 const data = await response.json();
-                allData = data.slice(1); // تجاهل العناوين
+                allData = data.slice(1);
                 document.getElementById('loader').style.display = 'none';
                 document.getElementById('step1').classList.remove('hidden');
             } catch (e) { 
-                document.getElementById('loader').innerText = "⚠️ خطأ في الاتصال. تأكد من إعدادات الشيت."; 
+                document.getElementById('loader').innerText = "⚠️ خطأ في تحميل البيانات."; 
             }
         }
 
@@ -144,11 +153,9 @@
             
             let filtered = allData.filter(row => row[0] == currentCity && row[1].toString().includes(project));
             let html = '';
-            
             const formatNum = (num) => (num === "" || isNaN(num)) ? "--" : Number(num).toLocaleString('ar-EG');
 
             filtered.forEach(row => {
-                // نص الرسالة الصافي (بدون إيموجي لتجنب علامات الاستفهام)
                 let msg = `استفسار عن وحدة من موقع الفيروز:\n` +
                           `المدينة: ${currentCity}\n` +
                           `المشروع: ${project}\n` +
@@ -160,7 +167,6 @@
 
                 html += `
                 <div class="apt-card">
-                    <span class="tag">${row[5] || 'جاهز'}</span>
                     <div class="apt-title">عمارة ${row[2] || '--'} - شقة ${row[3] || '--'}</div>
                     <div class="specs-list">
                         📍 الدور: ${row[4] || '--'} | 🧭 الاتجاه: ${row[5] || '--'}<br>
@@ -170,14 +176,10 @@
                         <div class="price-item"><span>المدفوع:</span> <span class="highlight">${formatNum(row[6])} ج.م</span></div>
                         <div class="price-item"><span>الأوفر:</span> <span style="color:#ef5350; font-weight:bold">${formatNum(row[7])} ج.م</span></div>
                     </div>
-                    
-                    <a href="${waLink}" target="_blank" class="btn-inquire">
-                        <img src="https://img.icons8.com/material-outlined/24/ffffff/whatsapp.png" width="20">
-                        استفسار عن هذه الشقة
-                    </a>
+                    <a href="${waLink}" target="_blank" class="btn-inquire">استفسار واتساب</a>
                 </div>`;
             });
-            document.getElementById('apartmentList').innerHTML = html || "<h3 style='text-align:center; width:100%'>جاري إضافة وحدات جديدة...</h3>";
+            document.getElementById('apartmentList').innerHTML = html || "<h3 style='text-align:center; width:100%'>جاري إضافة وحدات...</h3>";
         }
 
         function goBack(step) {
@@ -189,7 +191,6 @@
                 document.getElementById('step2').classList.remove('hidden'); 
             }
         }
-
         window.onload = loadData;
     </script>
 </body>
