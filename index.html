@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>الفيروز للتسويق العقاري</title>
+    <title>الفيروز للعقارات</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;900&display=swap" rel="stylesheet">
     <style>
         :root { --primary: #00838f; --secondary: #c5a012; --bg-dark: #0f1214; --card-bg: #1c2226; }
@@ -14,13 +14,13 @@
             background: var(--bg-dark); overflow-x: hidden; width: 100%;
         }
 
-        /* تصميم الهيدر بشكل فخم */
+        /* تعديل ترتيب الاسم ليصبح الفيروز للعقارات هو الأساسي */
         .header-bar { 
             padding: 40px 10px 20px; text-align: center; 
             background: linear-gradient(to bottom, #161d21, var(--bg-dark));
         }
         .company-name { font-size: 34px; font-weight: 900; color: #fff; margin: 0; letter-spacing: -1px; }
-        .company-subtitle { font-size: 14px; color: var(--secondary); font-weight: 700; text-transform: uppercase; }
+        .company-subtitle { font-size: 14px; color: var(--secondary); font-weight: 700; text-transform: uppercase; margin-top: 5px; }
 
         .container { width: 100%; max-width: 500px; margin: auto; padding: 15px; }
 
@@ -28,12 +28,12 @@
         .top-nav { display: flex; align-items: center; margin-bottom: 20px; animation: fadeIn 0.5s; }
         .btn-back-top { 
             background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff;
-            padding: 8px 16px; border-radius: 10px; font-size: 14px; cursor: pointer; display: flex; align-items: center;
+            padding: 8px 16px; border-radius: 10px; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 5px;
         }
 
         .section-title { font-size: 20px; color: #fff; font-weight: 800; flex-grow: 1; text-align: center; margin: 0; }
 
-        /* كروت المدن والمشاريع */
+        /* كروت المدن (تحت بعض) */
         .grid-box { display: flex; flex-direction: column; gap: 15px; width: 100%; }
         .card-city { 
             background: linear-gradient(135deg, #1c2226 0%, #252d33 100%);
@@ -42,6 +42,7 @@
             transition: 0.3s;
         }
 
+        /* كروت المشاريع (2 جنب بعض) */
         .project-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; }
         .card-project { 
             background: var(--card-bg); border-radius: 18px; padding: 25px 10px; 
@@ -51,10 +52,10 @@
         h3 { margin: 0; font-size: 20px; font-weight: 800; }
         p { margin: 6px 0 0; font-size: 12px; color: var(--secondary); font-weight: 600; }
 
-        /* كروت الوحدات التفصيلية */
+        /* كروت الوحدات */
         .apt-card { 
             background: #1c2226; border-radius: 15px; padding: 20px; margin-bottom: 15px;
-            border-left: 4px solid var(--primary); box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border-right: 4px solid var(--primary); box-shadow: 0 4px 15px rgba(0,0,0,0.3); text-align: right;
         }
         .apt-info { display: flex; justify-content: space-between; margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.05); }
         .price-label { font-size: 12px; color: #aaa; display: block; }
@@ -63,20 +64,18 @@
         .btn-wa { 
             margin-top: 15px; background: #25d366; color: #fff; text-align: center;
             padding: 12px; border-radius: 10px; text-decoration: none; display: block;
-            font-weight: 800; font-size: 15px; transition: 0.2s;
+            font-weight: 800; font-size: 15px;
         }
 
         .hidden { display: none !important; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        .loader-dots { text-align: center; padding: 40px; color: var(--secondary); font-weight: 700; }
     </style>
 </head>
 <body>
 
     <div class="header-bar">
-        <h1 class="company-name">Al-Fayrouz</h1>
-        <div class="company-subtitle">Real Estate • العقارات الفيروز</div>
+        <h1 class="company-name">الفيروز للعقارات</h1>
+        <div class="company-subtitle">Al-Fayrouz Real Estate</div>
     </div>
 
     <div class="container">
@@ -110,18 +109,17 @@
         let allData = [];
         let currentCity = "";
 
-        // جلب البيانات فوراً عند فتح الرابط
-        (async function init() {
+        async function loadData() {
             try {
                 const res = await fetch(API_URL);
                 const data = await res.json();
                 allData = data.slice(1);
-            } catch (e) { console.log("Slow connection..."); }
-        })();
+            } catch (e) { console.log("retrying..."); }
+        }
 
         function goToStep2(city) {
             currentCity = city;
-            toggleStep('step2');
+            toggle('step2');
             document.getElementById('cityTitle').innerText = city;
             let projects = (city === 'المنصورة الجديدة') ? ['جنة', 'سكن مصر', 'زاهية', 'إسكان ساحلي'] : ['جنة', 'دار مصر'];
             let html = '';
@@ -131,58 +129,50 @@
             document.getElementById('projectButtons').innerHTML = html;
         }
 
-        function showUnits(keyword) {
-            toggleStep('step3');
-            document.getElementById('projectTitle').innerText = keyword;
-            renderUnits(keyword);
+        function showUnits(kw) {
+            toggle('step3');
+            document.getElementById('projectTitle').innerText = kw;
+            render(kw);
         }
 
-        function renderUnits(keyword) {
+        function render(kw) {
             const list = document.getElementById('apartmentList');
             if (allData.length === 0) {
-                list.innerHTML = `<div class="loader-dots">جاري جلب أحدث العروض...</div>`;
-                setTimeout(() => renderUnits(keyword), 1000); return;
+                list.innerHTML = `<div style="text-align:center; padding:30px; color:var(--secondary);">جاري تحضير العروض...</div>`;
+                loadData().then(() => render(kw)); return;
             }
-
-            let filtered = allData.filter(row => {
-                let rCity = row[0] ? row[0].toString().trim() : "";
-                let rProj = row[1] ? row[1].toString().trim() : "";
-                return rCity === currentCity && rProj.includes(keyword);
-            });
-
+            let filtered = allData.filter(r => (r[0]||"").toString().trim() === currentCity && (r[1]||"").toString().includes(kw));
+            
             if (filtered.length === 0) {
-                list.innerHTML = `<div style="text-align:center; padding:40px;">لا توجد وحدات متاحة حالياً</div>`;
-                return;
+                list.innerHTML = `<div style="text-align:center; padding:30px;">لا توجد وحدات متاحة حالياً</div>`; return;
             }
 
             let html = '';
-            filtered.forEach(row => {
-                let msg = encodeURIComponent(`استفسار عن عقار في الفيروز:\nالمدينة: ${currentCity}\nالمشروع: ${row[1]}\nعمارة: ${row[2]}\nشقة: ${row[3]}`);
+            filtered.forEach(r => {
+                let msg = encodeURIComponent(`استفسار من الموقع:\nالمدينة: ${currentCity}\nالمشروع: ${r[1]}\nعمارة: ${r[2]}\nشقة: ${r[3]}`);
                 html += `
                 <div class="apt-card">
-                    <div style="font-size:18px; font-weight:800;">عمارة ${row[2]} • شقة ${row[3]}</div>
-                    <div style="font-size:13px; color:#aaa; margin-top:5px;">📍 ${row[4]} | ${row[5]}</div>
+                    <div style="font-size:18px; font-weight:800;">عمارة ${r[2]} • شقة ${r[3]}</div>
+                    <div style="font-size:13px; color:#aaa; margin-top:5px;">📍 ${r[4]} | ${r[5]}</div>
                     <div class="apt-info">
-                        <div><span class="price-label">المدفوع</span><span class="price-val">${row[6]} ج.م</span></div>
-                        <div><span class="price-label">الأوفر</span><span class="price-val" style="color:#ef5350">${row[7]} ج.م</span></div>
+                        <div><span class="price-label">المدفوع</span><span class="price-val">${r[6]}</span></div>
+                        <div><span class="price-label">الأوفر</span><span class="price-val" style="color:#ef5350">${r[7]}</span></div>
                     </div>
-                    <a href="https://wa.me/201212229797?text=${msg}" class="btn-wa">تواصل الآن عبر واتساب</a>
+                    <a href="https://wa.me/201212229797?text=${msg}" class="btn-wa">تواصل واتساب</a>
                 </div>`;
             });
             list.innerHTML = html;
         }
 
-        function toggleStep(id) {
-            document.getElementById('step1').classList.add('hidden');
-            document.getElementById('step2').classList.add('hidden');
-            document.getElementById('step3').classList.add('hidden');
+        function toggle(id) {
+            ['step1','step2','step3'].forEach(s => document.getElementById(s).classList.add('hidden'));
             document.getElementById(id).classList.remove('hidden');
             window.scrollTo(0,0);
         }
 
-        function goBack(step) {
-            toggleStep('step' + step);
-        }
+        function goBack(s) { toggle('step' + s); }
+        window.onload = loadData;
     </script>
 </body>
 </html>
+
