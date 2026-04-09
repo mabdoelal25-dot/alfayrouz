@@ -1,25 +1,10 @@
-body { background-color: #0d0d0d; color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; direction: rtl; }
-.main-header { text-align: center; padding: 40px 20px; background: linear-gradient(45deg, #000, #1a1a1a); border-bottom: 2px solid #00d2ff; }
-.logo-en { font-size: 2.5rem; letter-spacing: 4px; color: #00d2ff; margin: 0; }
-.logo-ar { font-size: 1.1rem; color: #aaa; margin-top: 5px; }
-
-.filter-section { text-align: center; padding: 20px; }
-.city-btn { background: transparent; color: #00d2ff; border: 1px solid #00d2ff; padding: 10px 20px; margin: 5px; cursor: pointer; border-radius: 25px; transition: 0.3s; font-weight: bold; }
-.city-btn:hover { background: #00d2ff; color: #000; }
-
-.gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; padding: 20px; }
-.property-card { background: #1a1a1a; border-radius: 15px; overflow: hidden; border: 1px solid #333; transition: 0.3s; }
-.property-card:hover { transform: translateY(-5px); border-color: #00d2ff; }
-.card-img img { width: 100%; height: 200px; object-fit: cover; }
-
+body { background: #0a0a0a; color: white; font-family: sans-serif; text-align: center; margin: 0; direction: rtl; }
+.main-header { padding: 40px; background: #111; border-bottom: 2px solid #00d2ff; }
+.logo-en { color: #00d2ff; font-size: 2.5rem; margin: 0; }
+.filter-section { padding: 20px; }
+.city-btn { background: none; color: #00d2ff; border: 1px solid #00d2ff; padding: 10px 20px; cursor: pointer; border-radius: 20px; margin: 5px; }
+.gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; padding: 20px; }
+.property-card { background: #1a1a1a; border-radius: 10px; overflow: hidden; border: 1px solid #333; }
+.property-card img { width: 100%; height: 180px; object-fit: cover; }
 .info { padding: 15px; text-align: right; }
-.info h3 { margin: 0 0 10px; color: #00d2ff; font-size: 1.2rem; }
-.specs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
-.specs span { background: #333; padding: 4px 8px; border-radius: 5px; font-size: 0.85rem; }
-.details { font-size: 0.9rem; color: #ccc; line-height: 1.4; height: 40px; overflow: hidden; }
-.price-box { margin-top: 15px; border-top: 1px solid #333; padding-top: 10px; }
-.total { font-size: 1.1rem; font-weight: bold; color: #00d2ff; }
-.over { color: #ff4d4d; font-size: 0.9rem; margin-top: 5px; }
-
-.wa-btn { width: 100%; background: #25d366; color: #fff; border: none; padding: 12px; margin-top: 15px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1rem; }
-.wa-btn:hover { background: #1ebe57; }
+.wa-btn { width: 100%; background: #25d366; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; }
