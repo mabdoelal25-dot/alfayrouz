@@ -8,51 +8,41 @@
     <style>
         :root { --primary: #006064; --secondary: #b59410; --bg-dark: #121212; --text-light: #eceff1; --glass: rgba(255, 255, 255, 0.05); }
         body { font-family: 'Cairo', sans-serif; margin: 0; padding: 0; color: var(--text-light); background-color: var(--bg-dark); background-image: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.95)), url('https://images.unsplash.com/photo-1582407947304-fd86f028f716?q=80&w=1600'); background-attachment: fixed; background-size: cover; background-position: center; }
-        
         .header-bar { padding: 40px 20px; text-align: center; }
-        .company-name { font-family: 'Playfair Display', serif; font-size: 42px; font-weight: 700; color: white; margin: 0; text-shadow: 2px 2px 10px rgba(0,0,0,0.5); }
-        .company-subtitle { font-size: 18px; color: var(--secondary); margin-top: 10px; font-weight: 600; letter-spacing: 2px; }
-
-        /* الأزرار العائمة */
+        .company-name { font-family: 'Playfair Display', serif; font-size: 38px; font-weight: 700; color: white; margin: 0; }
+        .company-subtitle { font-size: 16px; color: var(--secondary); margin-top: 5px; font-weight: 600; letter-spacing: 2px; }
+        
         .floating-contact { position: fixed; right: 20px; bottom: 20px; display: flex; flex-direction: column; gap: 12px; z-index: 1000; }
-        .contact-circle { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: 0.3s; border: 1px solid rgba(255,255,255,0.1); }
-        .contact-circle:hover { transform: scale(1.15) rotate(5deg); }
+        .contact-circle { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: 0.3s; }
         .call-btn { background: var(--primary); }
         .wa-btn { background: #25d366; }
-        .fb-btn { background: #1877F2; }
-        .ig-btn { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
-        .tk-btn { background: #000000; }
-        .contact-icon-img { width: 24px; height: 24px; }
 
         .container { max-width: 1200px; margin: auto; padding: 0 20px 100px 20px; }
-        .section-title { font-size: 24px; font-weight: 700; color: white; margin-bottom: 30px; text-align: center; border-bottom: 2px solid var(--secondary); display: inline-block; padding-bottom: 8px; }
-        .main-box { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
-        .card { background: var(--glass); backdrop-filter: blur(15px); border-radius: 20px; padding: 35px; cursor: pointer; transition: 0.4s; border: 1px solid rgba(255,255,255,0.1); text-align: center; }
-        .card:hover { transform: translateY(-8px); border-color: var(--secondary); box-shadow: 0 12px 30px rgba(0,0,0,0.5); }
-        .card h3 { font-size: 22px; color: white; margin: 0 0 10px 0; }
-        .card p { font-size: 14px; color: #b0bec5; margin: 0; }
+        .section-title { font-size: 22px; font-weight: 700; color: white; margin-bottom: 30px; text-align: center; border-bottom: 2px solid var(--secondary); display: inline-block; padding-bottom: 8px; }
+        
+        .main-box { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .card { background: var(--glass); backdrop-filter: blur(15px); border-radius: 20px; padding: 30px; cursor: pointer; transition: 0.4s; border: 1px solid rgba(255,255,255,0.1); text-align: center; }
+        .card:hover { transform: translateY(-5px); border-color: var(--secondary); }
+        
+        .apt-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
+        .apt-card { background: rgba(0,0,0,0.6); border-radius: 15px; padding: 20px; text-align: right; border-right: 5px solid var(--primary); border: 1px solid rgba(255,255,255,0.05); }
+        .tag { background: rgba(0, 96, 100, 0.3); color: #80deea; padding: 3px 10px; border-radius: 15px; font-size: 11px; font-weight: bold; }
+        .apt-title { font-size: 18px; color: white; margin: 10px 0; font-weight: 700; }
+        .specs-list { font-size: 13px; color: #b0bec5; line-height: 1.8; }
+        .price-row { margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1); }
+        .price-item { display: flex; justify-content: space-between; margin-bottom: 5px; }
+        .highlight { color: var(--secondary); font-weight: bold; font-size: 16px; }
         
         .hidden { display: none; }
-        .btn-back { margin-top: 30px; padding: 10px 30px; background: none; color: var(--secondary); border: 2px solid var(--secondary); border-radius: 30px; cursor: pointer; font-weight: 700; transition: 0.3s; }
-        .btn-back:hover { background: var(--secondary); color: #121212; }
-        
-        .apt-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 20px; }
-        .apt-card { background: rgba(0,0,0,0.5); border-radius: 15px; padding: 25px; text-align: right; border-right: 5px solid var(--primary); transition: 0.3s; }
-        .tag { background: rgba(0, 96, 100, 0.3); color: #80deea; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: bold; }
-        .apt-title { font-size: 19px; color: white; margin: 12px 0; }
-        .price-row { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1); }
-        .price-tag { color: var(--secondary); font-size: 20px; font-weight: bold; }
-        #loader { text-align: center; padding: 50px; color: var(--secondary); font-weight: bold; }
+        .btn-back { margin-top: 30px; padding: 10px 25px; background: none; color: var(--secondary); border: 1px solid var(--secondary); border-radius: 20px; cursor: pointer; }
+        #loader { text-align: center; padding: 50px; color: var(--secondary); }
     </style>
 </head>
 <body>
 
     <div class="floating-contact">
-        <a href="tel:+201212229797" class="contact-circle call-btn"><img src="https://img.icons8.com/ios-filled/50/ffffff/phone.png" class="contact-icon-img"></a>
-        <a href="https://wa.me/201212229797" class="contact-circle wa-btn"><img src="https://img.icons8.com/color/48/000000/whatsapp--v1.png" class="contact-icon-img"></a>
-        <a href="https://www.facebook.com/share/1DxP3MBFR1/" target="_blank" class="contact-circle fb-btn"><img src="https://img.icons8.com/ios-filled/50/ffffff/facebook-new.png" class="contact-icon-img"></a>
-        <a href="https://www.instagram.com/alfayrouzrealstate" target="_blank" class="contact-circle ig-btn"><img src="https://img.icons8.com/ios-filled/50/ffffff/instagram-new.png" class="contact-icon-img"></a>
-        <a href="https://www.tiktok.com/@relatystate1" target="_blank" class="contact-circle tk-btn"><img src="https://img.icons8.com/ios-filled/50/ffffff/tiktok.png" class="contact-icon-img"></a>
+        <a href="tel:+201212229797" class="contact-circle call-btn"><img src="https://img.icons8.com/ios-filled/50/ffffff/phone.png" width="24"></a>
+        <a href="https://wa.me/201212229797" class="contact-circle wa-btn"><img src="https://img.icons8.com/color/48/000000/whatsapp--v1.png" width="24"></a>
     </div>
 
     <div class="header-bar">
@@ -61,104 +51,88 @@
     </div>
 
     <div class="container">
-        <div id="loader">جاري جلب الوحدات المتاحة...</div>
+        <div id="loader">جاري جلب العروض الحصرية...</div>
 
         <div id="step1" class="hidden">
-            <div style="text-align:center"><h2 class="section-title">اختر وجهتك الاستثمارية</h2></div>
-            <div class="main-box">
-                <div class="card" onclick="goToStep2('المنصورة الجديدة')"><h3>المنصورة الجديدة</h3><p>عاصمة الدلتا السياحية الجديدة</p></div>
-                <div class="card" onclick="goToStep2('دمياط الجديدة')"><h3>دمياط الجديدة</h3><p>الرفاهية والخدمات المتكاملة</p></div>
-            </div>
+            <div style="text-align:center"><h2 class="section-title">اختر المدينة</h2></div>
+            <div class="main-box" id="cityButtons"></div>
         </div>
 
         <div id="step2" class="hidden">
             <div style="text-align:center"><h2 id="cityTitle" class="section-title"></h2></div>
-            <div id="projectButtons" class="main-box"></div>
+            <div id="regionButtons" class="main-box"></div>
             <div style="text-align:center"><button class="btn-back" onclick="goBack(1)">العودة للمدن</button></div>
         </div>
 
         <div id="step3" class="hidden">
-            <div style="text-align:center"><h2 id="projectTitle" class="section-title"></h2></div>
+            <div style="text-align:center"><h2 id="regionTitle" class="section-title"></h2></div>
             <div id="apartmentList" class="apt-grid"></div>
-            <div style="text-align:center"><button class="btn-back" onclick="goBack(2)">العودة للمشروعات</button></div>
+            <div style="text-align:center"><button class="btn-back" onclick="goBack(2)">العودة للمناطق</button></div>
         </div>
     </div>
 
     <script>
-        // الرابط الجديد الخاص بك
         const API_URL = "https://script.google.com/macros/s/AKfycbxVCQuj-Ep-hX-RoV5az62sRQFzl7ksZAamiEmkH9nqD-ST-KzdDez15farR31HqXsaeg/exec";
         let allData = [];
-        let currentCity = "";
 
-        async function loadInitialData() {
+        async function loadData() {
             try {
                 const response = await fetch(API_URL);
                 allData = await response.json();
                 document.getElementById('loader').classList.add('hidden');
-                document.getElementById('step1').classList.remove('hidden');
-            } catch (error) {
-                document.getElementById('loader').innerText = "حدث خطأ في جلب البيانات.. يرجى التأكد من نشر الشيت.";
-            }
+                showCities();
+            } catch (e) { document.getElementById('loader').innerText = "خطأ في الاتصال بالشيت."; }
         }
-        window.onload = loadInitialData;
+
+        function showCities() {
+            document.getElementById('step1').classList.remove('hidden');
+            let cities = [...new Set(allData.slice(1).map(row => row[0]))];
+            let html = '';
+            cities.forEach(c => { html += `<div class="card" onclick="goToStep2('${c}')"><h3>${c}</h3><p>عرض المناطق</p></div>`; });
+            document.getElementById('cityButtons').innerHTML = html;
+        }
 
         function goToStep2(city) {
             currentCity = city;
             document.getElementById('step1').classList.add('hidden');
             document.getElementById('step2').classList.remove('hidden');
             document.getElementById('cityTitle').innerText = city;
-            
-            // استخراج المشروعات الموجودة فعلياً في الشيت لهذه المدينة
-            let projects = [...new Set(allData.slice(1).filter(row => row[0] === city).map(row => row[1]))];
-            
-            let container = document.getElementById('projectButtons');
-            container.innerHTML = '';
-            
-            if(projects.length === 0) {
-                container.innerHTML = "<p style='text-align:center; width:100%'>لا توجد مشروعات حالياً في هذه المدينة</p>";
-            } else {
-                projects.forEach(p => { 
-                    container.innerHTML += `<div class="card" onclick="showUnits('${p}')"><h3>${p}</h3><p>عرض الوحدات المتاحة</p></div>`; 
-                });
-            }
+            let regions = [...new Set(allData.slice(1).filter(row => row[0] === city).map(row => row[1]))];
+            let html = '';
+            regions.forEach(r => { html += `<div class="card" onclick="showUnits('${r}')"><h3>${r}</h3><p>عرض الوحدات</p></div>`; });
+            document.getElementById('regionButtons').innerHTML = html;
         }
 
-        function showUnits(project) {
+        function showUnits(region) {
             document.getElementById('step2').classList.add('hidden');
             document.getElementById('step3').classList.remove('hidden');
-            document.getElementById('projectTitle').innerText = project + " - " + currentCity;
-            
-            let list = document.getElementById('apartmentList');
-            let filtered = allData.filter(row => row[0] == currentCity && row[1] == project);
-            
-            list.innerHTML = '';
+            document.getElementById('regionTitle').innerText = region;
+            let filtered = allData.filter(row => row[0] == currentCity && row[1] == region);
+            let html = '';
             filtered.forEach(row => {
-                let price = isNaN(row[7]) ? row[7] : Number(row[7]).toLocaleString();
-                list.innerHTML += `
-                    <div class="apt-card">
-                        <span class="tag">${row[6] || 'وحدة'}</span>
-                        <div class="apt-title">عمارة ${row[2]} - شقة ${row[3]}</div>
-                        <p style="color:#b0bec5; font-size:13px">
-                            <b>الدور:</b> ${row[4]} | <b>المساحة:</b> ${row[5]} م
-                        </p>
-                        <div class="price-row">
-                            <div class="price-tag">${price} ج.م</div>
-                            <div style="color:#ef5350;font-weight:600">الأوفر: ${row[8] || '0'}</div>
-                        </div>
-                    </div>`;
+                html += `
+                <div class="apt-card">
+                    <span class="tag">${row[5]}</span>
+                    <div class="apt-title">عمارة ${row[2]} - شقة ${row[3]}</div>
+                    <div class="specs-list">
+                        📍 الدور: ${row[4]} | 🧭 الاتجاه: ${row[5]}<br>
+                        📅 سنوات التقسيط: ${row[9]} | 💸 دفعة القسط: ${row[10]}
+                    </div>
+                    <div class="price-row">
+                        <div class="price-item"><span>المدفوع:</span> <span class="highlight">${row[6]}</span></div>
+                        <div class="price-item"><span>الأوفر:</span> <span style="color:#ef5350; font-weight:bold">${row[7]}</span></div>
+                        <div class="price-item"><span>سعر المتر:</span> <span>${row[8]}</span></div>
+                    </div>
+                </div>`;
             });
+            document.getElementById('apartmentList').innerHTML = html;
         }
 
         function goBack(step) {
-            if (step === 1) { 
-                document.getElementById('step2').classList.add('hidden'); 
-                document.getElementById('step1').classList.remove('hidden'); 
-            } else { 
-                document.getElementById('step3').classList.add('hidden'); 
-                document.getElementById('step2').classList.remove('hidden'); 
-            }
+            if (step === 1) { document.getElementById('step2').classList.add('hidden'); document.getElementById('step1').classList.remove('hidden'); }
+            else { document.getElementById('step3').classList.add('hidden'); document.getElementById('step2').classList.remove('hidden'); }
         }
+        window.onload = loadData;
     </script>
 </body>
 </html>
-
