@@ -6,6 +6,7 @@
     <title>الفيروز للتسويق العقاري</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <style>
+        /* الثيم الخاص بك كما هو بدون أي تغيير */
         :root { --primary: #006064; --secondary: #b59410; --bg-dark: #121212; --text-light: #eceff1; --glass: rgba(255, 255, 255, 0.05); }
         body { font-family: 'Cairo', sans-serif; margin: 0; padding: 0; color: var(--text-light); background-color: var(--bg-dark); background-image: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.95)), url('https://images.unsplash.com/photo-1582407947304-fd86f028f716?q=80&w=1600'); background-attachment: fixed; background-size: cover; background-position: center; }
         
@@ -76,7 +77,6 @@
     </div>
 
     <script>
-        // رابط الـ API الجديد بتاعك
         const API_URL = "https://script.google.com/macros/s/AKfycbxQsS6y6NgU_HdYXZOKsiV7xyzh7EBvYWLUeOacsqf7ERu93gnVyiOnNDUxqG6UUzcA/exec";
         let allData = [];
         let currentCity = "";
@@ -84,7 +84,9 @@
         async function loadData() {
             try {
                 const response = await fetch(API_URL);
-                allData = await response.json();
+                const data = await response.json();
+                // استبعاد صف العناوين الأول وتخزين باقي الصفوف
+                allData = data.slice(1); 
                 document.getElementById('loader').style.display = 'none';
                 showCities();
             } catch (e) { 
@@ -93,9 +95,9 @@
         }
 
         function showCities() {
+            window.scrollTo(0,0);
             document.getElementById('step1').classList.remove('hidden');
-            // استخراج المدن الفريدة من العمود A
-            let cities = [...new Set(allData.slice(1).map(row => row[0]).filter(c => c))];
+            let cities = [...new Set(allData.map(row => row[0]).filter(c => c))];
             let html = '';
             cities.forEach(c => { 
                 html += `<div class="card" onclick="goToStep2('${c}')"><h3>${c}</h3><p>عرض تفاصيل المناطق</p></div>`; 
@@ -104,13 +106,13 @@
         }
 
         function goToStep2(city) {
+            window.scrollTo(0,0);
             currentCity = city;
             document.getElementById('step1').classList.add('hidden');
             document.getElementById('step2').classList.remove('hidden');
             document.getElementById('cityTitle').innerText = city;
             
-            // استخراج المناطق الفريدة من العمود B للمدينة المختارة
-            let regions = [...new Set(allData.slice(1).filter(row => row[0] === city).map(row => row[1]).filter(r => r))];
+            let regions = [...new Set(allData.filter(row => row[0] === city).map(row => row[1]).filter(r => r))];
             let html = '';
             regions.forEach(r => { 
                 html += `<div class="card" onclick="showUnits('${r}')"><h3>${r}</h3><p>عرض الوحدات المتاحة</p></div>`; 
@@ -119,6 +121,7 @@
         }
 
         function showUnits(region) {
+            window.scrollTo(0,0);
             document.getElementById('step2').classList.add('hidden');
             document.getElementById('step3').classList.remove('hidden');
             document.getElementById('regionTitle').innerText = region;
@@ -126,10 +129,12 @@
             let filtered = allData.filter(row => row[0] == currentCity && row[1] == region);
             let html = '';
             
-            filtered.forEach(row => {
-                // تنسيق الأرقام عشان تظهر بالفواصل (مثلاً 1,000,000)
-                const formatNum = (num) => isNaN(num) || num === "" ? num : Number(num).toLocaleString();
+            const formatNum = (num) => {
+                if (num === "" || num === undefined || num === null || isNaN(num)) return "--";
+                return Number(num).toLocaleString();
+            };
 
+            filtered.forEach(row => {
                 html += `
                 <div class="apt-card">
                     <span class="tag">${row[5] || 'جاهز'}</span>
@@ -162,5 +167,3 @@
     </script>
 </body>
 </html>
-
-في أغلاط ؟ 
