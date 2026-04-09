@@ -28,14 +28,38 @@
         .card p { color: var(--secondary); font-size: 14px; margin: 0; }
 
         .apt-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
-        .apt-card { background: rgba(0,0,0,0.6); border-radius: 15px; padding: 25px; text-align: right; border-right: 5px solid var(--primary); border: 1px solid rgba(255,255,255,0.05); }
-        .tag { background: rgba(0, 96, 100, 0.3); color: #80deea; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: bold; }
+        .apt-card { background: rgba(0,0,0,0.6); border-radius: 15px; padding: 25px; text-align: right; border-right: 5px solid var(--primary); border: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; }
+        .tag { background: rgba(0, 96, 100, 0.3); color: #80deea; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: bold; width: fit-content; }
         .apt-title { font-size: 19px; color: white; margin: 12px 0; font-weight: 700; }
         .specs-list { font-size: 14px; color: #b0bec5; line-height: 1.8; margin-bottom: 15px; }
         
         .price-row { margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1); }
         .price-item { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 15px; }
         .highlight { color: var(--secondary); font-weight: 900; font-size: 18px; }
+
+        /* الزر الجديد "الاحترافي" */
+        .btn-inquire { 
+            margin-top: 20px;
+            background: linear-gradient(45deg, var(--primary), #00acc1);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: 0.3s;
+            text-decoration: none;
+        }
+        .btn-inquire:hover { 
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(0, 96, 100, 0.4);
+            filter: brightness(1.1);
+        }
         
         .hidden { display: none; }
         .btn-back { margin-top: 30px; padding: 12px 40px; background: none; color: var(--secondary); border: 1px solid var(--secondary); border-radius: 30px; cursor: pointer; font-weight: 700; transition: 0.3s; }
@@ -61,11 +85,11 @@
         <div id="step1" class="hidden">
             <div style="text-align:center"><h2 class="section-title">وجهتك العقارية القادمة</h2></div>
             <div class="main-box">
-                <div class="card" onclick="goToStep2('المنصورة الجديدة', 'عروس النيل الجديدة')">
+                <div class="card" onclick="goToStep2('المنصورة الجديدة')">
                     <h3>المنصورة الجديدة</h3>
                     <p>قلب الدلتا النابض بالفخامة</p>
                 </div>
-                <div class="card" onclick="goToStep2('دمياط الجديدة', 'مدينة المستقبل الساحلية')">
+                <div class="card" onclick="goToStep2('دمياط الجديدة')">
                     <h3>دمياط الجديدة</h3>
                     <p>الرقي والهدوء على الساحل</p>
                 </div>
@@ -89,6 +113,7 @@
         const API_URL = "https://script.google.com/macros/s/AKfycbxQsS6y6NgU_HdYXZOKsiV7xyzh7EBvYWLUeOacsqf7ERu93gnVyiOnNDUxqG6UUzcA/exec";
         let allData = [];
         let currentCity = "";
+        let currentProject = "";
 
         async function loadData() {
             try {
@@ -98,48 +123,50 @@
                 document.getElementById('loader').style.display = 'none';
                 document.getElementById('step1').classList.remove('hidden');
             } catch (e) { 
-                document.getElementById('loader').innerText = "⚠️ خطأ في الاتصال بالسيرفر."; 
+                document.getElementById('loader').innerText = "⚠️ خطأ في تحميل البيانات."; 
             }
         }
 
-        function goToStep2(city, subtitle) {
+        function goToStep2(city) {
             window.scrollTo(0,0);
             currentCity = city;
             document.getElementById('step1').classList.add('hidden');
             document.getElementById('step2').classList.remove('hidden');
             document.getElementById('cityTitle').innerText = city;
 
-            let projects = [];
-            if(city === 'المنصورة الجديدة') {
-                projects = ['جنة', 'سكن مصر', 'زاهية', 'إسكان ساحلي'];
-            } else if(city === 'دمياط الجديدة') {
-                projects = ['جنة', 'دار مصر'];
-            }
+            let projects = (city === 'المنصورة الجديدة') ? 
+                ['جنة', 'سكن مصر', 'زاهية', 'إسكان ساحلي'] : ['جنة', 'دار مصر'];
 
             let html = '';
             projects.forEach(p => {
-                html += `
-                <div class="card" onclick="showUnits('${p}')">
-                    <h3>${p}</h3>
-                    <p>استعراض أفضل الوحدات في ${p}</p>
-                </div>`;
+                html += `<div class="card" onclick="showUnits('${p}')"><h3>${p}</h3><p>استعرض عروض ${p}</p></div>`;
             });
             document.getElementById('projectButtons').innerHTML = html;
         }
 
         function showUnits(project) {
             window.scrollTo(0,0);
+            currentProject = project;
             document.getElementById('step2').classList.add('hidden');
             document.getElementById('step3').classList.remove('hidden');
-            document.getElementById('projectTitle').innerText = `مشروع ${project} - ${currentCity}`;
+            document.getElementById('projectTitle').innerText = `${project} - ${currentCity}`;
             
-            // الفلترة بناءً على المدينة (عمود 0) والمشروع (عمود 1)
             let filtered = allData.filter(row => row[0] == currentCity && row[1].includes(project));
-            
             let html = '';
+            
             const formatNum = (num) => (num === "" || isNaN(num)) ? "--" : Number(num).toLocaleString();
 
             filtered.forEach(row => {
+                // تجهيز نص الرسالة للواتساب
+                const message = encodeURIComponent(
+                    `السلام عليكم، أريد الاستفسار عن وحدة في الفيروز العقاري:\n\n` +
+                    `📍 المدينة: ${currentCity}\n` +
+                    `🏗️ المشروع: ${project}\n` +
+                    `🏢 عمارة: ${row[2]}\n` +
+                    `🔑 شقة: ${row[3]}\n` +
+                    `💰 الأوفر: ${formatNum(row[7])} ج.م`
+                );
+
                 html += `
                 <div class="apt-card">
                     <span class="tag">${row[5] || 'متاح'}</span>
@@ -152,9 +179,14 @@
                         <div class="price-item"><span>المدفوع:</span> <span class="highlight">${formatNum(row[6])} ج.م</span></div>
                         <div class="price-item"><span>الأوفر:</span> <span style="color:#ef5350; font-weight:bold">${formatNum(row[7])} ج.م</span></div>
                     </div>
+                    
+                    <a href="https://wa.me/201212229797?text=${message}" class="btn-inquire">
+                        <img src="https://img.icons8.com/material-outlined/24/ffffff/whatsapp.png" width="20">
+                        استفسار عن هذه الشقة
+                    </a>
                 </div>`;
             });
-            document.getElementById('apartmentList').innerHTML = html || "<h3 style='text-align:center; width:100%'>قريباً.. جاري تحديث وحدات هذا المشروع</h3>";
+            document.getElementById('apartmentList').innerHTML = html || "<h3 style='text-align:center; width:100%'>قريباً.. جاري التحديث</h3>";
         }
 
         function goBack(step) {
