@@ -1,109 +1,117 @@
 <!DOCTYPE html>
-<html dir="rtl" lang="ar">
+<html dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AL-FAYROUZ ESTATE | الفيروز للعقارات</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <title>الفيروز للتسويق العقاري</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <style>
-        :root { --gold: #D4AF37; --bg: #0a0a0a; --card: #161616; }
-        * { box-sizing: border-box; margin: 0; padding: 0; transition: 0.3s; }
-        body { font-family: 'Cairo', sans-serif; background: var(--bg); color: #fff; line-height: 1.6; }
+        :root { --primary: #006064; --secondary: #b59410; --bg-dark: #121212; --text-light: #eceff1; --glass: rgba(255, 255, 255, 0.05); }
+        body { font-family: 'Cairo', sans-serif; margin: 0; padding: 0; color: var(--text-light); background-color: var(--bg-dark); background-image: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.95)), url('https://images.unsplash.com/photo-1582407947304-fd86f028f716?q=80&w=1600'); background-attachment: fixed; background-size: cover; background-position: center; }
+        .header-bar { padding: 40px 20px; text-align: center; }
+        .company-name { font-family: 'Playfair Display', serif; font-size: 42px; font-weight: 700; color: white; margin: 0; text-shadow: 2px 2px 10px rgba(0,0,0,0.5); }
+        .company-subtitle { font-size: 18px; color: var(--secondary); margin-top: 10px; font-weight: 600; letter-spacing: 2px; }
 
-        nav { background: #000; padding: 15px; text-align: center; border-bottom: 2px solid var(--gold); position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
-        .logo { font-weight: 900; font-size: 1.6rem; letter-spacing: 1px; }
-        .logo span { color: var(--gold); }
+        /* الأزرار العائمة المطورة */
+        .floating-contact { position: fixed; right: 20px; bottom: 20px; display: flex; flex-direction: column; gap: 12px; z-index: 1000; }
+        .contact-circle { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: 0.3s; border: 1px solid rgba(255,255,255,0.1); }
+        .contact-circle:hover { transform: scale(1.15) rotate(5deg); }
+        .call-btn { background: var(--primary); }
+        .wa-btn { background: #25d366; }
+        .fb-btn { background: #1877F2; }
+        .ig-btn { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
+        .tk-btn { background: #000000; }
+        .contact-icon-img { width: 24px; height: 24px; }
 
-        .container { padding: 20px; max-width: 1200px; margin: auto; }
-        .hero { text-align: center; margin: 40px 0; }
-        .hero h1 { font-size: 2.2rem; color: var(--gold); margin-bottom: 10px; font-weight: 900; }
-        .hero p { color: #888; font-size: 1.1rem; }
-
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 25px; }
-
-        .card { background: var(--card); border-radius: 20px; overflow: hidden; border: 1px solid #222; display: flex; flex-direction: column; height: 100%; position: relative; }
-        .card:hover { transform: translateY(-10px); border-color: var(--gold); }
-
-        .img-wrapper { width: 100%; height: 240px; background: #222; position: relative; overflow: hidden; }
-        .card-img { width: 100%; height: 100%; object-fit: cover; }
-        .city-badge { position: absolute; top: 15px; right: 15px; background: var(--gold); color: #000; padding: 5px 15px; border-radius: 8px; font-weight: 700; font-size: 0.8rem; z-index: 2; }
-
-        .card-body { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
-        .price { font-size: 1.7rem; font-weight: 900; color: var(--gold); margin-bottom: 5px; }
-        .title { font-size: 1.25rem; font-weight: 700; margin-bottom: 15px; color: #eee; min-height: 3.2em; }
-
-        .specs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-        .spec-item { background: #222; padding: 10px; border-radius: 10px; font-size: 0.85rem; color: #bbb; border: 1px solid #333; text-align: center; }
-
-        .btn { display: block; width: 100%; padding: 15px; background: var(--gold); color: #000; text-align: center; text-decoration: none; border-radius: 12px; font-weight: 900; font-size: 1.1rem; margin-top: auto; }
-        .btn:hover { background: #fff; }
-
-        #status-msg { text-align: center; padding: 80px; color: var(--gold); font-size: 1.2rem; font-weight: 700; }
+        .container { max-width: 1200px; margin: auto; padding: 0 20px 100px 20px; }
+        .section-title { font-size: 24px; font-weight: 700; color: white; margin-bottom: 30px; text-align: center; border-bottom: 2px solid var(--secondary); display: inline-block; padding-bottom: 8px; }
+        .main-box { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
+        .card { background: var(--glass); backdrop-filter: blur(15px); border-radius: 20px; padding: 35px; cursor: pointer; transition: 0.4s; border: 1px solid rgba(255,255,255,0.1); text-align: center; }
+        .card:hover { transform: translateY(-8px); border-color: var(--secondary); box-shadow: 0 12px 30px rgba(0,0,0,0.5); }
+        .card h3 { font-size: 22px; color: white; margin: 0 0 10px 0; }
+        .card p { font-size: 14px; color: #b0bec5; margin: 0; }
+        .hidden { display: none; }
+        .btn-back { margin-top: 30px; padding: 10px 30px; background: none; color: var(--secondary); border: 2px solid var(--secondary); border-radius: 30px; cursor: pointer; font-weight: 700; transition: 0.3s; }
+        .btn-back:hover { background: var(--secondary); color: #121212; }
+        
+        .apt-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 20px; }
+        .apt-card { background: rgba(0,0,0,0.5); border-radius: 15px; padding: 25px; text-align: right; border-right: 5px solid var(--primary); transition: 0.3s; }
+        .tag { background: rgba(0, 96, 100, 0.3); color: #80deea; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: bold; }
+        .apt-title { font-size: 19px; color: white; margin: 12px 0; }
+        .price-row { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1); }
+        .price-tag { color: var(--secondary); font-size: 20px; font-weight: bold; }
     </style>
 </head>
 <body>
 
-<nav><div class="logo">AL-FAYROUZ <span>ESTATE</span></div></nav>
-
-<div class="container">
-    <div class="hero">
-        <h1>وحداتنا المختارة</h1>
-        <p>عقارات حصرية تحت إدارة علي الحمايدان</p>
+    <div class="floating-contact">
+        <a href="tel:+201212229797" class="contact-circle call-btn" title="اتصال مباشر"><img src="https://img.icons8.com/ios-filled/50/ffffff/phone.png" class="contact-icon-img"></a>
+        <a href="https://wa.me/201212229797" class="contact-circle wa-btn" title="واتساب"><img src="https://img.icons8.com/color/48/000000/whatsapp--v1.png" class="contact-icon-img"></a>
+        <a href="https://www.facebook.com/share/1DxP3MBFR1/" target="_blank" class="contact-circle fb-btn"><img src="https://img.icons8.com/ios-filled/50/ffffff/facebook-new.png" class="contact-icon-img"></a>
+        <a href="https://www.instagram.com/alfayrouzrealstate" target="_blank" class="contact-circle ig-btn"><img src="https://img.icons8.com/ios-filled/50/ffffff/instagram-new.png" class="contact-icon-img"></a>
+        <a href="https://www.tiktok.com/@relatystate1" target="_blank" class="contact-circle tk-btn"><img src="https://img.icons8.com/ios-filled/50/ffffff/tiktok.png" class="contact-icon-img"></a>
     </div>
-    <div id="status-msg">✨ جارٍ تجهيز العروض الفخمة...</div>
-    <div id="property-grid" class="grid"></div>
-</div>
 
-<script>
-    // الرابط اللي آخره /exec
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxiPcSexC05MJVeFohzNaNex4oDW0rVylIjAXSsV9BD1QP7v9Esg3xO8CtUh_yOOV6g/exec";
+    <div class="header-bar">
+        <h1 class="company-name">Al-Fayrouz Real Estate</h1>
+        <div class="company-subtitle">الفيروز للتسويق العقاري</div>
+    </div>
 
-    async function loadProperties() {
-        try {
-            const response = await fetch(SCRIPT_URL);
-            const data = await response.json();
-            // تصفية العناوين وأي صف ملوش مشروع
-            const cleanData = data.slice(1).filter(row => row[1]); 
-            displayData(cleanData);
-        } catch (error) {
-            document.getElementById('status-msg').innerHTML = "⚠️ خطأ في الاتصال.. تأكد من نشر الشيت بصلاحية Anyone.";
+    <div class="container">
+        <div id="step1">
+            <div style="text-align:center"><h2 class="section-title">اختر وجهتك الاستثمارية</h2></div>
+            <div class="main-box">
+                <div class="card" onclick="goToStep2('المنصورة الجديدة')"><h3>المنصورة الجديدة</h3><p>عاصمة الدلتا السياحية الجديدة</p></div>
+                <div class="card" onclick="goToStep2('دمياط الجديدة')"><h3>دمياط الجديدة</h3><p>الرفاهية والخدمات المتكاملة</p></div>
+            </div>
+        </div>
+
+        <div id="step2" class="hidden">
+            <div style="text-align:center"><h2 id="cityTitle" class="section-title"></h2></div>
+            <div id="projectButtons" class="main-box"></div>
+            <div style="text-align:center"><button class="btn-back" onclick="goBack(1)">العودة للمدن</button></div>
+        </div>
+
+        <div id="step3" class="hidden">
+            <div style="text-align:center"><h2 id="projectTitle" class="section-title"></h2></div>
+            <div id="apartmentList" class="apt-grid"></div>
+            <div style="text-align:center"><button class="btn-back" onclick="goBack(2)">العودة للمشروعات</button></div>
+        </div>
+    </div>
+
+    <script>
+        let allData = [];
+        let currentCity = "";
+        window.onload = function() { google.script.run.withSuccessHandler(data => { allData = data; }).getApartmentData(); };
+
+        function goToStep2(city) {
+            currentCity = city;
+            document.getElementById('step1').classList.add('hidden');
+            document.getElementById('step2').classList.remove('hidden');
+            document.getElementById('cityTitle').innerText = city;
+            let projects = (city === 'المنصورة الجديدة') ? [{n:'جنة', d:'إسكان فاخر'}, {n:'سكن مصر', d:'وحدات متميزة'}, {n:'محلات', d:'فرص تجارية'}] : [{n:'جنة', d:'حياة ملكية'}, {n:'دار مصر', d:'كمبوند متكامل'}, {n:'سكن مصر', d:'مواقع استراتيجية'}, {n:'محلات', d:'عائد مضمون'}];
+            let container = document.getElementById('projectButtons');
+            container.innerHTML = '';
+            projects.forEach(p => { container.innerHTML += `<div class="card" onclick="showUnits('${p.n}')"><h3>${p.n}</h3><p>${p.d}</p></div>`; });
         }
-    }
 
-    function displayData(list) {
-        document.getElementById('status-msg').style.display = 'none';
-        let html = "";
-        list.forEach(row => {
-            // حل مشكلة الـ NaN للسعر
-            let priceVal = row[7];
-            let finalPrice = (isNaN(priceVal) || priceVal === "") ? priceVal : Number(priceVal).toLocaleString() + " ج.م";
-            
-            // حل مشكلة الصورة
-            let imageLink = row[8] || 'https://via.placeholder.com/400x250/111/D4AF37?text=AL-FAYROUZ';
+        function showUnits(project) {
+            document.getElementById('step2').classList.add('hidden');
+            document.getElementById('step3').classList.remove('hidden');
+            document.getElementById('projectTitle').innerText = project + " - " + currentCity;
+            let list = document.getElementById('apartmentList');
+            let filtered = allData.filter(row => row[0] == currentCity && row[1] == project);
+            list.innerHTML = filtered.length <= 1 ? "<h3 style='color:white;text-align:center;width:100%'>لا توجد وحدات متاحة حالياً</h3>" : '';
+            for (let i = 1; i < filtered.length; i++) {
+                let row = filtered[i];
+                list.innerHTML += `<div class="apt-card"><span class="tag">${row[6]}</span><div class="apt-title">عمارة ${row[2]} - شقة ${row[3]}</div><p style="color:#b0bec5; font-size:13px"><b>الدور:</b> ${row[4]} | <b>المساحة:</b> ${row[5]} م</p><div class="price-row"><div class="price-tag">${row[7]} ج.م</div><div style="color:#ef5350;font-weight:600">الأوفر: ${row[8]}</div></div></div>`;
+            }
+        }
 
-            html += `
-            <div class="card">
-                <div class="img-wrapper">
-                    <div class="city-badge">${row[0] || 'عقار'}</div>
-                    <img src="${imageLink}" class="card-img" onerror="this.src='https://via.placeholder.com/400x250/111/D4AF37?text=صورة+قريباً'">
-                </div>
-                <div class="card-body">
-                    <span class="price">${finalPrice}</span>
-                    <h3 class="title">${row[1]} - عمارة ${row[2] || '--'}</h3>
-                    <div class="specs">
-                        <div class="spec-item">📏 ${row[5] || '0'} م²</div>
-                        <div class="spec-item">🧭 ${row[6] || 'بحري'}</div>
-                        <div class="spec-item">🏢 الدور ${row[4] || '--'}</div>
-                        <div class="spec-item">💎 ${row[3] || 'مميز'}</div>
-                    </div>
-                    <a href="https://wa.me/201212229797?text=استفسار عن وحدة: ${row[1]}" class="btn">تواصل عبر واتساب</a>
-                </div>
-            </div>`;
-        });
-        document.getElementById('property-grid').innerHTML = html;
-    }
-
-    loadProperties();
-</script>
+        function goBack(step) {
+            if (step === 1) { document.getElementById('step2').classList.add('hidden'); document.getElementById('step1').classList.remove('hidden'); }
+            else { document.getElementById('step3').classList.add('hidden'); document.getElementById('step2').classList.remove('hidden'); }
+        }
+    </script>
 </body>
 </html>
