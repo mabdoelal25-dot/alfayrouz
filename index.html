@@ -8,11 +8,12 @@
     <style>
         :root { --primary: #006064; --secondary: #b59410; --bg-dark: #121212; --text-light: #eceff1; --glass: rgba(255, 255, 255, 0.05); }
         body { font-family: 'Cairo', sans-serif; margin: 0; padding: 0; color: var(--text-light); background-color: var(--bg-dark); background-image: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.95)), url('https://images.unsplash.com/photo-1582407947304-fd86f028f716?q=80&w=1600'); background-attachment: fixed; background-size: cover; background-position: center; }
+        
         .header-bar { padding: 40px 20px; text-align: center; }
         .company-name { font-family: 'Playfair Display', serif; font-size: 42px; font-weight: 700; color: white; margin: 0; text-shadow: 2px 2px 10px rgba(0,0,0,0.5); }
         .company-subtitle { font-size: 18px; color: var(--secondary); margin-top: 10px; font-weight: 600; letter-spacing: 2px; }
 
-        /* الأزرار العائمة المطورة */
+        /* الأزرار العائمة */
         .floating-contact { position: fixed; right: 20px; bottom: 20px; display: flex; flex-direction: column; gap: 12px; z-index: 1000; }
         .contact-circle { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: 0.3s; border: 1px solid rgba(255,255,255,0.1); }
         .contact-circle:hover { transform: scale(1.15) rotate(5deg); }
@@ -30,6 +31,7 @@
         .card:hover { transform: translateY(-8px); border-color: var(--secondary); box-shadow: 0 12px 30px rgba(0,0,0,0.5); }
         .card h3 { font-size: 22px; color: white; margin: 0 0 10px 0; }
         .card p { font-size: 14px; color: #b0bec5; margin: 0; }
+        
         .hidden { display: none; }
         .btn-back { margin-top: 30px; padding: 10px 30px; background: none; color: var(--secondary); border: 2px solid var(--secondary); border-radius: 30px; cursor: pointer; font-weight: 700; transition: 0.3s; }
         .btn-back:hover { background: var(--secondary); color: #121212; }
@@ -40,13 +42,14 @@
         .apt-title { font-size: 19px; color: white; margin: 12px 0; }
         .price-row { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1); }
         .price-tag { color: var(--secondary); font-size: 20px; font-weight: bold; }
+        #loader { text-align: center; padding: 50px; color: var(--secondary); font-weight: bold; }
     </style>
 </head>
 <body>
 
     <div class="floating-contact">
-        <a href="tel:+201212229797" class="contact-circle call-btn" title="اتصال مباشر"><img src="https://img.icons8.com/ios-filled/50/ffffff/phone.png" class="contact-icon-img"></a>
-        <a href="https://wa.me/201212229797" class="contact-circle wa-btn" title="واتساب"><img src="https://img.icons8.com/color/48/000000/whatsapp--v1.png" class="contact-icon-img"></a>
+        <a href="tel:+201212229797" class="contact-circle call-btn"><img src="https://img.icons8.com/ios-filled/50/ffffff/phone.png" class="contact-icon-img"></a>
+        <a href="https://wa.me/201212229797" class="contact-circle wa-btn"><img src="https://img.icons8.com/color/48/000000/whatsapp--v1.png" class="contact-icon-img"></a>
         <a href="https://www.facebook.com/share/1DxP3MBFR1/" target="_blank" class="contact-circle fb-btn"><img src="https://img.icons8.com/ios-filled/50/ffffff/facebook-new.png" class="contact-icon-img"></a>
         <a href="https://www.instagram.com/alfayrouzrealstate" target="_blank" class="contact-circle ig-btn"><img src="https://img.icons8.com/ios-filled/50/ffffff/instagram-new.png" class="contact-icon-img"></a>
         <a href="https://www.tiktok.com/@relatystate1" target="_blank" class="contact-circle tk-btn"><img src="https://img.icons8.com/ios-filled/50/ffffff/tiktok.png" class="contact-icon-img"></a>
@@ -58,7 +61,9 @@
     </div>
 
     <div class="container">
-        <div id="step1">
+        <div id="loader">جاري جلب الوحدات المتاحة...</div>
+
+        <div id="step1" class="hidden">
             <div style="text-align:center"><h2 class="section-title">اختر وجهتك الاستثمارية</h2></div>
             <div class="main-box">
                 <div class="card" onclick="goToStep2('المنصورة الجديدة')"><h3>المنصورة الجديدة</h3><p>عاصمة الدلتا السياحية الجديدة</p></div>
@@ -80,38 +85,80 @@
     </div>
 
     <script>
+        // الرابط الجديد الخاص بك
+        const API_URL = "https://script.google.com/macros/s/AKfycbxVCQuj-Ep-hX-RoV5az62sRQFzl7ksZAamiEmkH9nqD-ST-KzdDez15farR31HqXsaeg/exec";
         let allData = [];
         let currentCity = "";
-        window.onload = function() { google.script.run.withSuccessHandler(data => { allData = data; }).getApartmentData(); };
+
+        async function loadInitialData() {
+            try {
+                const response = await fetch(API_URL);
+                allData = await response.json();
+                document.getElementById('loader').classList.add('hidden');
+                document.getElementById('step1').classList.remove('hidden');
+            } catch (error) {
+                document.getElementById('loader').innerText = "حدث خطأ في جلب البيانات.. يرجى التأكد من نشر الشيت.";
+            }
+        }
+        window.onload = loadInitialData;
 
         function goToStep2(city) {
             currentCity = city;
             document.getElementById('step1').classList.add('hidden');
             document.getElementById('step2').classList.remove('hidden');
             document.getElementById('cityTitle').innerText = city;
-            let projects = (city === 'المنصورة الجديدة') ? [{n:'جنة', d:'إسكان فاخر'}, {n:'سكن مصر', d:'وحدات متميزة'}, {n:'محلات', d:'فرص تجارية'}] : [{n:'جنة', d:'حياة ملكية'}, {n:'دار مصر', d:'كمبوند متكامل'}, {n:'سكن مصر', d:'مواقع استراتيجية'}, {n:'محلات', d:'عائد مضمون'}];
+            
+            // استخراج المشروعات الموجودة فعلياً في الشيت لهذه المدينة
+            let projects = [...new Set(allData.slice(1).filter(row => row[0] === city).map(row => row[1]))];
+            
             let container = document.getElementById('projectButtons');
             container.innerHTML = '';
-            projects.forEach(p => { container.innerHTML += `<div class="card" onclick="showUnits('${p.n}')"><h3>${p.n}</h3><p>${p.d}</p></div>`; });
+            
+            if(projects.length === 0) {
+                container.innerHTML = "<p style='text-align:center; width:100%'>لا توجد مشروعات حالياً في هذه المدينة</p>";
+            } else {
+                projects.forEach(p => { 
+                    container.innerHTML += `<div class="card" onclick="showUnits('${p}')"><h3>${p}</h3><p>عرض الوحدات المتاحة</p></div>`; 
+                });
+            }
         }
 
         function showUnits(project) {
             document.getElementById('step2').classList.add('hidden');
             document.getElementById('step3').classList.remove('hidden');
             document.getElementById('projectTitle').innerText = project + " - " + currentCity;
+            
             let list = document.getElementById('apartmentList');
             let filtered = allData.filter(row => row[0] == currentCity && row[1] == project);
-            list.innerHTML = filtered.length <= 1 ? "<h3 style='color:white;text-align:center;width:100%'>لا توجد وحدات متاحة حالياً</h3>" : '';
-            for (let i = 1; i < filtered.length; i++) {
-                let row = filtered[i];
-                list.innerHTML += `<div class="apt-card"><span class="tag">${row[6]}</span><div class="apt-title">عمارة ${row[2]} - شقة ${row[3]}</div><p style="color:#b0bec5; font-size:13px"><b>الدور:</b> ${row[4]} | <b>المساحة:</b> ${row[5]} م</p><div class="price-row"><div class="price-tag">${row[7]} ج.م</div><div style="color:#ef5350;font-weight:600">الأوفر: ${row[8]}</div></div></div>`;
-            }
+            
+            list.innerHTML = '';
+            filtered.forEach(row => {
+                let price = isNaN(row[7]) ? row[7] : Number(row[7]).toLocaleString();
+                list.innerHTML += `
+                    <div class="apt-card">
+                        <span class="tag">${row[6] || 'وحدة'}</span>
+                        <div class="apt-title">عمارة ${row[2]} - شقة ${row[3]}</div>
+                        <p style="color:#b0bec5; font-size:13px">
+                            <b>الدور:</b> ${row[4]} | <b>المساحة:</b> ${row[5]} م
+                        </p>
+                        <div class="price-row">
+                            <div class="price-tag">${price} ج.م</div>
+                            <div style="color:#ef5350;font-weight:600">الأوفر: ${row[8] || '0'}</div>
+                        </div>
+                    </div>`;
+            });
         }
 
         function goBack(step) {
-            if (step === 1) { document.getElementById('step2').classList.add('hidden'); document.getElementById('step1').classList.remove('hidden'); }
-            else { document.getElementById('step3').classList.add('hidden'); document.getElementById('step2').classList.remove('hidden'); }
+            if (step === 1) { 
+                document.getElementById('step2').classList.add('hidden'); 
+                document.getElementById('step1').classList.remove('hidden'); 
+            } else { 
+                document.getElementById('step3').classList.add('hidden'); 
+                document.getElementById('step2').classList.remove('hidden'); 
+            }
         }
     </script>
 </body>
 </html>
+
