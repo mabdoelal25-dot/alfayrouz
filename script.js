@@ -12,23 +12,25 @@ async function getSheetsData() {
             const col = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/); 
             if(col.length < 10) return; 
 
-            const city = col[0].trim();
-            const project = col[1].trim();
-            const details = col[9].trim();
-            const image = col[11].trim(); // رابط الصورة
+            const city = col[0].trim(); // العمود A
+            const project = col[1].trim(); // العمود B
+            const details = col[9].trim(); // العمود J
+            const image = col[11].trim(); // العمود L (رابط الصورة)
 
             gallery.innerHTML += `
                 <div class="property-card" data-city="${city}">
                     <img src="${image}" onerror="this.src='https://via.placeholder.com/300x200?text=AL-FAYROUZ'">
                     <div class="info">
                         <h3>${project}</h3>
-                        <p>${city}</p>
-                        <p>${details}</p>
-                        <button class="wa-btn" onclick="window.open('https://wa.me/2010XXXXXXXX')">واتساب</button>
+                        <p class="city-name">${city}</p>
+                        <p class="details">${details}</p>
+                        <button class="wa-btn" onclick="window.open('https://wa.me/2010XXXXXXXX')">تواصل واتساب</button>
                     </div>
                 </div>`;
         });
-    } catch (e) { console.log("خطأ في البيانات"); }
+    } catch (e) { 
+        console.error("خطأ في تحميل البيانات:", e); 
+    }
 }
 
 function filterCity(cityName) {
@@ -37,4 +39,5 @@ function filterCity(cityName) {
         card.style.display = (card.getAttribute('data-city') === cityName) ? "block" : "none";
     });
 }
+
 window.onload = getSheetsData;
