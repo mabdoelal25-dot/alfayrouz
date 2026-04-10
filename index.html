@@ -11,6 +11,7 @@
         html, body { overflow-x: hidden; width: 100%; height: 100%; margin: 0; padding: 0; touch-action: manipulation; }
         body { font-family: 'Cairo', sans-serif; color: #f0f0f0; background: var(--bg-dark); }
 
+        /* شاشة التحميل */
         #loadingScreen { position: fixed; top:0; left:0; width:100%; height:100%; background: var(--bg-dark); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .loader-ball { width: 50px; height: 50px; background: var(--primary); border-radius: 50%; animation: pulse-glow 0.8s infinite alternate; box-shadow: 0 0 20px var(--primary); }
         @keyframes pulse-glow { from { transform: scale(0.8); opacity: 0.6; } to { transform: scale(1.2); opacity: 1; box-shadow: 0 0 40px var(--primary); } }
@@ -30,6 +31,7 @@
         .project-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .card-project { background: var(--card-bg); border-radius: 15px; padding: 25px 10px; text-align: center; border: 1px solid rgba(255,255,255,0.05); cursor: pointer; }
 
+        /* الكارت الأساسي */
         .apt-card { background: #1c2226; border-radius: 18px; margin-bottom: 20px; border-right: 5px solid var(--secondary); overflow: hidden; position: relative; transition: 0.3s; }
         .img-container { width: 100%; height: 200px; background: #000; position: relative; }
         .img-container img { width: 100%; height: 100%; object-fit: cover; }
@@ -40,21 +42,25 @@
         .price-box { display: flex; justify-content: space-between; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.05); }
         .price-val { font-size: 16px; font-weight: 900; color: var(--secondary); }
 
-        /* ستايل تم البيع الجديد "الشيك" */
-        .is-sold { opacity: 0.7; border: 1px solid rgba(197, 160, 18, 0.2); }
-        .is-sold .price-val { color: #888; }
-        .sold-tag { 
-            position: absolute; top: 12px; right: 12px; 
-            background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px);
-            padding: 5px 12px; border-radius: 8px; border: 1px solid var(--secondary);
-            display: flex; align-items: center; gap: 6px; z-index: 10;
+        /* ستايل تم البيع الجديد - شريط أحمر */
+        .is-sold { 
+            opacity: 0.7; 
+            border-right: 6px solid var(--sold) !important; /* الشريط الأحمر في الجنب */
+            box-shadow: inset 0 0 15px rgba(239, 83, 80, 0.1); /* تظليل أحمر خفيف */
         }
-        .sold-tag span { color: var(--secondary); font-size: 12px; font-weight: 900; }
-        .sold-check { width: 14px; height: 14px; fill: var(--secondary); }
-        .sold-footer { 
+        .is-sold .price-val { color: #888; }
+        .sold-label-top { 
+            position: absolute; top: 12px; left: 12px; 
+            background: var(--sold); color: #fff;
+            padding: 4px 12px; border-radius: 6px; 
+            font-size: 11px; font-weight: 900; z-index: 10;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        .sold-msg { 
             margin-top: 15px; padding: 10px; text-align: center;
-            background: rgba(197, 160, 18, 0.05); border-radius: 10px;
-            color: var(--secondary); font-weight: 800; font-size: 13px;
+            background: rgba(239, 83, 80, 0.1); border-radius: 10px;
+            color: var(--sold); font-weight: 900; font-size: 13px;
+            border: 1px solid rgba(239, 83, 80, 0.2);
         }
 
         .float-call { position: fixed; bottom: 20px; left: 15px; background: #1c2226; border: 1.5px solid var(--secondary); color: #fff; display: flex; align-items: center; gap: 8px; padding: 8px 15px; border-radius: 50px; text-decoration: none; box-shadow: 0 5px 15px rgba(0,0,0,0.4); z-index: 1000; font-weight: 800; font-size: 13px; }
@@ -122,7 +128,7 @@
                 const d = await r.json();
                 allData = d.slice(1);
                 document.getElementById('loadingScreen').style.display = 'none';
-            } catch(e) { console.error("Error"); }
+            } catch(e) { console.error("Error fetching data"); }
         }
 
         function goToStep2(c) {
@@ -149,24 +155,21 @@
             let availableCount = filtered.filter(r => !(r[11]||"").toString().includes("تم البيع")).length;
             counter.innerText = `متاح حالياً ${availableCount} وحدة في ${kw}`;
 
+            // المتاح أولاً ثم المباع
             filtered.sort((a, b) => ((a[11]||"").includes("تم البيع") ? 1 : 0) - ((b[11]||"").includes("تم البيع") ? 1 : 0));
 
             let h = '';
             filtered.forEach(r => {
                 let isSold = (r[11]||"").toString().includes("تم البيع");
                 let img = r[12] ? (r[12].includes('id=') ? `https://drive.google.com/thumbnail?sz=w1000&id=${r[12].split('id=')[1].split('&')[0]}` : r[12]) : "";
-                let isFinished = r[10] === "خالصة";
+                let isFinished = (r[10]||"").toString().trim() === "خالصة";
 
                 h += `<div class="apt-card ${isSold ? 'is-sold' : ''}">
-                    ${isSold ? `
-                    <div class="sold-tag">
-                        <svg class="sold-check" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
-                        <span>تم البيع</span>
-                    </div>` : ''}
+                    ${isSold ? `<div class="sold-label-top">تم البيع</div>` : ''}
                     ${img ? `<div class="img-container"><img src="${img}" loading="lazy"></div>` : ''}
                     <div class="apt-content">
                         <div class="apt-title">عمارة ${r[2]} • شقة ${r[3]}</div>
-                        <div style="font-size:12px; color:#aaa; margin-bottom:10px;">${r[4]} | ${r[5]}</div>
+                        <div style="font-size:12px; color:#aaa; margin-bottom:10px;">📍 ${r[4]} | ${r[5]}</div>
                         <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; font-size:12px; margin-bottom:10px;">
                             <div>📏 ${r[13] || '--'} م</div>
                             <div>🕒 ${isFinished ? 'خالصة' : (r[9]||'--') + ' سنوات'}</div>
@@ -176,7 +179,7 @@
                             <div><small>الأوفر:</small><br><span class="price-val" style="color:#ef5350">${r[7]||'--'}</span></div>
                         </div>
                         ${isSold ? `
-                        <div class="sold-footer">تم البيع بواسطة الفيروز العقارية</div>
+                        <div class="sold-msg">هذه الوحدة غير متاحة حالياً (تم البيع)</div>
                         ` : `<a href="https://wa.me/201212229797" class="btn-wa">تواصل واتساب</a>`}
                     </div>
                 </div>`;
