@@ -6,57 +6,60 @@
     <title>Al-Fayrouz Real Estate</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;800;900&family=Montserrat:wght@900&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #00838f; --secondary: #c5a012; --bg-dark: #0f1214; --card-bg: #1c2226; --sold: #ef5350; --available: #2ecc71; }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        :root { --primary: #00838f; --secondary: #c5a012; --bg-dark: #0f1214; --card-bg: #1c2226; --sold: #ef5350; --available: #39FF14; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
         html, body { overflow-x: hidden; width: 100%; height: 100%; margin: 0; padding: 0; touch-action: manipulation; }
         body { font-family: 'Cairo', sans-serif; color: #f0f0f0; background: var(--bg-dark); }
 
         /* شاشة التحميل */
-        #loadingScreen { position: fixed; top:0; left:0; width:100%; height:100%; background: var(--bg-dark); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .loader-logo { font-family: 'Montserrat'; font-size: 30px; font-weight: 900; color: var(--secondary); animation: pulse-text 1.5s infinite ease-in-out; }
-        @keyframes pulse-text { 0%, 100% { opacity: 0.3; transform: scale(0.95); } 50% { opacity: 1; transform: scale(1.05); } }
+        #loadingScreen { position: fixed; inset: 0; background: var(--bg-dark); z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .loader-logo { font-family: 'Montserrat'; font-size: 32px; font-weight: 900; color: var(--secondary); animation: pulse-text 1.2s infinite ease-in-out; }
+        @keyframes pulse-text { 0%, 100% { opacity: 0.4; transform: scale(0.9); } 50% { opacity: 1; transform: scale(1.1); } }
 
         .header-bar { padding: 40px 10px 20px; text-align: center; }
-        .company-name { font-family: 'Montserrat', sans-serif; font-size: 36px; font-weight: 900; color: #fff; margin: 0; text-transform: uppercase; }
+        .company-name { font-family: 'Montserrat', sans-serif; font-size: 38px; font-weight: 900; color: #fff; margin: 0; text-transform: uppercase; }
         .company-subtitle { font-size: 14px; color: var(--secondary); font-weight: 800; margin-top: 5px; }
 
         .container { width: 100%; max-width: 450px; margin: auto; padding: 15px; }
         .section-title { font-size: 22px; color: #fff; font-weight: 900; text-align: center; margin-bottom: 25px; }
 
         .card-city { background: linear-gradient(135deg, #1c2226 0%, #252d33 100%); border-radius: 20px; padding: 40px 20px; text-align: center; border: 2px solid rgba(197, 160, 18, 0.3); cursor: pointer; margin-bottom: 15px; }
-        .card-city h3 { font-size: 30px; font-weight: 900; color: var(--secondary); margin: 0 0 8px 0; }
+        .card-city h3 { font-size: 32px; font-weight: 900; color: var(--secondary); margin: 0; }
 
         .project-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .card-project { background: var(--card-bg); border-radius: 15px; padding: 25px 10px; text-align: center; border: 1px solid rgba(255,255,255,0.05); cursor: pointer; }
+        .card-project { background: var(--card-bg); border-radius: 15px; padding: 25px 10px; text-align: center; border: 1px solid rgba(255,255,255,0.05); cursor: pointer; font-weight: 900; }
 
-        .apt-card { background: #1c2226; border-radius: 18px; margin-bottom: 20px; overflow: hidden; position: relative; border-right: 6px solid transparent; }
-        .is-available { border-right-color: var(--available); } 
-        .is-sold { border-right-color: var(--sold); opacity: 0.6; } 
+        .apt-card { background: #1c2226; border-radius: 22px; margin-bottom: 25px; overflow: hidden; position: relative; border-right: 8px solid transparent; transition: 0.3s; }
+        .is-available { border-right-color: var(--available); box-shadow: 0 10px 30px rgba(0,0,0,0.3); } 
+        .is-sold { border-right-color: var(--sold); opacity: 0.5; filter: grayscale(0.5); } 
         
-        .img-container { width: 100%; height: 200px; background: #000; }
+        .img-container { width: 100%; height: 220px; background: #000; overflow: hidden; }
         .img-container img { width: 100%; height: 100%; object-fit: cover; }
-        .apt-content { padding: 15px; }
-        .apt-title { font-size: 19px; font-weight: 900; color: #fff; }
-        .units-counter { background: rgba(197, 160, 18, 0.1); color: var(--secondary); text-align: center; padding: 10px; border-radius: 10px; margin-bottom: 15px; font-size: 14px; font-weight: 900; border: 1px dashed var(--secondary); }
+        .apt-content { padding: 20px; }
+        .apt-title { font-size: 20px; font-weight: 900; color: #fff; margin-bottom: 8px; }
+        .units-counter { background: rgba(197, 160, 18, 0.1); color: var(--secondary); text-align: center; padding: 12px; border-radius: 12px; margin-bottom: 20px; font-size: 15px; font-weight: 900; border: 1px dashed var(--secondary); }
 
         .price-box { display: flex; justify-content: space-between; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.05); }
-        .price-val { font-size: 16px; font-weight: 900; color: var(--secondary); }
+        .price-val { font-size: 17px; font-weight: 900; color: var(--secondary); }
 
-        /* زر المعاينة الجديد - تصميم فخم */
-        .btn-preview { 
-            background: linear-gradient(to left, #2ecc71, #27ae60);
-            color: #fff; text-align: center; padding: 14px; 
-            border-radius: 12px; cursor: pointer !important; font-weight: 900; margin-top: 15px; 
+        /* زر المعاينة النيون الجديد */
+        .btn-preview-neon { 
+            background: var(--available); 
+            color: #000; text-align: center; padding: 16px; 
+            border-radius: 15px; cursor: pointer !important; font-weight: 900; margin-top: 15px; 
             display: flex; align-items: center; justify-content: center; gap: 10px;
-            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
-            border: none; width: 100%;
+            box-shadow: 0 5px 20px rgba(57, 255, 20, 0.4);
+            border: none; width: 100%; font-size: 16px; transition: 0.2s;
         }
+        .btn-preview-neon:active { transform: scale(0.98); opacity: 0.8; }
 
-        /* نافذة الخيارات */
-        .contact-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); backdrop-filter: blur(10px); z-index: 10000; display: none; align-items: center; justify-content: center; padding: 20px; }
-        .modal-content { background: #1c2226; width: 100%; max-width: 320px; border-radius: 25px; padding: 30px; border: 1px solid var(--secondary); text-align: center; position: relative; }
-        .modal-btn { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 16px; border-radius: 15px; text-decoration: none; font-weight: 900; margin-bottom: 12px; color: #fff; font-size: 16px; }
-        .btn-call { background: var(--primary); }
+        /* نافذة التواصل - تعديل شامل */
+        .contact-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.92); backdrop-filter: blur(10px); z-index: 999999; display: none; align-items: center; justify-content: center; padding: 20px; }
+        .modal-content { background: #1c2226; width: 100%; max-width: 340px; border-radius: 30px; padding: 35px; border: 2px solid var(--available); text-align: center; animation: slideUp 0.3s ease-out; }
+        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        .modal-btn { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 18px; border-radius: 18px; text-decoration: none; font-weight: 900; margin-bottom: 15px; color: #fff; font-size: 17px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .btn-call { background: #007bff; }
         .btn-whatsapp { background: #25d366; }
 
         .hidden { display: none !important; }
@@ -66,41 +69,42 @@
 
     <div id="loadingScreen">
         <div class="loader-logo">AL-FAYROUZ</div>
+        <p style="color:#666; font-size:13px; margin-top:15px; font-weight:700;">جاري تحميل أحدث البيانات...</p>
     </div>
 
     <div class="header-bar">
         <h1 class="company-name">Al-Fayrouz</h1>
-        <div class="company-subtitle">الفيروز للعقارات</div>
+        <div class="company-subtitle">الفيروز للعقارات - الفخامة والتفرد</div>
     </div>
 
     <div id="contactModal" class="contact-modal" onclick="closeModal()">
         <div class="modal-content" onclick="event.stopPropagation()">
-            <h3 style="margin:0 0 10px 0; color:var(--secondary);">طلب معاينة</h3>
-            <p style="font-size:13px; color:#aaa; margin-bottom:25px;">اختر طريقة التواصل المناسبة</p>
-            <a id="modalCall" href="#" class="modal-btn btn-call">📞 اتصال هاتفي</a>
-            <a id="modalWA" href="#" class="modal-btn btn-whatsapp">💬 واتساب</a>
-            <button onclick="closeModal()" style="background:none; border:none; color:#777; cursor:pointer; margin-top:10px; font-weight:bold; font-family:'Cairo';">إغلاق</button>
+            <h2 style="margin:0 0 10px 0; color:var(--available); font-weight:900;">تأكيد المعاينة</h2>
+            <p style="font-size:14px; color:#ccc; margin-bottom:30px;">برجاء اختيار وسيلة التواصل:</p>
+            <a id="modalCall" href="#" class="modal-btn btn-call">📞 اتصل الآن</a>
+            <a id="modalWA" href="#" class="modal-btn btn-whatsapp">💬 واتساب الوحدة</a>
+            <button onclick="closeModal()" style="background:none; border:none; color:#777; cursor:pointer; margin-top:15px; font-weight:900; font-family:'Cairo'; font-size:15px;">تجاهل</button>
         </div>
     </div>
 
     <div class="container">
         <div id="step1">
-            <h2 class="section-title">اختر وجهتك العقارية</h2>
-            <div class="card-city" onclick="goToStep2('المنصورة الجديدة')"><h3>المنصورة الجديدة</h3><p>وجهة الفخامة الساحلية</p></div>
-            <div class="card-city" onclick="goToStep2('دمياط الجديدة')"><h3>دمياط الجديدة</h3><p>الهدوء والسكن الراقي</p></div>
+            <h2 class="section-title">اختر المدينة</h2>
+            <div class="card-city" onclick="goToStep2('المنصورة الجديدة')"><h3>المنصورة الجديدة</h3></div>
+            <div class="card-city" onclick="goToStep2('دمياط الجديدة')"><h3>دمياط الجديدة</h3></div>
         </div>
 
         <div id="step2" class="hidden">
-            <div style="display:flex; align-items:center; margin-bottom:20px;">
-                <button onclick="goBack(1)" style="background:#1c2226; border:1px solid #444; color:#fff; padding:8px 15px; border-radius:10px; cursor:pointer;">← رجوع</button>
+            <div style="display:flex; align-items:center; margin-bottom:25px;">
+                <button onclick="goBack(1)" style="background:#1c2226; border:1.5px solid #444; color:#fff; padding:10px 20px; border-radius:15px; font-weight:900;">رجوع</button>
                 <h2 id="cityTitle" class="section-title" style="flex-grow:1; margin:0;"></h2>
             </div>
             <div id="projectButtons" class="project-grid"></div>
         </div>
 
         <div id="step3" class="hidden">
-            <div style="display:flex; align-items:center; margin-bottom:20px;">
-                <button onclick="goBack(2)" style="background:#1c2226; border:1px solid #444; color:#fff; padding:8px 15px; border-radius:10px; cursor:pointer;">← رجوع</button>
+            <div style="display:flex; align-items:center; margin-bottom:25px;">
+                <button onclick="goBack(2)" style="background:#1c2226; border:1.5px solid #444; color:#fff; padding:10px 20px; border-radius:15px; font-weight:900;">رجوع</button>
                 <h2 id="projectTitle" class="section-title" style="flex-grow:1; margin:0;"></h2>
             </div>
             <div id="unitCounter" class="units-counter"></div>
@@ -114,13 +118,12 @@
 
         async function fetchD() {
             try {
-                const r = await fetch(API_URL);
-                const d = await r.json();
-                allData = d.slice(1);
+                const response = await fetch(API_URL + "?v=" + Math.random());
+                const data = await response.json();
+                allData = data.slice(1);
                 document.getElementById('loadingScreen').style.display = 'none';
             } catch(e) { 
-                console.error("Error"); 
-                document.getElementById('loadingScreen').style.display = 'none';
+                document.getElementById('loadingScreen').innerHTML = '<p style="color:white">عذراً، حدث خطأ في الاتصال. جرب مرة أخرى</p>';
             }
         }
 
@@ -130,14 +133,14 @@
             document.getElementById('cityTitle').innerText = c;
             let projects = (c === 'المنصورة الجديدة') ? ['جنة', 'سكن مصر', 'زاهية', 'إسكان ساحلي'] : ['جنة', 'سكن مصر', 'دار مصر'];
             let html = '';
-            projects.forEach(p => html += `<div class="card-project" onclick="showU('${p}')"><h3>${p}</h3></div>`);
+            projects.forEach(p => html += `<div class="card-project" onclick="showU('${p}')">${p}</div>`);
             document.getElementById('projectButtons').innerHTML = html;
         }
 
         function showU(kw) { switchStep('step3'); document.getElementById('projectTitle').innerText = kw; render(kw); }
 
-        // دالة فتح النافذة (تم التأكد من عملها)
         function triggerContact(phone, message) {
+            console.log("Contact Triggered"); // للتأكد في الـ Console
             document.getElementById('modalCall').href = "tel:" + phone;
             document.getElementById('modalWA').href = "https://wa.me/" + phone + "?text=" + encodeURIComponent(message);
             document.getElementById('contactModal').style.display = 'flex';
@@ -150,32 +153,32 @@
             const counter = document.getElementById('unitCounter');
             let filtered = allData.filter(r => (r[0]||"").toString().trim() === window.curCity && (r[1]||"").toString().includes(kw));
             let available = filtered.filter(r => !(r[11]||"").toString().includes("تم البيع")).length;
+            
             counter.innerText = `متاح حالياً ${available} وحدة في ${kw}`;
-
             filtered.sort((a, b) => ((a[11]||"").includes("تم البيع") ? 1 : 0) - ((b[11]||"").includes("تم البيع") ? 1 : 0));
 
             let h = '';
             filtered.forEach(r => {
                 let sold = (r[11]||"").toString().includes("تم البيع");
                 let img = r[12] ? (r[12].includes('id=') ? `https://drive.google.com/thumbnail?sz=1000&id=${r[12].split('id=')[1].split('&')[0]}` : r[12]) : "";
-                let detailsMsg = `أهلاً الفيروز، أرغب في معاينة الوحدة:\n- مشروع: ${r[1]}\n- عمارة: ${r[2]}\n- شقة: ${r[3]}`;
+                let msg = `أهلاً، أرغب في معاينة هذه الوحدة:\n📌 المدينة: ${window.curCity}\n🏗️ مشروع: ${r[1]}\n🏢 عمارة: ${r[2]} | شقة: ${r[3]}`;
 
                 h += `<div class="apt-card ${sold ? 'is-sold' : 'is-available'}">
                     ${img ? `<div class="img-container"><img src="${img}" loading="lazy"></div>` : ''}
                     <div class="apt-content">
                         <div class="apt-title">عمارة ${r[2]} • شقة ${r[3]}</div>
-                        <div style="font-size:12px; color:#aaa; margin-bottom:12px;">${r[4]} | ${r[5]}</div>
-                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; font-size:12px; margin-bottom:15px; font-weight:700;">
-                            <div>📏 ${r[13] || '--'} م</div>
-                            <div>🕒 ${r[10] === "خالصة" ? 'خالصة' : (r[9]||'--') + ' سنوات'}</div>
+                        <div style="font-size:13px; color:#888; margin-bottom:12px; font-weight:700;">${r[4]} | ${r[5]}</div>
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; font-size:13px; margin-bottom:15px; font-weight:800;">
+                            <div>📏 ${r[13] || '--'} متر</div>
+                            <div>🕒 ${r[10] === "خالصة" ? 'كاش (خالصة)' : (r[9]||'--') + ' سنوات'}</div>
                         </div>
                         <div class="price-box">
                             <div><small>المدفوع</small><br><span class="price-val">${r[6]||'--'}</span></div>
                             <div><small>الأوفر</small><br><span class="price-val" style="color:#ef5350">${r[7]||'--'}</span></div>
                         </div>
-                        ${sold ? `<div style="text-align:center; padding:10px; color:var(--sold); font-weight:900;">تم البيع</div>` : 
-                        `<button class="btn-preview" onclick="triggerContact('201212229797', '${detailsMsg}')">
-                            <span>👁️ طلب معاينة للوحدة</span>
+                        ${sold ? `<div style="text-align:center; padding:15px; color:var(--sold); font-weight:900; font-size:18px;">تـم البيـع</div>` : 
+                        `<button class="btn-preview-neon" onclick="triggerContact('201212229797', '${msg}')">
+                            طلب معاينة للوحدة
                         </button>`}
                     </div>
                 </div>`;
@@ -186,7 +189,7 @@
         function switchStep(id) {
             ['step1','step2','step3'].forEach(s => document.getElementById(s).classList.add('hidden'));
             document.getElementById(id).classList.remove('hidden');
-            window.scrollTo(0,0);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
         function goBack(s) { switchStep('step' + s); }
         window.onload = fetchD;
