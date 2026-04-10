@@ -11,11 +11,21 @@
         html, body { overflow-x: hidden; width: 100%; height: 100%; margin: 0; padding: 0; touch-action: manipulation; }
         body { font-family: 'Cairo', sans-serif; color: #f0f0f0; background: var(--bg-dark); }
 
-        /* شاشة التحميل */
-        #loadingScreen { position: fixed; top:0; left:0; width:100%; height:100%; background: var(--bg-dark); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .loader-ball { width: 50px; height: 50px; background: var(--primary); border-radius: 50%; animation: pulse-glow 0.8s infinite alternate; box-shadow: 0 0 20px var(--primary); }
-        @keyframes pulse-glow { from { transform: scale(0.8); opacity: 0.6; } to { transform: scale(1.2); opacity: 1; box-shadow: 0 0 40px var(--primary); } }
-        .loader-text { margin-top: 20px; font-family: 'Montserrat'; font-weight: 900; color: var(--secondary); letter-spacing: 2px; }
+        /* شاشة التحميل الجديدة - فخامة */
+        #loadingScreen { 
+            position: fixed; top:0; left:0; width:100%; height:100%; 
+            background: var(--bg-dark); z-index: 9999; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+        }
+        .loader-logo { 
+            font-family: 'Montserrat'; font-size: 30px; font-weight: 900; color: var(--secondary);
+            text-shadow: 0 0 20px rgba(197, 160, 18, 0.5);
+            animation: pulse-text 1.5s infinite ease-in-out;
+        }
+        @keyframes pulse-text { 0%, 100% { opacity: 0.3; transform: scale(0.95); } 50% { opacity: 1; transform: scale(1.05); } }
+        .loader-bar { width: 150px; height: 3px; background: rgba(255,255,255,0.05); margin-top: 20px; border-radius: 10px; overflow: hidden; }
+        .loader-progress { width: 40%; height: 100%; background: var(--secondary); animation: slide 1.2s infinite ease-in-out; }
+        @keyframes slide { from { transform: translateX(150px); } to { transform: translateX(-150px); } }
 
         .header-bar { padding: 40px 10px 20px; text-align: center; }
         .company-name { font-family: 'Montserrat', sans-serif; font-size: 36px; font-weight: 900; color: #fff; margin: 0; text-transform: uppercase; }
@@ -31,12 +41,12 @@
         .project-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .card-project { background: var(--card-bg); border-radius: 15px; padding: 25px 10px; text-align: center; border: 1px solid rgba(255,255,255,0.05); cursor: pointer; }
 
-        /* الكارت الأساسي */
-        .apt-card { background: #1c2226; border-radius: 18px; margin-bottom: 20px; overflow: hidden; position: relative; transition: 0.3s; }
-        .is-available { border-right: 6px solid var(--available); } /* الشريط الأخضر للمتاح */
-        .is-sold { border-right: 6px solid var(--sold); opacity: 0.6; pointer-events: none; } /* الشريط الأحمر للمباع */
+        .apt-card { background: #1c2226; border-radius: 18px; margin-bottom: 20px; overflow: hidden; position: relative; }
+        /* الشريط الجانبي - متاح (أخضر) / مباع (أحمر) */
+        .is-available { border-right: 6px solid var(--available); } 
+        .is-sold { border-right: 6px solid var(--sold); opacity: 0.6; } 
         
-        .img-container { width: 100%; height: 200px; background: #000; position: relative; }
+        .img-container { width: 100%; height: 200px; background: #000; }
         .img-container img { width: 100%; height: 100%; object-fit: cover; }
         .apt-content { padding: 15px; }
         .apt-title { font-size: 19px; font-weight: 900; color: #fff; margin-bottom: 5px; }
@@ -45,27 +55,16 @@
         .price-box { display: flex; justify-content: space-between; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.05); }
         .price-val { font-size: 16px; font-weight: 900; color: var(--secondary); }
 
-        /* أزرار التواصل الجديدة */
         .btn-preview { 
             background: var(--available); color: #fff; text-align: center; padding: 14px; 
             border-radius: 12px; cursor: pointer; font-weight: 900; margin-top: 15px; 
             display: flex; align-items: center; justify-content: center; gap: 8px;
         }
 
-        /* نافذة خيارات التواصل */
-        .contact-modal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8); backdrop-filter: blur(5px);
-            z-index: 2000; display: none; align-items: center; justify-content: center; padding: 20px;
-        }
-        .modal-content {
-            background: #1c2226; width: 100%; max-width: 320px; 
-            border-radius: 20px; padding: 25px; border: 1px solid var(--secondary); text-align: center;
-        }
-        .modal-btn {
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-            padding: 15px; border-radius: 12px; text-decoration: none; font-weight: 900; margin-bottom: 12px; color: #fff;
-        }
+        /* نافذة الخيارات */
+        .contact-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 2000; display: none; align-items: center; justify-content: center; padding: 20px; }
+        .modal-content { background: #1c2226; width: 100%; max-width: 320px; border-radius: 25px; padding: 30px; border: 1px solid var(--secondary); text-align: center; }
+        .modal-btn { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 16px; border-radius: 15px; text-decoration: none; font-weight: 900; margin-bottom: 12px; color: #fff; font-size: 16px; }
         .btn-call { background: var(--primary); }
         .btn-whatsapp { background: #25d366; }
 
@@ -75,8 +74,9 @@
 <body>
 
     <div id="loadingScreen">
-        <div class="loader-ball"></div>
-        <div class="loader-text">AL-FAYROUZ</div>
+        <div class="loader-logo">AL-FAYROUZ</div>
+        <div class="loader-bar"><div class="loader-progress"></div></div>
+        <p style="color:#555; font-size:12px; margin-top:10px;">جاري تحديث البيانات...</p>
     </div>
 
     <div class="header-bar">
@@ -86,14 +86,124 @@
 
     <div id="contactModal" class="contact-modal" onclick="closeModal()">
         <div class="modal-content" onclick="event.stopPropagation()">
-            <h3 style="margin-top:0; color:var(--secondary);">تواصل مع المعاين</h3>
-            <p style="font-size:13px; color:#aaa; margin-bottom:20px;">اختر وسيلة التواصل المناسبة لك</p>
+            <h3 style="margin:0 0 10px 0; color:var(--secondary);">معاينة الوحدة</h3>
+            <p style="font-size:13px; color:#aaa; margin-bottom:25px;">اختر وسيلة التواصل التي تفضلها</p>
             <a id="modalCall" href="#" class="modal-btn btn-call">📞 اتصال هاتفي</a>
-            <a id="modalWA" href="#" class="modal-btn btn-whatsapp">💬 واتساب</a>
-            <button onclick="closeModal()" style="background:none; border:none; color:#777; font-weight:bold; cursor:pointer; margin-top:10px;">إلغاء</button>
+            <a id="modalWA" href="#" class="modal-btn btn-whatsapp">💬 رسالة واتساب</a>
+            <button onclick="closeModal()" style="background:none; border:none; color:#777; cursor:pointer; margin-top:10px; font-weight:bold;">إلغاء</button>
         </div>
     </div>
 
     <div class="container">
         <div id="step1">
-            <h2 class="section-title">اخ
+            <h2 class="section-title">اختر وجهتك العقارية</h2>
+            <div class="card-city" onclick="goToStep2('المنصورة الجديدة')"><h3>المنصورة الجديدة</h3><p>وجهة الفخامة الساحلية</p></div>
+            <div class="card-city" onclick="goToStep2('دمياط الجديدة')"><h3>دمياط الجديدة</h3><p>الهدوء والسكن الراقي</p></div>
+        </div>
+
+        <div id="step2" class="hidden">
+            <div style="display:flex; align-items:center; margin-bottom:20px;">
+                <button onclick="goBack(1)" style="background:#1c2226; border:1px solid #444; color:#fff; padding:8px 15px; border-radius:10px;">← رجوع</button>
+                <h2 id="cityTitle" class="section-title" style="flex-grow:1; margin:0;"></h2>
+            </div>
+            <div id="projectButtons" class="project-grid"></div>
+        </div>
+
+        <div id="step3" class="hidden">
+            <div style="display:flex; align-items:center; margin-bottom:20px;">
+                <button onclick="goBack(2)" style="background:#1c2226; border:1px solid #444; color:#fff; padding:8px 15px; border-radius:10px;">← رجوع</button>
+                <h2 id="projectTitle" class="section-title" style="flex-grow:1; margin:0;"></h2>
+            </div>
+            <div id="unitCounter" class="units-counter"></div>
+            <div id="apartmentList"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = "https://script.google.com/macros/s/AKfycbxQsS6y6NgU_HdYXZOKsiV7xyzh7EBvYWLUeOacsqf7ERu93gnVyiOnNDUxqG6UUzcA/exec";
+        let allData = [];
+
+        // محاولة جلب البيانات مع "تجاوز" شاشة التحميل لو اتأخرت
+        async function fetchD() {
+            const timeout = setTimeout(() => {
+                document.getElementById('loadingScreen').style.display = 'none';
+            }, 5000); // لو الداتا اتأخرت أكتر من 5 ثواني افتح الموقع باللي موجود
+
+            try {
+                const r = await fetch(API_URL);
+                const d = await r.json();
+                allData = d.slice(1);
+                clearTimeout(timeout);
+                document.getElementById('loadingScreen').style.display = 'none';
+            } catch(e) {
+                console.error("Connection Error");
+                document.getElementById('loadingScreen').style.display = 'none';
+            }
+        }
+
+        function goToStep2(c) {
+            window.curCity = c;
+            switchStep('step2');
+            document.getElementById('cityTitle').innerText = c;
+            let projects = (c === 'المنصورة الجديدة') ? ['جنة', 'سكن مصر', 'زاهية', 'إسكان ساحلي'] : ['جنة', 'سكن مصر', 'دار مصر'];
+            let html = '';
+            projects.forEach(p => html += `<div class="card-project" onclick="showU('${p}')"><h3>${p}</h3></div>`);
+            document.getElementById('projectButtons').innerHTML = html;
+        }
+
+        function showU(kw) { switchStep('step3'); document.getElementById('projectTitle').innerText = kw; render(kw); }
+
+        function openContact(phone, message) {
+            document.getElementById('modalCall').href = "tel:" + phone;
+            document.getElementById('modalWA').href = "https://wa.me/" + phone + "?text=" + encodeURIComponent(message);
+            document.getElementById('contactModal').style.display = 'flex';
+        }
+
+        function closeModal() { document.getElementById('contactModal').style.display = 'none'; }
+
+        function render(kw) {
+            const list = document.getElementById('apartmentList');
+            const counter = document.getElementById('unitCounter');
+            let filtered = allData.filter(r => (r[0]||"").toString().trim() === window.curCity && (r[1]||"").toString().includes(kw));
+            let available = filtered.filter(r => !(r[11]||"").toString().includes("تم البيع")).length;
+            counter.innerText = `متاح حالياً ${available} وحدة في ${kw}`;
+
+            filtered.sort((a, b) => ((a[11]||"").includes("تم البيع") ? 1 : 0) - ((b[11]||"").includes("تم البيع") ? 1 : 0));
+
+            let h = '';
+            filtered.forEach(r => {
+                let sold = (r[11]||"").toString().includes("تم البيع");
+                let img = r[12] ? (r[12].includes('id=') ? `https://drive.google.com/thumbnail?sz=1000&id=${r[12].split('id=')[1].split('&')[0]}` : r[12]) : "";
+                let details = `طلب معاينة:\nمشروع: ${r[1]}\nعمارة: ${r[2]}\nشقة: ${r[3]}\nالدور: ${r[4]}`;
+
+                h += `<div class="apt-card ${sold ? 'is-sold' : 'is-available'}">
+                    ${img ? `<div class="img-container"><img src="${img}" loading="lazy"></div>` : ''}
+                    <div class="apt-content">
+                        <div class="apt-title">عمارة ${r[2]} • شقة ${r[3]}</div>
+                        <div style="font-size:12px; color:#aaa; margin-bottom:12px;">${r[4]} | ${r[5]}</div>
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; font-size:12px; margin-bottom:15px; font-weight:700;">
+                            <div>📏 ${r[13] || '--'} م</div>
+                            <div>🕒 ${r[10] === "خالصة" ? 'خالصة' : (r[9]||'--') + ' سنوات'}</div>
+                        </div>
+                        <div class="price-box">
+                            <div><small>المدفوع</small><br><span class="price-val">${r[6]||'--'}</span></div>
+                            <div><small>الأوفر</small><br><span class="price-val" style="color:#ef5350">${r[7]||'--'}</span></div>
+                        </div>
+                        ${sold ? `<div style="text-align:center; padding:10px; color:var(--sold); font-weight:900;">تم البيع</div>` : 
+                        `<div class="btn-preview" onclick="openContact('201212229797', '${details}')">طلب معاينة للوحدة</div>`}
+                    </div>
+                </div>`;
+            });
+            list.innerHTML = h;
+        }
+
+        function switchStep(id) {
+            ['step1','step2','step3'].forEach(s => document.getElementById(s).classList.add('hidden'));
+            document.getElementById(id).classList.remove('hidden');
+            window.scrollTo(0,0);
+        }
+        function goBack(s) { switchStep('step' + s); }
+        window.onload = fetchD;
+    </script>
+</body>
+</html>
