@@ -23,16 +23,16 @@
         .container { width: 100%; max-width: 450px; margin: auto; padding: 15px; }
         .section-title { font-size: 22px; color: #fff; font-weight: 900; text-align: center; margin-bottom: 25px; }
 
-        .card-city { background: linear-gradient(135deg, #1c2226 0%, #252d33 100%); border-radius: 20px; padding: 40px 20px; text-align: center; border: 2px solid rgba(197, 160, 18, 0.3); cursor: pointer; margin-bottom: 15px; }
-        .card-city h3 { font-size: 32px; font-weight: 900; color: var(--secondary); margin: 0; }
+        /* تعديل كروت المدن لإضافة الكلام الجذاب */
+        .card-city { background: linear-gradient(135deg, #1c2226 0%, #252d33 100%); border-radius: 20px; padding: 30px 20px; text-align: center; border: 2px solid rgba(197, 160, 18, 0.3); cursor: pointer; margin-bottom: 15px; }
+        .card-city h3 { font-size: 28px; font-weight: 900; color: var(--secondary); margin: 0; }
+        .card-city p { font-size: 13px; color: #888; margin-top: 8px; font-weight: 700; }
 
         .project-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .card-project { background: var(--card-bg); border-radius: 15px; padding: 25px 10px; text-align: center; border: 1px solid rgba(255,255,255,0.05); cursor: pointer; font-weight: 900; }
 
         .apt-card { background: #1c2226; border-radius: 22px; margin-bottom: 25px; overflow: hidden; position: relative; transition: 0.3s; }
         .is-available { border-right: 8px solid var(--available); box-shadow: 0 10px 30px rgba(0,0,0,0.3); } 
-        
-        /* اللون الأحمر الطاغي في "تم البيع" */
         .is-sold { border-right: 15px solid var(--sold); opacity: 0.6; filter: grayscale(0.7); } 
         
         .img-container { width: 100%; height: 220px; background: #000; overflow: hidden; }
@@ -51,17 +51,18 @@
             border-radius: 15px; cursor: pointer !important; font-weight: 900; margin-top: 15px; 
             display: flex; align-items: center; justify-content: center; gap: 10px;
             box-shadow: 0 5px 20px rgba(57, 255, 20, 0.4);
-            border: none; width: 100%; font-size: 16px; transition: 0.2s;
+            border: none; width: 100%; font-size: 16px; transition: 0.2s; text-decoration: none;
         }
 
-        /* نافذة التواصل */
-        .contact-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.92); backdrop-filter: blur(10px); z-index: 999999; display: none; align-items: center; justify-content: center; padding: 20px; }
-        .modal-content { background: #1c2226; width: 100%; max-width: 340px; border-radius: 30px; padding: 35px; border: 2px solid var(--available); text-align: center; animation: slideUp 0.3s ease-out; }
-        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        
-        .modal-btn { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 18px; border-radius: 18px; text-decoration: none; font-weight: 900; margin-bottom: 15px; color: #fff; font-size: 17px; }
-        .btn-call { background: #007bff; }
-        .btn-whatsapp { background: #25d366; }
+        /* زر اتصل بنا العائم الصغير */
+        .btn-call-fixed {
+            position: fixed; bottom: 25px; left: 25px;
+            width: 55px; height: 55px; background: var(--secondary);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5); z-index: 9999;
+            text-decoration: none; border: 2px solid #fff;
+        }
+        .btn-call-fixed svg { fill: #fff; width: 25px; height: 25px; }
 
         .hidden { display: none !important; }
     </style>
@@ -73,26 +74,26 @@
         <p style="color:#666; font-size:13px; margin-top:15px; font-weight:700;">جاري تحميل أحدث البيانات...</p>
     </div>
 
+    <a href="tel:201212229797" class="btn-call-fixed">
+        <svg viewBox="0 0 24 24"><path d="M20 15.5c-1.2 0-2.4-.2-3.6-.6-.3-.1-.7 0-1 .2l-2.2 2.2c-2.8-1.4-5.1-3.8-6.6-6.6l2.2-2.2c.3-.3.4-.7.2-1-.3-1.1-.5-2.3-.5-3.5 0-.6-.4-1-1-1H4c-.6 0-1 .4-1 1 0 9.4 7.6 17 17 17 .6 0 1-.4 1-1v-3.5c0-.6-.4-1-1-1z"/></svg>
+    </a>
+
     <div class="header-bar">
         <h1 class="company-name">Al-Fayrouz</h1>
         <div class="company-subtitle">الفيروز للعقارات - الفخامة والتفرد</div>
     </div>
 
-    <div id="contactModal" class="contact-modal" onclick="closeModal()">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <h2 style="margin:0 0 10px 0; color:var(--available); font-weight:900;">تأكيد المعاينة</h2>
-            <p style="font-size:14px; color:#ccc; margin-bottom:30px;">برجاء اختيار وسيلة التواصل:</p>
-            <a id="modalCall" href="#" class="modal-btn btn-call">📞 اتصل الآن</a>
-            <a id="modalWA" href="#" class="modal-btn btn-whatsapp">💬 واتساب الوحدة</a>
-            <button onclick="closeModal()" style="background:none; border:none; color:#777; cursor:pointer; margin-top:15px; font-weight:900;">تجاهل</button>
-        </div>
-    </div>
-
     <div class="container">
         <div id="step1">
             <h2 class="section-title">اختر المدينة</h2>
-            <div class="card-city" onclick="goToStep2('المنصورة الجديدة')"><h3>المنصورة الجديدة</h3></div>
-            <div class="card-city" onclick="goToStep2('دمياط الجديدة')"><h3>دمياط الجديدة</h3></div>
+            <div class="card-city" onclick="goToStep2('المنصورة الجديدة')">
+                <h3>المنصورة الجديدة</h3>
+                <p>مستقبل السكن الفاخر على الساحل مباشرة</p>
+            </div>
+            <div class="card-city" onclick="goToStep2('دمياط الجديدة')">
+                <h3>دمياط الجديدة</h3>
+                <p>الهدوء، الرقي، والاستثمار المضمون</p>
+            </div>
         </div>
 
         <div id="step2" class="hidden">
@@ -140,14 +141,6 @@
 
         function showU(kw) { switchStep('step3'); document.getElementById('projectTitle').innerText = kw; render(kw); }
 
-        function triggerContact(phone, message) {
-            document.getElementById('modalCall').href = "tel:" + phone;
-            document.getElementById('modalWA').href = "https://wa.me/" + phone + "?text=" + encodeURIComponent(message);
-            document.getElementById('contactModal').style.display = 'flex';
-        }
-
-        function closeModal() { document.getElementById('contactModal').style.display = 'none'; }
-
         function render(kw) {
             const list = document.getElementById('apartmentList');
             const counter = document.getElementById('unitCounter');
@@ -161,7 +154,9 @@
             filtered.forEach(r => {
                 let sold = (r[11]||"").toString().includes("تم البيع");
                 let img = r[12] ? (r[12].includes('id=') ? `https://drive.google.com/thumbnail?sz=1000&id=${r[12].split('id=')[1].split('&')[0]}` : r[12]) : "";
-                let msg = `أهلاً، أرغب في معاينة هذه الوحدة:\n📌 المدينة: ${window.curCity}\n🏗️ مشروع: ${r[1]}\n🏢 عمارة: ${r[2]} | شقة: ${r[3]}`;
+                
+                // رسالة الواتساب المخصصة
+                let msg = encodeURIComponent(`أهلاً شركة الفيروز، أرغب في معاينة الوحدة التالية:\n📍 المدينة: ${window.curCity}\n🏗️ المشروع: ${r[1]}\n🏢 عمارة: ${r[2]}\n🔑 شقة: ${r[3]}`);
 
                 h += `<div class="apt-card ${sold ? 'is-sold' : 'is-available'}">
                     ${img ? `<div class="img-container"><img src="${img}" loading="lazy"></div>` : ''}
@@ -177,7 +172,7 @@
                             <div><small>الأوفر</small><br><span class="price-val" style="color:#ef5350">${r[7]||'--'}</span></div>
                         </div>
                         ${sold ? `<div style="text-align:center; padding:15px; color:var(--sold); font-weight:900; font-size:22px;">تـم البيـع</div>` : 
-                        `<button class="btn-preview-neon" onclick="triggerContact('201212229797', '${msg}')">طلب معاينة للوحدة</button>`}
+                        `<a href="https://wa.me/201212229797?text=${msg}" class="btn-preview-neon">طلب معاينة للوحدة</a>`}
                     </div>
                 </div>`;
             });
