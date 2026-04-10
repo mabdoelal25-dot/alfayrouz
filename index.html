@@ -19,20 +19,35 @@
         .btn-back-top { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 8px 16px; border-radius: 12px; cursor: pointer; }
         .section-title { font-size: 19px; color: #fff; font-weight: 800; flex-grow: 1; text-align: center; margin: 0; }
 
-        .apt-card { background: #1c2226; border-radius: 18px; padding: 15px; margin-bottom: 20px; border-right: 5px solid var(--primary); position: relative; overflow: hidden; }
+        .grid-box { display: flex; flex-direction: column; gap: 15px; }
+        .card-city { background: linear-gradient(135deg, #1c2226 0%, #252d33 100%); border-radius: 20px; padding: 35px 20px; text-align: center; border: 1px solid rgba(255,255,255,0.08); cursor: pointer; }
+        .project-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .card-project { background: var(--card-bg); border-radius: 18px; padding: 25px 10px; text-align: center; border: 1px solid rgba(255,255,255,0.05); cursor: pointer; }
+
+        /* ستايل الكارت الكامل مع الصورة */
+        .apt-card { background: #1c2226; border-radius: 18px; padding: 0; margin-bottom: 15px; border-right: 5px solid var(--primary); position: relative; overflow: hidden; }
+        .apt-content { padding: 20px; }
         
-        /* ستايل عرض الصورة */
-        .img-container { width: 100%; border-radius: 12px; overflow: hidden; background: #222; margin-bottom: 15px; height: 200px; position: relative; }
+        /* تصميم الصورة داخل الكارت */
+        .img-container { width: 100%; height: 200px; background: #000; overflow: hidden; position: relative; }
         .img-container img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
         .apt-title { font-size: 18px; font-weight: 900; color: #fff; margin-bottom: 5px; }
         .apt-subtitle { font-size: 13px; color: #aaa; margin-bottom: 15px; }
+        
         .specs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 12px; color: #ccc; margin-bottom: 15px; }
+        
         .price-box { display: flex; justify-content: space-between; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.05); }
+        .price-item { display: flex; flex-direction: column; }
+        .price-label { font-size: 11px; color: #888; }
         .price-val { font-size: 16px; font-weight: 800; color: var(--secondary); }
-        .btn-wa { background: #25d366; color: #fff; text-align: center; padding: 14px; border-radius: 12px; text-decoration: none; display: block; font-weight: 800; margin-top: 15px; }
+
+        /* ستايل تم البيع */
         .is-sold { opacity: 0.6; filter: grayscale(0.8); pointer-events: none; }
-        .sold-badge { position: absolute; top: 15px; left: -30px; background: var(--sold); color: #fff; padding: 5px 35px; transform: rotate(-45deg); font-weight: 900; font-size: 10px; z-index: 10; }
+        .sold-badge { position: absolute; top: 15px; left: -30px; background: var(--sold); color: #fff; padding: 5px 35px; transform: rotate(-45deg); font-weight: 900; font-size: 10px; z-index: 10; box-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+        .sold-text { display: block; text-align: center; color: var(--sold); font-weight: 900; margin-top: 10px; padding: 8px; border: 1px solid var(--sold); border-radius: 10px; }
+
+        .btn-wa { background: #25d366; color: #fff; text-align: center; padding: 14px; border-radius: 12px; text-decoration: none; display: block; font-weight: 800; margin-top: 15px; }
         .hidden { display: none !important; }
     </style>
 </head>
@@ -45,20 +60,26 @@
 
     <div class="container">
         <div id="step1">
-            <h2 class="section-title" style="margin-bottom:25px;">اختر المدينة</h2>
-            <div style="display: flex; flex-direction: column; gap: 15px;">
-                <div style="background:#1c2226; padding:30px; border-radius:20px; text-align:center;" onclick="goToStep2('المنصورة الجديدة')"><h3>المنصورة الجديدة</h3></div>
-                <div style="background:#1c2226; padding:30px; border-radius:20px; text-align:center;" onclick="goToStep2('دمياط الجديدة')"><h3>دمياط الجديدة</h3></div>
+            <h2 class="section-title" style="margin-bottom:25px;">اختر وجهتك العقارية</h2>
+            <div class="grid-box">
+                <div class="card-city" onclick="goToStep2('المنصورة الجديدة')"><h3>المنصورة الجديدة</h3><p>وجهة الفخامة الساحلية</p></div>
+                <div class="card-city" onclick="goToStep2('دمياط الجديدة')"><h3>دمياط الجديدة</h3><p>الهدوء والسكن الراقي</p></div>
             </div>
         </div>
 
         <div id="step2" class="hidden">
-            <div class="top-nav"><button class="btn-back-top" onclick="goBack(1)">→ رجوع</button><h2 id="cityTitle" class="section-title"></h2></div>
-            <div id="projectButtons" style="display:grid; grid-template-columns:1fr 1fr; gap:10px;"></div>
+            <div class="top-nav">
+                <button class="btn-back-top" onclick="goBack(1)">→ رجوع</button>
+                <h2 id="cityTitle" class="section-title"></h2>
+            </div>
+            <div id="projectButtons" class="project-grid"></div>
         </div>
 
         <div id="step3" class="hidden">
-            <div class="top-nav"><button class="btn-back-top" onclick="goBack(2)">→ رجوع</button><h2 id="projectTitle" class="section-title"></h2></div>
+            <div class="top-nav">
+                <button class="btn-back-top" onclick="goBack(2)">→ رجوع</button>
+                <h2 id="projectTitle" class="section-title"></h2>
+            </div>
             <div id="apartmentList"></div>
         </div>
     </div>
@@ -76,80 +97,104 @@
             } catch(e) { console.error("Error fetching data"); }
         }
 
-        function fM(n) {
-            if(!n || isNaN(n)) return n;
-            return Number(n).toLocaleString() + " ج.م";
-        }
-
         function goToStep2(c) {
-            curCity = c; switchStep('step2'); document.getElementById('cityTitle').innerText = c;
+            curCity = c;
+            switchStep('step2');
+            document.getElementById('cityTitle').innerText = c;
             let projects = (c === 'المنصورة الجديدة') ? ['جنة', 'سكن مصر', 'زاهية', 'إسكان ساحلي'] : ['جنة', 'سكن مصر', 'دار مصر'];
-            let html = ''; projects.forEach(p => html += `<div style="background:#1c2226; padding:20px; border-radius:15px; text-align:center;" onclick="showU('${p}')"><h3>${p}</h3></div>`);
+            let html = '';
+            projects.forEach(p => {
+                html += `<div class="card-project" onclick="showU('${p}')"><h3>${p}</h3><p>عرض الوحدات</p></div>`;
+            });
             document.getElementById('projectButtons').innerHTML = html;
         }
 
-        function showU(kw) { switchStep('step3'); document.getElementById('projectTitle').innerText = kw; render(kw); }
+        function showU(kw) {
+            switchStep('step3');
+            document.getElementById('projectTitle').innerText = kw;
+            render(kw);
+        }
 
         function render(kw) {
             const list = document.getElementById('apartmentList');
-            if (allData.length === 0) { fetchD().then(() => render(kw)); return; }
+            if (allData.length === 0) {
+                list.innerHTML = `<div style="text-align:center; padding:30px; color:var(--secondary);">جاري تحميل البيانات...</div>`;
+                fetchD().then(() => render(kw));
+                return;
+            }
 
             let filtered = allData.filter(r => (r[0]||"").toString().trim() === curCity && (r[1]||"").toString().includes(kw));
-            
+
+            filtered.sort((a, b) => {
+                let statusA = (a[11] || "").toString().includes("تم البيع") ? 1 : 0;
+                let statusB = (b[11] || "").toString().includes("تم البيع") ? 1 : 0;
+                return statusA - statusB;
+            });
+
+            if (filtered.length === 0) {
+                list.innerHTML = `<div style="text-align:center; padding:30px;">لا توجد وحدات متاحة حالياً</div>`;
+                return;
+            }
+
             let h = '';
             filtered.forEach(r => {
                 let isSold = (r[11] || "").toString().includes("تم البيع");
-                let rawUrl = (r[12] || "").toString().trim(); 
+                let rawUrl = (r[12] || "").toString().trim();
+                let msg = encodeURIComponent(`استفسار عن عمارة ${r[2]} شقة ${r[3]} في مشروع ${r[1]} - ${curCity}`);
                 
-                // معالجة الرابط لكسر مشكلة اللون الأسود في جوجل درايف
-                let finalImg = rawUrl;
-                if (rawUrl.includes('drive.google.com')) {
-                    let fileId = "";
-                    if (rawUrl.includes('id=')) {
-                        fileId = rawUrl.split('id=')[1].split('&')[0];
-                    } else if (rawUrl.includes('/d/')) {
-                        fileId = rawUrl.split('/d/')[1].split('/')[0];
-                    }
-                    if (fileId) {
+                // معالجة الرابط الذكي للصور
+                let finalImg = "";
+                if (rawUrl) {
+                    if (rawUrl.includes('drive.google.com')) {
+                        let fileId = rawUrl.includes('id=') ? rawUrl.split('id=')[1].split('&')[0] : rawUrl.split('/d/')[1].split('/')[0];
                         finalImg = `https://drive.google.com/thumbnail?sz=w1000&id=${fileId}`;
+                    } else {
+                        finalImg = rawUrl;
                     }
                 }
 
-                let msg = encodeURIComponent(`استفسار عن عمارة ${r[2]} شقة ${r[3]} في مشروع ${r[1]}`);
-                
                 h += `
                 <div class="apt-card ${isSold ? 'is-sold' : ''}">
                     ${isSold ? '<div class="sold-badge">تم البيع</div>' : ''}
                     
-                    ${rawUrl ? `
+                    ${finalImg ? `
                     <div class="img-container">
                         <img src="${finalImg}" loading="lazy" onerror="this.parentElement.style.display='none'">
                     </div>` : ''}
 
-                    <div class="apt-title">عمارة ${r[2]} • شقة ${r[3]}</div>
-                    <div class="apt-subtitle">📍 ${r[4]} | ${r[5]}</div>
-                    
-                    <div class="specs-grid">
-                        <div>📏 المتر: ${fM(r[8])}</div>
-                        <div>🕒 التقسيط: ${r[9]} سنوات</div>
-                        <div>💰 الدفعة: ${fM(r[10])}</div>
-                    </div>
+                    <div class="apt-content">
+                        <div class="apt-title">عمارة ${r[2]} • شقة ${r[3]}</div>
+                        <div class="apt-subtitle">📍 ${r[4]} | ${r[5]}</div>
+                        
+                        <div class="specs-grid">
+                            <div>📏 سعر المتر: ${r[8]}</div>
+                            <div>🕒 التقسيط: ${r[9]} سنوات</div>
+                            <div>💰 القسط: ${r[10]}</div>
+                        </div>
 
-                    <div class="price-box">
-                        <div><span style="font-size:11px; color:#888;">المدفوع</span><br><span class="price-val">${fM(r[6])}</span></div>
-                        <div><span style="font-size:11px; color:#888;">الأوفر</span><br><span class="price-val" style="color:#ef5350">${fM(r[7])}</span></div>
-                    </div>
+                        <div class="price-box">
+                            <div class="price-item"><span class="price-label">المدفوع</span><span class="price-val">${r[6]}</span></div>
+                            <div class="price-item"><span class="price-label">الأوفر</span><span class="price-val" style="color:#ef5350">${r[7]}</span></div>
+                        </div>
 
-                    ${isSold ? '' : `<a href="https://wa.me/201212229797?text=${msg}" class="btn-wa">تواصل واتساب</a>`}
+                        ${isSold ? 
+                            '<span class="sold-text">تباع بحمد الله</span>' : 
+                            `<a href="https://wa.me/201212229797?text=${msg}" class="btn-wa">تواصل واتساب</a>`
+                        }
+                    </div>
                 </div>`;
             });
             list.innerHTML = h;
         }
 
-        function switchStep(id) { ['step1','step2','step3'].forEach(s => document.getElementById(s).classList.add('hidden')); document.getElementById(id).classList.remove('hidden'); window.scrollTo(0,0); }
+        function switchStep(id) {
+            ['step1','step2','step3'].forEach(s => document.getElementById(s).classList.add('hidden'));
+            document.getElementById(id).classList.remove('hidden');
+            window.scrollTo(0,0);
+        }
+
         function goBack(s) { switchStep('step' + s); }
         window.onload = fetchD;
     </script>
 </body>
 </html>
-
