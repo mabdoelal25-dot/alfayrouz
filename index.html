@@ -11,54 +11,53 @@
         html, body { overflow-x: hidden; width: 100%; height: 100%; margin: 0; padding: 0; touch-action: manipulation; }
         body { font-family: 'Cairo', sans-serif; color: #f0f0f0; background: var(--bg-dark); }
 
-        /* شاشة التحميل الفخمة */
+        /* شاشة التحميل الفخمة (لعبة الانتظار) */
         #loadingScreen { position: fixed; top:0; left:0; width:100%; height:100%; background: var(--bg-dark); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .loader-ball { width: 50px; height: 50px; background: var(--primary); border-radius: 50%; animation: pulse-glow 0.8s infinite alternate; box-shadow: 0 0 20px var(--primary); }
         @keyframes pulse-glow { from { transform: scale(0.8); opacity: 0.6; } to { transform: scale(1.2); opacity: 1; box-shadow: 0 0 40px var(--primary); } }
         .loader-text { margin-top: 20px; font-family: 'Montserrat'; font-weight: 900; color: var(--secondary); letter-spacing: 2px; }
 
-        .header-bar { padding: 40px 10px 20px; text-align: center; }
-        .company-name { font-family: 'Montserrat', sans-serif; font-size: 36px; font-weight: 900; color: #fff; margin: 0; text-transform: uppercase; }
-        .company-subtitle { font-size: 14px; color: var(--secondary); font-weight: 800; margin-top: 5px; }
+        .header-bar { padding: 45px 10px 25px; text-align: center; background: linear-gradient(to bottom, #161d21, var(--bg-dark)); }
+        .company-name { font-family: 'Montserrat', sans-serif; font-size: 38px; font-weight: 900; color: #fff; margin: 0; letter-spacing: 2px; text-transform: uppercase; }
+        .company-subtitle { font-size: 16px; color: var(--secondary); font-weight: 700; margin-top: 5px; }
 
-        .container { width: 100%; max-width: 450px; margin: auto; padding: 15px; }
-        .section-title { font-size: 22px; color: #fff; font-weight: 900; text-align: center; margin-bottom: 25px; }
+        .container { width: 100%; max-width: 500px; margin: auto; padding: 15px; }
+        .section-title { font-size: 24px; color: #fff; font-weight: 900; text-align: center; margin-bottom: 25px; }
 
-        /* كروت المدن */
-        .card-city { background: linear-gradient(135deg, #1c2226 0%, #252d33 100%); border-radius: 20px; padding: 40px 20px; text-align: center; border: 2px solid rgba(197, 160, 18, 0.3); cursor: pointer; margin-bottom: 15px; }
-        .card-city h3 { font-size: 30px; font-weight: 900; color: var(--secondary); margin: 0 0 8px 0; }
-        .card-city p { font-size: 15px; color: #888; margin: 0; font-weight: 700; }
+        .card-city { background: linear-gradient(135deg, #1c2226 0%, #252d33 100%); border-radius: 20px; padding: 45px 20px; text-align: center; border: 2px solid rgba(197, 160, 18, 0.3); cursor: pointer; margin-bottom: 15px; }
+        .card-city h3 { font-size: 32px; font-weight: 900; color: var(--secondary); margin: 0 0 10px 0; }
+        .card-city p { font-size: 16px; color: #ccc; margin: 0; }
 
         .project-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .card-project { background: var(--card-bg); border-radius: 15px; padding: 25px 10px; text-align: center; border: 1px solid rgba(255,255,255,0.05); cursor: pointer; }
+        .card-project { background: var(--card-bg); border-radius: 18px; padding: 30px 10px; text-align: center; border: 1px solid rgba(255,255,255,0.05); cursor: pointer; }
 
-        /* الكارت المسطرة الأصلي */
-        .apt-card { background: #1c2226; border-radius: 18px; margin-bottom: 20px; border-right: 5px solid var(--secondary); overflow: hidden; position: relative; }
-        .img-container { width: 100%; height: 200px; background: #000; }
+        /* الكارت المسطرة الأصلي باللون الذهبي */
+        .apt-card { background: #1c2226; border-radius: 18px; margin-bottom: 20px; border-right: 5px solid var(--secondary); overflow: hidden; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .img-container { width: 100%; height: 210px; background: #000; }
         .img-container img { width: 100%; height: 100%; object-fit: cover; }
-        .apt-content { padding: 15px; }
+        .apt-content { padding: 20px; }
         .apt-title { font-size: 19px; font-weight: 900; color: #fff; margin-bottom: 5px; }
-        .units-counter { background: rgba(197, 160, 18, 0.1); color: var(--secondary); text-align: center; padding: 10px; border-radius: 10px; margin-bottom: 15px; font-size: 14px; font-weight: 900; border: 1px dashed var(--secondary); }
+        .units-counter { background: rgba(197, 160, 18, 0.1); color: var(--secondary); text-align: center; padding: 12px; border-radius: 12px; margin-bottom: 15px; font-size: 15px; font-weight: 900; border: 1px dashed var(--secondary); }
 
-        .price-box { display: flex; justify-content: space-between; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.05); }
-        .price-val { font-size: 16px; font-weight: 900; color: var(--secondary); }
+        .price-box { display: flex; justify-content: space-between; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.08); }
+        .price-val { font-size: 17px; font-weight: 900; color: var(--secondary); }
 
-        /* ستايل تم البيع (بدون تشويه) */
+        /* ستايل تم البيع المحترم */
         .is-sold { opacity: 0.4; filter: grayscale(1); pointer-events: none; }
         .sold-text { display: block; text-align: center; color: var(--sold); font-weight: 900; margin-top: 15px; border: 1px solid var(--sold); padding: 8px; border-radius: 10px; }
 
         /* زر الاتصال الشيك الصغير */
         .float-call { 
-            position: fixed; bottom: 20px; left: 15px; 
+            position: fixed; bottom: 25px; left: 20px; 
             background: #1c2226; border: 1.5px solid var(--secondary); color: #fff;
             display: flex; align-items: center; gap: 8px;
-            padding: 8px 15px; border-radius: 50px; 
-            text-decoration: none; box-shadow: 0 5px 15px rgba(0,0,0,0.4);
-            z-index: 1000; font-weight: 800; font-size: 13px;
+            padding: 10px 18px; border-radius: 50px; 
+            text-decoration: none; box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+            z-index: 1000; font-weight: 800; font-size: 14px;
         }
-        .float-call svg { fill: var(--secondary); width: 16px; height: 16px; }
+        .float-call svg { fill: var(--secondary); width: 18px; height: 18px; }
 
-        .btn-wa { background: #25d366; color: #fff; text-align: center; padding: 12px; border-radius: 12px; text-decoration: none; display: block; font-weight: 900; margin-top: 15px; }
+        .btn-wa { background: #25d366; color: #fff; text-align: center; padding: 15px; border-radius: 14px; text-decoration: none; display: block; font-weight: 900; margin-top: 15px; }
         .hidden { display: none !important; }
     </style>
 </head>
@@ -94,7 +93,7 @@
 
         <div id="step2" class="hidden">
             <div style="display:flex; align-items:center; margin-bottom:20px;">
-                <button onclick="goBack(1)" style="background:none; border:1px solid #444; color:#fff; padding:5px 15px; border-radius:8px;">رجوع</button>
+                <button onclick="goBack(1)" style="background:none; border:1px solid #444; color:#fff; padding:8px 15px; border-radius:12px; cursor:pointer;">← رجوع</button>
                 <h2 id="cityTitle" class="section-title" style="flex-grow:1; margin:0;"></h2>
             </div>
             <div id="projectButtons" class="project-grid"></div>
@@ -102,10 +101,10 @@
 
         <div id="step3" class="hidden">
             <div style="display:flex; align-items:center; margin-bottom:20px;">
-                <button onclick="goBack(2)" style="background:none; border:1px solid #444; color:#fff; padding:5px 15px; border-radius:8px;">رجوع</button>
+                <button onclick="goBack(2)" style="background:none; border:1px solid #444; color:#fff; padding:8px 15px; border-radius:12px; cursor:pointer;">← رجوع</button>
                 <h2 id="projectTitle" class="section-title" style="flex-grow:1; margin:0;"></h2>
             </div>
-            <div id="unitCounter" class="units-counter"></div>
+            <div id="unitCounter" class="units-counter">جاري فحص الوحدات...</div>
             <div id="apartmentList"></div>
         </div>
     </div>
@@ -129,62 +128,4 @@
             document.getElementById('cityTitle').innerText = c;
             let projects = (c === 'المنصورة الجديدة') ? ['جنة', 'سكن مصر', 'زاهية', 'إسكان ساحلي'] : ['جنة', 'سكن مصر', 'دار مصر'];
             let html = '';
-            projects.forEach(p => html += `<div class="card-project" onclick="showU('${p}')"><h3 style="margin:0; font-size:18px;">${p}</h3></div>`);
-            document.getElementById('projectButtons').innerHTML = html;
-        }
-
-        function showU(kw) {
-            switchStep('step3');
-            document.getElementById('projectTitle').innerText = kw;
-            render(kw);
-        }
-
-        function render(kw) {
-            const list = document.getElementById('apartmentList');
-            const counter = document.getElementById('unitCounter');
-            let filtered = allData.filter(r => (r[0]||"").toString().trim() === window.curCity && (r[1]||"").toString().includes(kw));
-            
-            let availableCount = filtered.filter(r => !(r[11]||"").toString().includes("تم البيع")).length;
-            counter.innerText = `متاح حالياً ${availableCount} وحدة في ${kw}`;
-
-            // ترتيب (المتاح فوق)
-            filtered.sort((a, b) => ((a[11]||"").includes("تم البيع") ? 1 : 0) - ((b[11]||"").includes("تم البيع") ? 1 : 0));
-
-            let h = '';
-            filtered.forEach(r => {
-                let isSold = (r[11]||"").toString().includes("تم البيع");
-                let img = r[12] ? (r[12].includes('id=') ? `https://drive.google.com/thumbnail?sz=w1000&id=${r[12].split('id=')[1].split('&')[0]}` : r[12]) : "";
-                let isFinished = r[10] === "خالصة";
-
-                h += `<div class="apt-card ${isSold ? 'is-sold' : ''}">
-                    ${img ? `<div class="img-container"><img src="${img}"></div>` : ''}
-                    <div class="apt-content">
-                        <div class="apt-title">عمارة ${r[2]} • شقة ${r[3]}</div>
-                        <div style="font-size:12px; color:#aaa; margin-bottom:10px;">${r[4]} | ${r[5]}</div>
-                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; font-size:12px; margin-bottom:10px;">
-                            <div>📏 ${r[13] || '--'} م</div>
-                            <div>🕒 ${isFinished ? 'خالصة' : (r[9]||'--') + ' سنوات'}</div>
-                        </div>
-                        ${(!isFinished && r[14]) ? `<div style="background:rgba(197,160,18,0.1); padding:8px; border-radius:8px; font-size:13px; margin-bottom:10px;">متبقي: <b>${r[14]}</b> قسط</div>` : ''}
-                        <div class="price-box">
-                            <div><small>المدفوع:</small><br><span class="price-val">${r[6]||'--'}</span></div>
-                            <div><small>الأوفر:</small><br><span class="price-val" style="color:#ef5350">${r[7]||'--'}</span></div>
-                        </div>
-                        ${isSold ? '<span class="sold-text">تم البيع بحمد الله</span>' : `<a href="https://wa.me/201212229797" class="btn-wa">واتساب</a>`}
-                    </div>
-                </div>`;
-            });
-            list.innerHTML = h;
-        }
-
-        function switchStep(id) {
-            ['step1','step2','step3'].forEach(s => document.getElementById(s).classList.add('hidden'));
-            document.getElementById(id).classList.remove('hidden');
-            window.scrollTo(0,0);
-        }
-        function goBack(s) { switchStep('step' + s); }
-        window.onload = fetchD;
-    </script>
-</body>
-</html>
-
+            projects.forEach(p => html += `<div class="card-project" onclick="showU('${p}')"><h3 style="
