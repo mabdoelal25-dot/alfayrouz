@@ -39,7 +39,7 @@
         .card-project { background: var(--card-bg); border-radius: 15px; padding: 25px 10px; text-align: center; border: 1px solid rgba(255,255,255,0.05); cursor: pointer; font-weight: 900; transition: 0.3s; display: flex; align-items: center; justify-content: center; min-height: 80px; }
         .card-project:active { background: var(--secondary); color: #000; }
 
-        .apt-card { background: #1c2226; border-radius: 22px; margin-bottom: 25px; overflow: hidden; position: relative; }
+        .apt-card { background: #1c2226; border-radius: 22px; margin-bottom: 25px; overflow: hidden; position: relative; transition: 0.3s; }
         .is-available { border-right: 8px solid var(--available); box-shadow: 0 10px 30px rgba(0,0,0,0.3); } 
         .is-sold { border-right: 15px solid var(--sold); opacity: 0.6; filter: grayscale(0.7); } 
         
@@ -54,7 +54,7 @@
         .spec-label { display: block; font-size: 10px; color: #777; font-weight: 700; margin-bottom: 2px; }
         .spec-value { display: block; font-size: 12px; color: #eee; font-weight: 800; }
 
-        .price-box-container { background: rgba(0,0,0,0.2); padding: 12px; border-radius: 12px; margin-bottom: 15px; border: 1px solid rgba(197, 160, 18, 0.1); }
+        .price-box-container { background: rgba(255,255,255,0.03); border-radius: 15px; padding: 18px; border: 1px solid rgba(197, 160, 18, 0.2); margin-bottom: 15px; }
         .price-line { display: flex; justify-content: space-between; margin-bottom: 5px; align-items: center; }
         .pl-label { font-size: 12px; color: #aaa; font-weight: 700; }
         .pl-val { font-size: 14px; color: var(--secondary); font-weight: 900; }
@@ -149,7 +149,15 @@
         function render(kw) {
             const list = document.getElementById('apartmentList');
             let filtered = allData.filter(r => (r[0]||"").toString().trim() === window.curCity && (r[1]||"").toString().includes(kw));
-            document.getElementById('unitCounter').innerText = `متاح ${filtered.length} وحدة حالياً`;
+            
+            // ترتيب الوحدات: المتاح أولاً ثم المباع في الأخير
+            filtered.sort((a, b) => {
+                let soldA = (a[11]||"").toString().includes("تم البيع");
+                let soldB = (b[11]||"").toString().includes("تم البيع");
+                return soldA - soldB; 
+            });
+
+            document.getElementById('unitCounter').innerText = `متاح ${filtered.filter(r => !(r[11]||"").toString().includes("تم البيع")).length} وحدة حالياً`;
 
             let h = '';
             filtered.forEach(r => {
@@ -181,7 +189,7 @@
                             <div class="spec-item"><span class="spec-label">نظام السداد</span><span class="spec-value">${r[9]||'--'} سنوات</span></div>
                         </div>
 
-                        <div class="price-box-container" style="background: rgba(255,255,255,0.03); border-radius: 15px; padding: 18px; border: 1px solid rgba(197, 160, 18, 0.2);">
+                        <div class="price-box-container">
                             <div style="font-size: 11px; color: var(--secondary); margin-bottom: 12px; border-bottom: 1px solid #333; padding-bottom: 8px; font-weight: bold; text-align: center;">التفاصيل المالية والتعاقدية</div>
                             
                             <div class="price-line"><span class="pl-label">المدفوع:</span><span class="pl-val" style="color:#eee">${formatNum(paidToCompany)} ج.م</span></div>
@@ -197,7 +205,7 @@
 
                             <div style="margin-top: 20px; border-top: 1px dashed #444; padding-top: 15px;">
                                 <div class="price-line">
-                                    <span class="pl-label">صافي الأقساط المتبقية بدون فايدة البنك:</span>
+                                    <span class="pl-label">صافي الأقساط المتبقية بدون فائدة البنك:</span>
                                     <span class="pl-val" style="color: #fff; font-size: 15px;">${formatNum(remainingInstallments)} ج.م</span>
                                 </div>
                                 <div style="font-size: 10px; color: #888; margin-top: 2px; text-align: left;">(القيمة الكلية ${formatNum(totalValue)} ج.م)</div>
@@ -209,21 +217,18 @@
                     </div>
                 </div>`;
             });
-            list.innerHTML = h;
+            list.innerHTML = h || '<div style="text-align:center; padding:20px;">لا يوجد وحدات في هذا القسم حالياً</div>';
         }
 
         function goToStep2(c) { 
             window.curCity = c; 
             switchStep('step2'); 
             let projects = [];
-            
-            // تعديل الخانات الجديدة هنا
             if (c === 'المنصورة الجديدة') {
                 projects = ['جنة', 'سكن مصر', 'زاهية', 'إسكان ساحلي', 'تجارية وإدارية'];
             } else if (c === 'دمياط الجديدة') {
                 projects = ['جنة', 'سكن مصر', 'دار مصر', 'أهالي', 'تجارية وإدارية'];
             }
-
             let html = ''; 
             projects.forEach(p => html += `<div class="card-project" onclick="showU('${p}')">${p}</div>`); 
             document.getElementById('projectButtons').innerHTML = html; 
@@ -236,3 +241,4 @@
     </script>
 </body>
 </html>
+
