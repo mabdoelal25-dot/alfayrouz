@@ -53,8 +53,7 @@
         .spec-value { display: block; font-size: 12px; color: #eee; font-weight: 800; }
 
         .price-box-container { background: rgba(0,0,0,0.2); padding: 12px; border-radius: 12px; margin-bottom: 15px; border: 1px solid rgba(197, 160, 18, 0.1); }
-        .price-line { display: flex; justify-content: space-between; margin-bottom: 5px; }
-        .price-line:last-child { margin-bottom: 0; }
+        .price-line { display: flex; justify-content: space-between; margin-bottom: 5px; align-items: center; }
         .pl-label { font-size: 12px; color: #aaa; font-weight: 700; }
         .pl-val { font-size: 14px; color: var(--secondary); font-weight: 900; }
 
@@ -155,35 +154,54 @@
                 let sold = (r[11]||"").toString().includes("تم البيع");
                 let img = getImg(r[12]);
                 let msg = encodeURIComponent(`طلب معاينة: عمارة ${r[2]} شقة ${r[3]}`);
+                
+                // دالة تنسيق الأرقام بالفواصل
+                const formatNum = (val) => {
+                    let n = parseFloat(val);
+                    return isNaN(n) ? '--' : n.toLocaleString();
+                };
 
                 h += `<div class="apt-card ${sold ? 'is-sold' : 'is-available'}">
                     ${img ? `<div class="img-container"><img src="${img}" loading="lazy"></div>` : ''}
                     <div class="apt-content">
                         <span class="apt-location">${r[1] || '---'}</span>
-                        <div class="apt-title">عمارة ${r[2]} • شقة ${r[3]}</div>
+                        <div class="apt-title">عمارة ${r[2]} • وحدة ${r[3]}</div>
                         
                         <div class="apt-specs">
-                            <div class="spec-item"><span class="spec-label">الدور</span><span class="spec-value">${r[4]||'--'}</span></div>
-                            <div class="spec-item"><span class="spec-label">الاتجاه</span><span class="spec-value">${r[5]||'--'}</span></div>
-                            <div class="spec-item"><span class="spec-label">المساحة</span><span class="spec-value">${r[13]||'--'} م</span></div>
+                            <div class="spec-item"><span class="spec-label">المستوى</span><span class="spec-value">${r[4]||'--'}</span></div>
+                            <div class="spec-item"><span class="spec-label">الإطلالة</span><span class="spec-value">${r[5]||'--'}</span></div>
+                            <div class="spec-item"><span class="spec-label">المساحة صافي</span><span class="spec-value">${r[13]||'--'} م²</span></div>
                             <div class="spec-item"><span class="spec-label">الحالة</span><span class="spec-value">${sold ? 'تم البيع' : 'جاهزة للمعاينة'}</span></div>
                         </div>
 
-                        <div class="price-box-container">
-                            <div class="price-line"><span class="pl-label">المدفوع:</span><span class="pl-val">${r[6]||'--'}</span></div>
-                            <div class="price-line"><span class="pl-label">الأوفر:</span><span class="pl-val" style="color:#ef5350">${r[7]||'--'}</span></div>
-                            <div class="price-line"><span class="pl-label">سعر المتر:</span><span class="pl-val">${r[8]||'--'}</span></div>
+                        <div class="price-box-container" style="background: rgba(255,255,255,0.03); border-radius: 12px; padding: 15px; border: 1px solid rgba(197, 160, 18, 0.1);">
+                            <div style="font-size: 11px; color: #888; margin-bottom: 8px; border-bottom: 1px solid #333; padding-bottom: 5px; font-weight: bold;">تقرير القيمة المالية للموحدة</div>
                             
-                            <div class="price-line"><span class="pl-label">السعر الإجمالي:</span><span class="pl-val" style="color:#39FF14">${r[15]||'--'}</span></div>
-                            <div class="price-line"><span class="pl-label">المبلغ المتبقي:</span><span class="pl-val">${r[16]||'--'}</span></div>
+                            <div class="price-line"><span class="pl-label">سعر المتر الأساسي:</span><span class="pl-val">${formatNum(r[8])} ج.م</span></div>
+                            <div class="price-line"><span class="pl-label">قيمة التميز (الدور/الإطلالة):</span><span class="pl-val" style="color: #ffb74d;">محتسبة</span></div>
                             
-                            <div class="price-line"><span class="pl-label">سنوات التقسيط:</span><span class="pl-val">${r[9]||'--'}</span></div>
-                            <div class="price-line"><span class="pl-label">دفعة التقسيط:</span><span class="pl-val">${r[10]||'--'}</span></div>
-                            <div class="price-line"><span class="pl-label">متبقي من الأقساط:</span><span class="pl-val">${r[14]||'--'}</span></div>
+                            <div class="price-line" style="margin: 5px 0; border-top: 1px dashed #444; padding-top: 5px;">
+                                <span class="pl-label">إجمالي القيمة العقارية:</span>
+                                <span class="pl-val">${formatNum(r[8] * r[13])} ج.م</span>
+                            </div>
+                            
+                            <div class="price-line"><span class="pl-label">قيمة الأوفر (المطلوب):</span><span class="pl-val" style="color:#ef5350">+ ${formatNum(r[7])} ج.م</span></div>
+                            
+                            <div style="margin-top: 12px; background: linear-gradient(90deg, rgba(57,255,20,0.1), transparent); padding: 10px; border-radius: 8px; border-right: 3px solid #39FF14;">
+                                <div class="price-line" style="margin:0;">
+                                    <span class="pl-label" style="color: #fff; font-size: 13px;">صافي السعر الإجمالي:</span>
+                                    <span class="pl-val" style="color:#39FF14; font-size: 1.3em; font-weight: 900;">${formatNum(r[15])} ج.م</span>
+                                </div>
+                            </div>
+
+                            <div class="price-line" style="margin-top: 10px; opacity: 0.8;">
+                                <span class="pl-label">المبلغ المتبقي (أقساط):</span>
+                                <span class="pl-val" style="color: #fff;">${formatNum(r[16])} ج.م</span>
+                            </div>
                         </div>
 
-                        ${sold ? '<div style="text-align:center; color:var(--sold); font-weight:900; font-size:20px;">تـم البيـع</div>' : 
-                        `<a href="https://wa.me/201212229797?text=${msg}" class="btn-preview-neon">طلب معاينة الآن</a>`}
+                        ${sold ? '<div style="text-align:center; color:var(--sold); font-weight:900; font-size:22px; margin-top:10px;">تـم التعاقـد</div>' : 
+                        `<a href="https://wa.me/201212229797?text=${msg}" class="btn-preview-neon" style="margin-top: 10px;">تواصل مع المستشار العقاري</a>`}
                     </div>
                 </div>`;
             });
@@ -198,3 +216,4 @@
     </script>
 </body>
 </html>
+
