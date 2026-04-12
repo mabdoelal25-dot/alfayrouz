@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html dir="rtl">
 <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-2KF82HSX13"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-2KF82HSX13');
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Al-Fayrouz Real Estate</title>
@@ -165,6 +173,10 @@
                             <div class="price-line"><span class="pl-label">المدفوع:</span><span class="pl-val">${r[6]||'--'}</span></div>
                             <div class="price-line"><span class="pl-label">الأوفر:</span><span class="pl-val" style="color:#ef5350">${r[7]||'--'}</span></div>
                             <div class="price-line"><span class="pl-label">سعر المتر:</span><span class="pl-val">${r[8]||'--'}</span></div>
+                            
+                            <div class="price-line"><span class="pl-label">السعر الإجمالي:</span><span class="pl-val" style="color:#39FF14">${r[15]||'--'}</span></div>
+                            <div class="price-line"><span class="pl-label">المبلغ المتبقي:</span><span class="pl-val">${r[16]||'--'}</span></div>
+                            
                             <div class="price-line"><span class="pl-label">سنوات التقسيط:</span><span class="pl-val">${r[9]||'--'}</span></div>
                             <div class="price-line"><span class="pl-label">دفعة التقسيط:</span><span class="pl-val">${r[10]||'--'}</span></div>
                             <div class="price-line"><span class="pl-label">متبقي من الأقساط:</span><span class="pl-val">${r[14]||'--'}</span></div>
