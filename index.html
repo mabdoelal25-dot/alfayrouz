@@ -12,50 +12,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Al-Fayrouz Real Estate</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;800;900&family=Playfair+Display:wght@900&family=Reem+Kufi:wght@700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;800;900&family=Montserrat:wght@900&family=Reem+Kufi:wght@700&display=swap" rel="stylesheet">
     <style>
         :root { --primary: #00838f; --secondary: #c5a012; --bg-dark: #0f1214; --card-bg: #1c2226; --sold: #ff1100; --available: #39FF14; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
         html, body { overflow-x: hidden; width: 100%; height: 100%; margin: 0; padding: 0; touch-action: manipulation; }
         body { font-family: 'Cairo', sans-serif; color: #f0f0f0; background: var(--bg-dark); }
 
-        /* لودر الشاشة */
         #loadingScreen { position: fixed; inset: 0; background: var(--bg-dark); z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .loader-logo { font-family: 'Playfair Display', serif !important; font-size: 32px; font-weight: 900; color: var(--secondary); animation: pulse-text 1.2s infinite ease-in-out; }
+        .loader-logo { font-family: 'Montserrat'; font-size: 32px; font-weight: 900; color: var(--secondary); animation: pulse-text 1.2s infinite ease-in-out; }
         @keyframes pulse-text { 0%, 100% { opacity: 0.4; transform: scale(0.9); } 50% { opacity: 1; transform: scale(1.1); } }
 
-        /* الهيدر والاسم الجديد */
         .header-bar { padding: 50px 10px 30px; text-align: center; background: linear-gradient(to bottom, rgba(197, 160, 18, 0.05), transparent); }
-        .company-name { 
-            font-family: 'Playfair Display', serif !important; 
-            font-size: 46px; 
-            font-weight: 900; 
-            color: #fff; 
-            margin: 0; 
-            text-transform: uppercase; 
-            letter-spacing: 3px; 
-            line-height: 1;
-            text-shadow: 2px 4px 10px rgba(0,0,0,0.5);
-        }
-        .company-subtitle { font-family: 'Reem Kufi', sans-serif; font-size: 22px; color: var(--secondary); font-weight: 700; margin-top: 10px; display: block; }
+        .company-name { font-family: 'Montserrat', sans-serif; font-size: 42px; font-weight: 900; color: #fff; margin: 0; text-transform: uppercase; letter-spacing: 2px; line-height: 1; }
+        .company-subtitle { font-family: 'Reem Kufi', sans-serif; font-size: 22px; color: var(--secondary); font-weight: 700; margin-top: 10px; display: block; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
 
         .container { width: 100%; max-width: 450px; margin: auto; padding: 15px; }
         .section-title { font-size: 22px; color: #fff; font-weight: 900; text-align: center; margin-bottom: 25px; }
 
-        /* كروت المدن */
         .card-city { background: linear-gradient(135deg, #1c2226 0%, #252d33 100%); border-radius: 20px; padding: 30px 20px; text-align: center; border: 2px solid rgba(197, 160, 18, 0.3); cursor: pointer; margin-bottom: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); transition: 0.3s; }
         .card-city:active { transform: scale(0.95); }
         .card-city h3 { font-size: 28px; font-weight: 900; color: var(--secondary); margin: 0; }
         .card-city p { font-size: 13px; color: #888; margin-top: 8px; font-weight: 700; }
 
-        /* شبكة المشاريع */
         .project-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .card-project { background: var(--card-bg); border-radius: 15px; padding: 25px 10px; text-align: center; border: 1px solid rgba(255,255,255,0.05); cursor: pointer; font-weight: 900; transition: 0.3s; display: flex; align-items: center; justify-content: center; min-height: 80px; }
         .card-project:active { background: var(--secondary); color: #000; }
 
-        /* كروت الوحدات */
         .apt-card { background: #1c2226; border-radius: 22px; margin-bottom: 25px; overflow: hidden; position: relative; }
         .is-available { border-right: 8px solid var(--available); box-shadow: 0 10px 30px rgba(0,0,0,0.3); } 
         .is-sold { border-right: 15px solid var(--sold); opacity: 0.6; filter: grayscale(0.7); } 
@@ -83,7 +66,6 @@
             box-shadow: 0 5px 20px rgba(57, 255, 20, 0.4); border: none; width: 100%; font-size: 16px; text-decoration: none;
         }
 
-        /* زر الاتصال */
         .btn-call-fixed {
             position: fixed; bottom: 25px; left: 25px;
             width: 55px; height: 55px; background: var(--secondary);
@@ -199,14 +181,14 @@
                             <div class="spec-item"><span class="spec-label">نظام السداد</span><span class="spec-value">${r[9]||'--'} سنوات</span></div>
                         </div>
 
-                        <div class="price-box-container">
+                        <div class="price-box-container" style="background: rgba(255,255,255,0.03); border-radius: 15px; padding: 18px; border: 1px solid rgba(197, 160, 18, 0.2);">
                             <div style="font-size: 11px; color: var(--secondary); margin-bottom: 12px; border-bottom: 1px solid #333; padding-bottom: 8px; font-weight: bold; text-align: center;">التفاصيل المالية والتعاقدية</div>
                             
                             <div class="price-line"><span class="pl-label">المدفوع:</span><span class="pl-val" style="color:#eee">${formatNum(paidToCompany)} ج.م</span></div>
                             <div class="price-line"><span class="pl-label">قيمة الأوفر:</span><span class="pl-val" style="color:#ef5350">+ ${formatNum(overPrice)} ج.م</span></div>
                             
                             <div style="margin-top: 15px; background: linear-gradient(135deg, rgba(57,255,20,0.15) 0%, rgba(57,255,20,0.05) 100%); padding: 15px; border-radius: 12px; border: 2px solid var(--available); position: relative; text-align: center;">
-                                <div style="font-family: 'Cairo'; font-weight: 900; font-size: 18px; color: var(--available); text-transform: uppercase; margin-bottom: 5px;">استلم مفتاحك الآن</div>
+                                <div style="font-family: 'Cairo'; font-weight: 900; font-size: 18px; color: var(--available); text-transform: uppercase; margin-bottom: 5px; text-shadow: 0 0 10px rgba(57,255,20,0.5);">استلم مفتاحك الآن</div>
                                 <div class="price-line" style="justify-content: center; gap: 10px; margin:0;">
                                     <span class="pl-val" style="color:#fff; font-size: 1.8em; font-weight: 900;">${formatNum(cashNow)}</span>
                                     <span style="color: var(--available); font-weight: 800; font-size: 14px;">جنية كاش</span>
@@ -223,7 +205,8 @@
                         </div>
 
                         ${sold ? '<div style="text-align:center; color:var(--sold); font-weight:900; font-size:24px; margin-top:15px;">تـم التعاقـد</div>' : 
-                        `<a href="https://wa.me/201212229797?text=${msg}" class="btn-preview-neon" style="margin-top: 10px;">طلب معاينة
+                        `<a href="https://wa.me/201212229797?text=${msg}" class="btn-preview-neon" style="margin-top: 10px;">طلب معاينة وتفاصيل القسط</a>`}
+                    </div>
                 </div>`;
             });
             list.innerHTML = h;
@@ -234,6 +217,7 @@
             switchStep('step2'); 
             let projects = [];
             
+            // تعديل الخانات الجديدة هنا
             if (c === 'المنصورة الجديدة') {
                 projects = ['جنة', 'سكن مصر', 'زاهية', 'إسكان ساحلي', 'تجارية وإدارية'];
             } else if (c === 'دمياط الجديدة') {
@@ -252,4 +236,3 @@
     </script>
 </body>
 </html>
-
