@@ -1,31 +1,25 @@
 <!DOCTYPE html>
 <html dir="rtl">
 <head>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://drive.google.com">
-    
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-2KF82HSX13"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-2KF82HSX13', { 'page_path': location.pathname + location.search + location.hash });
+      gtag('config', 'G-2KF82HSX13');
     </script>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Al-Fayrouz Real Estate</title>
-    
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;800;900&family=Montserrat:wght@900&family=Reem+Kufi:wght@700&display=swap" rel="stylesheet">
-    
     <style>
-        /* كود الـ CSS بتاعك زي ما هو بالظبط بدون تعديل حرف واحد */
+        /* الديزاين بتاعك ثابت زي ما هو 100% */
         :root { --primary: #00838f; --secondary: #c5a012; --bg-dark: #0f1214; --card-bg: #1c2226; --sold: #ff1100; --available: #39FF14; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
         html, body { overflow-x: hidden; width: 100%; height: 100%; margin: 0; padding: 0; touch-action: manipulation; }
         body { font-family: 'Cairo', sans-serif; color: #f0f0f0; background: var(--bg-dark); }
-        #loadingScreen { position: fixed; inset: 0; background: var(--bg-dark); z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        #loadingScreen { position: fixed; inset: 0; background: var(--bg-dark); z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.5s; }
         .loader-logo { font-family: 'Montserrat'; font-size: 32px; font-weight: 900; color: var(--secondary); animation: pulse-text 1.2s infinite ease-in-out; }
         @keyframes pulse-text { 0%, 100% { opacity: 0.4; transform: scale(0.9); } 50% { opacity: 1; transform: scale(1.1); } }
         .social-menu { position: fixed; bottom: 25px; left: 25px; z-index: 10000; display: flex; flex-direction: column-reverse; align-items: center; gap: 15px; }
@@ -67,12 +61,7 @@
         .price-line { display: flex; justify-content: space-between; margin-bottom: 5px; align-items: center; }
         .pl-label { font-size: 12px; color: #aaa; font-weight: 700; }
         .pl-val { font-size: 14px; color: var(--secondary); font-weight: 900; }
-        .btn-preview-neon { 
-            background: var(--available); color: #000; text-align: center; padding: 16px; 
-            border-radius: 15px; cursor: pointer; font-weight: 900; margin-top: 10px; 
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-            box-shadow: 0 5px 20px rgba(57, 255, 20, 0.4); border: none; width: 100%; font-size: 16px; text-decoration: none;
-        }
+        .btn-preview-neon { background: var(--available); color: #000; text-align: center; padding: 16px; border-radius: 15px; cursor: pointer; font-weight: 900; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 5px 20px rgba(57, 255, 20, 0.4); border: none; width: 100%; font-size: 16px; text-decoration: none; }
         .hidden { display: none !important; }
         .units-counter { background: rgba(197, 160, 18, 0.1); color: var(--secondary); text-align: center; padding: 12px; border-radius: 12px; margin-bottom: 20px; font-size: 15px; font-weight: 900; border: 1px dashed var(--secondary); }
     </style>
@@ -117,24 +106,59 @@
     </div>
 
     <script>
-        /* كود الـ JavaScript بتاعك زي ما هو بالظبط بدون تعديل حرف واحد */
         const API_URL = "https://script.google.com/macros/s/AKfycbxQsS6y6NgU_HdYXZOKsiV7xyzh7EBvYWLUeOacsqf7ERu93gnVyiOnNDUxqG6UUzcA/exec";
         let allData = [];
-        function toggleSocial() { const menu = document.getElementById('subSocialMenu'); const btn = document.getElementById('mainSocialBtn'); menu.classList.toggle('active'); btn.style.transform = menu.classList.contains('active') ? 'rotate(45deg)' : 'rotate(0deg)'; }
-        async function fetchD() { try { const response = await fetch(API_URL + "?v=" + Math.random()); const data = await response.json(); allData = data.slice(1); document.getElementById('loadingScreen').style.display = 'none'; } catch(e) { console.error(e); } }
-        function getImg(url) { if (!url) return ""; if (url.toString().includes('drive.google.com')) { let id = url.includes('id=') ? url.split('id=')[1].split('&')[0] : url.split('/d/')[1].split('/')[0]; return `https://drive.google.com/thumbnail?sz=1000&id=${id}`; } return url; }
+
+        // تحسين: تشغيل جلب البيانات فوراً قبل أي شيء آخر
+        (async function init() {
+            try {
+                // سحب البيانات بوضع الاستعجال
+                const response = await fetch(API_URL + "?v=" + Math.random());
+                const data = await response.json();
+                allData = data.slice(1);
+                // إخفاء شاشة التحميل بمجرد وصول البيانات
+                const loader = document.getElementById('loadingScreen');
+                loader.style.opacity = '0';
+                setTimeout(() => loader.style.display = 'none', 500);
+            } catch(e) { 
+                console.error(e);
+                document.getElementById('loadingScreen').style.display = 'none';
+            }
+        })();
+
+        function toggleSocial() {
+            const menu = document.getElementById('subSocialMenu');
+            const btn = document.getElementById('mainSocialBtn');
+            menu.classList.toggle('active');
+            btn.style.transform = menu.classList.contains('active') ? 'rotate(45deg)' : 'rotate(0deg)';
+        }
+
+        function getImg(url) {
+            if (!url) return "";
+            if (url.toString().includes('drive.google.com')) {
+                let id = url.includes('id=') ? url.split('id=')[1].split('&')[0] : url.split('/d/')[1].split('/')[0];
+                return `https://drive.google.com/thumbnail?sz=1000&id=${id}`;
+            }
+            return url;
+        }
+
         function render(kw) {
             const list = document.getElementById('apartmentList');
             let filtered = allData.filter(r => (r[0]||"").toString().trim() === window.curCity && (r[1]||"").toString().includes(kw));
             filtered.sort((a, b) => (a[11]||"").toString().includes("تم البيع") - (b[11]||"").toString().includes("تم البيع"));
             document.getElementById('unitCounter').innerText = `متاح ${filtered.filter(r => !(r[11]||"").toString().includes("تم البيع")).length} وحدة حالياً`;
+
             let h = '';
             filtered.forEach(r => {
                 let sold = (r[11]||"").toString().includes("تم البيع");
                 let img = getImg(r[12]);
                 const fmt = (v) => isNaN(parseFloat(v)) ? '--' : parseFloat(v).toLocaleString();
-                let paid = parseFloat(r[6]) || 0; let over = parseFloat(r[7]) || 0; let cashNow = paid + over;
-                let totalValue = parseFloat(r[15]) || 0; let remaining = totalValue - cashNow;
+                let paid = parseFloat(r[6]) || 0;
+                let over = parseFloat(r[7]) || 0;
+                let cashNow = paid + over;
+                let totalValue = parseFloat(r[15]) || 0;
+                let remaining = totalValue - cashNow;
+
                 h += `<div class="apt-card ${sold ? 'is-sold' : 'is-available'}">
                     ${img ? `<div class="img-container"><img src="${img}" loading="lazy"></div>` : ''}
                     <div class="apt-content">
@@ -169,11 +193,11 @@
             });
             list.innerHTML = h;
         }
+
         function goToStep2(c) { window.curCity = c; switchStep('step2'); let projects = c === 'المنصورة الجديدة' ? ['جنة', 'سكن مصر', 'زاهية', 'إسكان ساحلي', 'تجارية وإدارية'] : ['جنة', 'سكن مصر', 'دار مصر', 'أهالي', 'تجارية وإدارية']; let html = ''; projects.forEach(p => html += `<div class="card-project" onclick="showU('${p}')">${p}</div>`); document.getElementById('projectButtons').innerHTML = html; }
         function showU(kw) { switchStep('step3'); render(kw); }
         function switchStep(id) { ['step1','step2','step3'].forEach(s => document.getElementById(s).classList.add('hidden')); document.getElementById(id).classList.remove('hidden'); window.scrollTo(0,0); }
         function goBack(s) { switchStep('step' + s); }
-        window.onload = fetchD;
     </script>
 </body>
 </html>
