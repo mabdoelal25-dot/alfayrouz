@@ -23,7 +23,7 @@
         .loader-logo { font-family: 'Montserrat'; font-size: 32px; font-weight: 900; color: var(--secondary); animation: pulse-text 1.2s infinite ease-in-out; }
         @keyframes pulse-text { 0%, 100% { opacity: 0.4; transform: scale(0.9); } 50% { opacity: 1; transform: scale(1.1); } }
 
-        /* نافذة الإضافة (نفس ديزاينك) */
+        /* نافذة الإضافة */
         .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 20000; padding: 15px; backdrop-filter: blur(8px); overflow-y: auto; }
         .modal-box { background: var(--card-bg); border-radius: 20px; padding: 25px; border: 1px solid var(--secondary); max-width: 420px; margin: 10px auto; }
         .modal-box input, .modal-box select { width: 100%; padding: 12px; margin-top: 8px; border-radius: 12px; border: 1px solid #333; background: #0b0d0e; color: #fff; font-family: 'Cairo'; text-align: right; }
@@ -48,7 +48,6 @@
         .container { width: 100%; max-width: 450px; margin: auto; padding: 15px; }
         .section-title { font-size: 22px; color: #fff; font-weight: 900; text-align: center; margin-bottom: 25px; }
 
-        /* زر الإضافة في الصفحة الأولى */
         .sell-card-trigger { background: linear-gradient(135deg, #1c2226 0%, #252d33 100%); border: 2px dashed var(--secondary); border-radius: 20px; padding: 20px; text-align: center; cursor: pointer; margin-bottom: 25px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
         .sell-card-trigger span { color: var(--secondary); font-weight: 900; font-size: 16px; }
 
@@ -170,7 +169,6 @@
         const API_URL = "https://script.google.com/macros/s/AKfycbxQsS6y6NgU_HdYXZOKsiV7xyzh7EBvYWLUeOacsqf7ERu93gnVyiOnNDUxqG6UUzcA/exec";
         let allData = [];
 
-        // دوال الإضافة (أوتوماتيك بدون واتساب)
         function openM() { document.getElementById('sellModal').style.display = 'block'; }
         function closeM() { document.getElementById('sellModal').style.display = 'none'; }
         function toggleFields() {
@@ -207,7 +205,6 @@
             finally { btn.innerText = "إرسال وتأكيد الإضافة"; }
         }
 
-        // باقي دوال الموقع الأصلية
         function toggleSocial() {
             const menu = document.getElementById('subSocialMenu');
             const btn = document.getElementById('mainSocialBtn');
@@ -285,4 +282,5 @@
     </script>
 </body>
 </html>
+
 
