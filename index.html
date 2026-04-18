@@ -93,25 +93,27 @@
     <div id="unitModal" class="modal-overlay">
         <div class="modal-box">
             <h2>عرض وحدة للبيع</h2>
+            
             <div class="form-group"><select id="fCity" onchange="updateFProj()"><option value="">اختر المدينة</option><option>المنصورة الجديدة</option><option>دمياط الجديدة</option></select></div>
             <div class="form-group"><select id="fProj" onchange="checkZahia()"><option value="">اختر المشروع</option></select></div>
             <div id="boxNormal" class="form-group" style="display:flex; gap:10px;"><input type="number" id="fBld" placeholder="رقم العمارة"><input type="number" id="fUnt" placeholder="رقم الشقة"></div>
             <div id="boxVilla" class="form-group hidden"><input type="number" id="fVilla" placeholder="رقم الفيلا"></div>
-            <div class="form-group"><input type="text" id="fFloor" placeholder="الدور (مثال: الثالث)"></div>
+            <div class="form-group"><input type="text" id="fFloor" placeholder="الدور"></div>
             <div class="form-group"><input type="number" id="fSize" placeholder="المساحة بالمتر"></div>
+            <div class="form-group"><input type="number" id="fMeter" placeholder="سعر المتر"></div>
             <div class="form-group"><input type="tel" id="fPhone" placeholder="رقم الموبايل للتواصل"></div>
+            
             <div class="form-group"><select id="fStatus" onchange="togglePay()"><option value="">نظام البيع</option><option value="أقساط">أقساط</option><option value="كاش">كاش</option></select></div>
             
             <div id="payInstall" class="hidden">
                 <div class="form-group"><input type="number" id="fPaid" placeholder="المدفوع الحالي"></div>
                 <div class="form-group"><input type="number" id="fOver" placeholder="الأوفر المطلوب"></div>
-                <div class="form-group"><input type="number" id="fInstallVal" placeholder="قيمة القسط"></div>
-                <div class="form-group"><input type="number" id="fYears" placeholder="عدد سنوات التقسيط"></div>
-                <div class="form-group"><input type="number" id="fMeter" placeholder="سعر المتر التقريبي"></div>
+                <div class="form-group"><input type="number" id="fInstallVal" placeholder="دفعة التقسيط"></div>
+                <div class="form-group"><input type="number" id="fYears" placeholder="سنوات التقسيط"></div>
             </div>
 
             <div id="payCash" class="hidden">
-                <div class="form-group"><input type="number" id="fPrice" placeholder="السعر الكاش النهائي"></div>
+                <div class="form-group"><input type="number" id="fPrice" placeholder="السعر المطلوب كاش"></div>
             </div>
 
             <button class="btn-submit-form" onclick="sendUnit()">إرسال البيانات</button>
@@ -190,26 +192,22 @@
             document.getElementById('boxVilla').classList.toggle('hidden', !isZahia);
         }
 
-        // وظيفة الإرسال المحدثة (ترسل رقم الهاتف وتتحقق من الخانات)
         async function sendUnit() {
             const status = document.getElementById('fStatus').value;
-            const phone = document.getElementById('fPhone').value;
-            const commonFields = ['fCity', 'fProj', 'fFloor', 'fSize', 'fPhone', 'fStatus'];
+            const commonFields = ['fCity', 'fProj', 'fFloor', 'fSize', 'fMeter', 'fPhone', 'fStatus'];
             let activeFields = [...commonFields];
 
             if (status === 'أقساط') {
-                activeFields.push('fPaid', 'fOver', 'fInstallVal', 'fYears', 'fMeter');
+                activeFields.push('fPaid', 'fOver', 'fInstallVal', 'fYears');
             } else if (status === 'كاش') {
                 activeFields.push('fPrice');
             }
 
-            // التأكد من ملء كل الخانات الظاهرة
             for (let id of activeFields) {
                 let el = document.getElementById(id);
                 if (!el.value) { alert("يرجى إكمال جميع البيانات المطلوبة!"); el.focus(); return; }
             }
 
-            // تجميع البيانات لإرسالها للجيت (العمود S هو الخانة الـ 19)
             const formData = {
                 city: document.getElementById('fCity').value,
                 project: document.getElementById('fProj').value,
@@ -217,22 +215,20 @@
                 unit: document.getElementById('fUnt').value || "Villa",
                 floor: document.getElementById('fFloor').value,
                 size: document.getElementById('fSize').value,
-                phone: phone, // سيتم ربطه بالعمود S في السكريبت
+                meter: document.getElementById('fMeter').value,
+                phone: document.getElementById('fPhone').value,
                 status: status,
                 paid: document.getElementById('fPaid').value || 0,
                 over: document.getElementById('fOver').value || 0,
                 install: document.getElementById('fInstallVal').value || 0,
                 years: document.getElementById('fYears').value || 0,
-                meter: document.getElementById('fMeter').value || 0,
                 price: document.getElementById('fPrice').value || 0
             };
 
-            // إشعار المستخدم بالنجاح
-            alert("تم إرسال بياناتك بنجاح! سيتم التواصل معكم قريباً.");
+            alert("تم إرسال بياناتك بنجاح! سيتم مراجعتها قريباً.");
             closeModal();
             
-            // فتح واتساب لإبلاغ الإدارة
-            const msg = `طلب إضافة وحدة جديدة:\nالمدينة: ${formData.city}\nالمشروع: ${formData.project}\nرقم العمارة/الفيلا: ${formData.bld}\nالمساحة: ${formData.size}م\nرقم الموبايل: ${formData.phone}\nالنظام: ${formData.status}`;
+            const msg = `إضافة وحدة جديدة:\nالمدينة: ${formData.city}\nالمشروع: ${formData.project}\nرقم العمارة/الفيلا: ${formData.bld}\nالمساحة: ${formData.size}م\nسعر المتر: ${formData.meter}\nالموبايل: ${formData.phone}\nالنظام: ${formData.status}`;
             window.open(`https://wa.me/201212229797?text=${encodeURIComponent(msg)}`);
         }
 
@@ -242,7 +238,7 @@
                 const data = await res.json();
                 allData = data.slice(1);
                 document.getElementById('loadingScreen').style.display = 'none';
-            } catch(e) { console.error("Error loading data", e); }
+            } catch(e) { console.error("Error", e); }
         }
 
         function getImg(u) {
@@ -268,7 +264,6 @@
                 let paid = parseFloat(r[6]) || 0;
                 let over = parseFloat(r[7]) || 0;
                 let cashNow = paid + over;
-                let totalVal = parseFloat(r[15]) || 0;
 
                 h += `<div class="apt-card ${sold ? 'is-sold' : 'is-available'}">
                     ${img ? `<div class="img-container"><img src="${img}" loading="lazy"></div>` : ''}
