@@ -12,70 +12,74 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Al-Fayrouz Real Estate</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=Montserrat:wght@900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;800;900&family=Montserrat:wght@900&family=Reem+Kufi:wght@700&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #00838f; --secondary: #c5a012; --bg-dark: #0f1214; --card-bg: #1c2226; --sold: #ff1100; --available: #39FF14; --input-focus: #c5a012; }
+        :root { --primary: #00838f; --secondary: #c5a012; --bg-dark: #0f1214; --card-bg: #1c2226; --sold: #ff1100; --available: #39FF14; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
-        body { font-family: 'Cairo', sans-serif; color: #f0f0f0; background: var(--bg-dark); margin: 0; padding: 0; }
+        html, body { overflow-x: hidden; width: 100%; height: 100%; margin: 0; padding: 0; touch-action: manipulation; }
+        body { font-family: 'Cairo', sans-serif; color: #f0f0f0; background: var(--bg-dark); }
 
-        /* مظهر أرقى لنوافذ الإدخال */
-        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 20000; padding: 15px; backdrop-filter: blur(10px); overflow-y: auto; }
-        .modal-box { background: #161b1e; border-radius: 25px; padding: 30px; border: 1px solid rgba(197, 160, 18, 0.2); max-width: 420px; margin: 20px auto; box-shadow: 0 25px 50px rgba(0,0,0,0.5); }
-        
+        /* الشاشة الافتتاحية */
+        #loadingScreen { position: fixed; inset: 0; background: var(--bg-dark); z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .loader-logo { font-family: 'Montserrat'; font-size: 32px; font-weight: 900; color: var(--secondary); animation: pulse-text 1.2s infinite ease-in-out; }
+        @keyframes pulse-text { 0%, 100% { opacity: 0.4; transform: scale(0.9); } 50% { opacity: 1; transform: scale(1.1); } }
+
+        /* نافذة الإضافة الجديدة والأنيقة */
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 20000; padding: 15px; backdrop-filter: blur(10px); overflow-y: auto; }
+        .modal-box { background: #161b1e; border-radius: 25px; padding: 25px; border: 1px solid rgba(197, 160, 18, 0.3); max-width: 420px; margin: 10px auto; box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
+        .modal-box h2 { text-align: center; color: var(--secondary); margin-bottom: 20px; font-size: 22px; }
         .modal-box input, .modal-box select { 
-            width: 100%; padding: 14px; margin-top: 12px; border-radius: 12px; 
-            border: 1px solid #2d353a; background: #0b0d0e; color: #fff; 
-            font-family: 'Cairo'; text-align: right; transition: 0.3s;
-            font-size: 14px;
+            width: 100%; padding: 14px; margin-top: 10px; border-radius: 12px; border: 1px solid #2d353a; 
+            background: #0b0d0e; color: #fff; font-family: 'Cairo'; text-align: right; font-size: 14px;
         }
-        .modal-box input:focus, .modal-box select:focus { border-color: var(--secondary); box-shadow: 0 0 10px rgba(197, 160, 18, 0.1); }
-        
-        .btn-submit-auto { 
-            background: linear-gradient(135deg, var(--secondary) 0%, #a38510 100%); 
-            color: #000; width: 100%; padding: 16px; border-radius: 15px; 
-            font-weight: 900; border: none; margin-top: 25px; cursor: pointer; 
-            font-size: 16px; transition: 0.3s;
-        }
+        .modal-box input:focus { border-color: var(--secondary); }
+        .btn-submit-auto { background: var(--available); color: #000; width: 100%; padding: 16px; border-radius: 15px; font-weight: 900; border: none; margin-top: 20px; cursor: pointer; font-size: 16px; }
 
-        /* تنسيق الهيدر والمحتوى الرئيسي */
+        /* تصميم الهيدر الأساسي الخاص بك */
         .header-bar { padding: 50px 10px 30px; text-align: center; }
-        .company-name { font-family: 'Montserrat'; font-size: 42px; font-weight: 900; color: #fff; margin: 0; letter-spacing: 2px; }
-        .company-subtitle { font-size: 22px; color: var(--secondary); font-weight: 700; margin-top: 5px; display: block; }
+        .company-name { font-family: 'Montserrat', sans-serif; font-size: 42px; font-weight: 900; color: #fff; margin: 0; text-transform: uppercase; }
+        .company-subtitle { font-family: 'Reem Kufi', sans-serif; font-size: 22px; color: var(--secondary); font-weight: 700; margin-top: 10px; display: block; }
+
+        /* القائمة الجانبية */
+        .social-menu { position: fixed; bottom: 25px; left: 25px; z-index: 10000; display: flex; flex-direction: column-reverse; align-items: center; gap: 15px; }
+        .social-btn { width: 55px; height: 55px; background: var(--secondary); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #fff; cursor: pointer; }
+        .sub-menu { display: flex; flex-direction: column-reverse; gap: 12px; opacity: 0; visibility: hidden; transition: 0.4s; }
+        .sub-menu.active { opacity: 1; visibility: visible; }
+        .sub-item { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1.5px solid #fff; }
 
         .container { width: 100%; max-width: 450px; margin: auto; padding: 15px; }
-        .card-city { background: #1c2226; border-radius: 20px; padding: 30px; text-align: center; border: 1px solid rgba(197, 160, 18, 0.2); cursor: pointer; margin-bottom: 15px; transition: 0.3s; }
-        .card-project { background: #1c2226; border-radius: 15px; padding: 25px; text-align: center; border: 1px solid #2d353a; cursor: pointer; font-weight: 900; }
-        
-        .apt-card { background: #1c2226; border-radius: 22px; margin-bottom: 25px; overflow: hidden; border-right: 6px solid var(--available); }
-        .is-sold { opacity: 0.6; border-right-color: var(--sold); }
+        .sell-card-trigger { background: rgba(197,160,18,0.1); border: 2px dashed var(--secondary); border-radius: 20px; padding: 20px; text-align: center; cursor: pointer; margin-bottom: 25px; }
+        .card-city { background: var(--card-bg); border-radius: 20px; padding: 30px; text-align: center; border: 1px solid rgba(197, 160, 18, 0.2); cursor: pointer; margin-bottom: 15px; }
+        .card-project { background: var(--card-bg); border-radius: 15px; padding: 25px; text-align: center; border: 1px solid #2d353a; cursor: pointer; font-weight: 900; }
+
+        /* كروت العرض الجديدة */
+        .apt-card { background: #1c2226; border-radius: 22px; margin-bottom: 25px; overflow: hidden; border-right: 6px solid var(--available); position: relative; }
+        .is-sold { opacity: 0.6; border-right-color: var(--sold); filter: grayscale(0.5); }
+        .img-container { width: 100%; height: 220px; background: #000; }
+        .img-container img { width: 100%; height: 100%; object-fit: cover; }
         .apt-content { padding: 20px; }
-        .apt-title { font-size: 19px; font-weight: 900; color: #fff; }
-        .price-box { background: rgba(0,0,0,0.2); padding: 15px; border-radius: 15px; margin-top: 15px; border: 1px solid rgba(197, 160, 18, 0.1); }
+        .price-box-container { background: rgba(0,0,0,0.2); padding: 15px; border-radius: 15px; margin-top: 15px; border: 1px solid rgba(197, 160, 18, 0.1); }
         
         .hidden { display: none !important; }
-        #loadingScreen { position: fixed; inset: 0; background: var(--bg-dark); z-index: 99999; display: flex; align-items: center; justify-content: center; color: var(--secondary); font-weight: 900; font-size: 24px; }
     </style>
 </head>
 <body>
 
-    <div id="loadingScreen">AL-FAYROUZ...</div>
+    <div id="loadingScreen"><div class="loader-logo">AL-FAYROUZ</div></div>
 
     <div id="sellModal" class="modal-overlay">
         <div class="modal-box">
-            <h2 style="text-align:center; color:var(--secondary); font-weight:900; margin-bottom:10px;">إضافة عرض جديد</h2>
-            <p style="text-align:center; font-size:12px; color:#888; margin-bottom:20px;">أدخل تفاصيل الوحدة بدقة ليتم عرضها</p>
-            
+            <h2>إضافة وحدة جديدة 🏠</h2>
             <select id="sCity" onchange="upModProj()">
                 <option value="">اختر المدينة</option>
                 <option>المنصورة الجديدة</option>
                 <option>دمياط الجديدة</option>
             </select>
-            
             <select id="sProj" onchange="toggleZahiaFields()">
                 <option value="">المشروع</option>
             </select>
 
-            <div id="normalFields" style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+            <div id="normalFields" style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
                 <input type="number" id="sBld" placeholder="رقم العمارة">
                 <input type="number" id="sUnt" placeholder="رقم الشقة">
             </div>
@@ -84,7 +88,7 @@
                 <input type="number" id="sVilla" placeholder="رقم الفيلا">
             </div>
 
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
                 <input type="text" id="sFloor" placeholder="الدور">
                 <input type="number" id="sSize" placeholder="المساحة">
             </div>
@@ -95,7 +99,7 @@
             </select>
 
             <div id="installmentGroup">
-                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
                     <input type="number" id="sPaid" placeholder="المدفوع">
                     <input type="number" id="sOver" placeholder="الأوفر">
                 </div>
@@ -106,8 +110,16 @@
                 <input type="number" id="sTotalPrice" placeholder="إجمالي السعر الكاش">
             </div>
 
-            <button class="btn-submit-auto" onclick="autoSend()">تأكيد ونشر العرض</button>
-            <button onclick="closeM()" style="width:100%; background:none; border:none; color:#666; margin-top:15px; cursor:pointer; font-weight:700;">إلغاء</button>
+            <button class="btn-submit-auto" onclick="autoSend()">تأكيد ونشر الإعلان</button>
+            <button onclick="closeM()" style="width:100%; background:none; border:none; color:#666; margin-top:15px; cursor:pointer;">إلغاء</button>
+        </div>
+    </div>
+
+    <div class="social-menu">
+        <div class="social-btn" onclick="toggleSocial()">📞</div>
+        <div class="sub-menu" id="subSocialMenu">
+            <a href="https://wa.me/201212229797" class="sub-item" style="background:#25D366;">WA</a>
+            <a href="tel:+201212229797" class="sub-item" style="background:#34b7f1;">📞</a>
         </div>
     </div>
 
@@ -118,16 +130,16 @@
 
     <div class="container">
         <div id="step1">
-            <div onclick="openM()" style="background:rgba(197,160,18,0.1); border:1px dashed var(--secondary); border-radius:15px; padding:15px; text-align:center; color:var(--secondary); cursor:pointer; margin-bottom:20px; font-weight:900;">+ أضف وحدتك هنا</div>
+            <div class="sell-card-trigger" onclick="openM()"><span>🏠 اضغط هنا لإضافة وحدتك الخاصة فوراً</span></div>
             <div class="card-city" onclick="goToStep2('المنصورة الجديدة')"><h3>المنصورة الجديدة</h3></div>
             <div class="card-city" onclick="goToStep2('دمياط الجديدة')"><h3>دمياط الجديدة</h3></div>
         </div>
         <div id="step2" class="hidden">
-            <button onclick="goBack(1)" style="margin-bottom:15px; background:none; border:1px solid #444; color:#fff; padding:8px 15px; border-radius:10px;">رجوع</button>
+            <button onclick="goBack(1)" style="color:#fff; background:#1c2226; padding:10px; border-radius:10px; margin-bottom:10px;">رجوع</button>
             <div id="projectButtons" style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;"></div>
         </div>
         <div id="step3" class="hidden">
-            <button onclick="goBack(2)" style="margin-bottom:15px; background:none; border:1px solid #444; color:#fff; padding:8px 15px; border-radius:10px;">رجوع</button>
+            <button onclick="goBack(2)" style="color:#fff; background:#1c2226; padding:10px; border-radius:10px; margin-bottom:10px;">رجوع</button>
             <div id="apartmentList"></div>
         </div>
     </div>
@@ -138,6 +150,7 @@
 
         function openM() { document.getElementById('sellModal').style.display = 'block'; }
         function closeM() { document.getElementById('sellModal').style.display = 'none'; }
+        function toggleSocial() { document.getElementById('subSocialMenu').classList.toggle('active'); }
 
         function upModProj() {
             const c = document.getElementById('sCity').value;
@@ -150,8 +163,7 @@
         }
 
         function toggleZahiaFields() {
-            const proj = document.getElementById('sProj').value;
-            const isZahia = proj === 'زاهية';
+            const isZahia = document.getElementById('sProj').value === 'زاهية';
             document.getElementById('normalFields').classList.toggle('hidden', isZahia);
             document.getElementById('zahiaFields').classList.toggle('hidden', !isZahia);
         }
@@ -165,28 +177,22 @@
         async function autoSend() {
             const proj = document.getElementById('sProj').value;
             const status = document.getElementById('sStatus').value;
-            
             const payload = {
                 city: document.getElementById('sCity').value,
                 region: proj,
                 building: proj === 'زاهية' ? "فيلا" : document.getElementById('sBld').value,
                 unit: proj === 'زاهية' ? document.getElementById('sVilla').value : document.getElementById('sUnt').value,
-                floor: document.getElementById('sFloor').value,
-                status: status,
+                floor: document.getElementById('sFloor').value, status: status,
                 size: document.getElementById('sSize').value,
                 paid: status === 'خالصة' ? document.getElementById('sTotalPrice').value : document.getElementById('sPaid').value,
                 over: status === 'خالصة' ? "0" : document.getElementById('sOver').value,
                 remaining: status === 'خالصة' ? "0" : document.getElementById('sRem').value
             };
-
-            const btn = document.querySelector('.btn-submit-auto');
-            btn.innerText = "جاري الحفظ...";
             try {
                 await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
-                alert("تمت الإضافة بنجاح");
+                alert("تم إرسال عرضك بنجاح");
                 closeM();
-            } catch(e) { alert("خطأ في الإرسال"); }
-            btn.innerText = "تأكيد ونشر العرض";
+            } catch(e) { alert("حدث خطأ"); }
         }
 
         async function fetchD() {
@@ -203,29 +209,29 @@
             filtered.forEach(r => {
                 const isCash = r[8] === 'خالصة';
                 const isZahia = r[1] === 'زاهية';
-                h += `
-                <div class="apt-card ${r[11].includes('بيع') ? 'is-sold' : ''}">
+                const img = r[12] ? `https://drive.google.com/thumbnail?sz=1000&id=${r[12].includes('id=') ? r[12].split('id=')[1] : r[12].split('/d/')[1].split('/')[0]}` : null;
+                
+                h += `<div class="apt-card ${r[11].includes('بيع') ? 'is-sold' : ''}">
+                    ${img ? `<div class="img-container"><img src="${img}"></div>` : ''}
                     <div class="apt-content">
-                        <span style="color:var(--secondary); font-size:12px; font-weight:800;">${r[1]}</span>
-                        <div class="apt-title">${isZahia ? 'فيلا رقم ' + r[3] : 'عمارة ' + r[2] + ' • شقة ' + r[3]}</div>
-                        <div class="price-box">
+                        <span style="color:var(--secondary); font-weight:800;">${r[1]}</span>
+                        <div style="font-size:18px; font-weight:900;">${isZahia ? 'فيلا رقم ' + r[3] : 'عمارة ' + r[2] + ' • شقة ' + r[3]}</div>
+                        <div class="price-box-container">
                             ${isCash ? 
-                                `<div style="text-align:center"><div style="color:#888; font-size:11px;">إجمالي الكاش</div><div style="color:var(--available); font-size:18px; font-weight:900;">${parseFloat(r[6]).toLocaleString()} ج.م</div></div>` :
-                                `<div style="display:flex; justify-content:space-between; font-size:13px;"><span>كاش الاستلام:</span><span style="color:var(--available); font-weight:900;">${(parseFloat(r[6])+parseFloat(r[7])).toLocaleString()} ج.م</span></div>`
+                                `<div style="text-align:center"><div style="color:var(--available); font-size:20px; font-weight:900;">${parseFloat(r[6]).toLocaleString()} ج.م (كاش)</div></div>` :
+                                `<div style="display:flex; justify-content:space-between;"><span>كاش الاستلام:</span><span style="color:var(--available); font-weight:900;">${(parseFloat(r[6])+parseFloat(r[7])).toLocaleString()} ج.م</span></div>`
                             }
                         </div>
                     </div>
                 </div>`;
             });
-            list.innerHTML = h || '<p style="text-align:center">لا يوجد عروض حالياً</p>';
+            list.innerHTML = h || '<p style="text-align:center">لا يوجد عروض</p>';
         }
 
         function goToStep2(c) { 
-            window.curCity = c; 
-            switchStep('step2'); 
+            window.curCity = c; switchStep('step2'); 
             let projects = c === 'المنصورة الجديدة' ? ['جنة', 'سكن مصر', 'زاهية', 'إسكان ساحلي'] : ['جنة', 'سكن مصر', 'دار مصر', 'أهالي']; 
-            let html = ''; 
-            projects.forEach(p => html += `<div class="card-project" onclick="showU('${p}')">${p}</div>`); 
+            let html = ''; projects.forEach(p => html += `<div class="card-project" onclick="showU('${p}')">${p}</div>`); 
             document.getElementById('projectButtons').innerHTML = html; 
         }
         function showU(kw) { switchStep('step3'); render(kw); }
@@ -235,4 +241,3 @@
     </script>
 </body>
 </html>
-
