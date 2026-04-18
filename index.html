@@ -22,11 +22,9 @@
         .loader-logo { font-family: 'Montserrat'; font-size: 32px; font-weight: 900; color: var(--secondary); animation: pulse-text 1.2s infinite ease-in-out; }
         @keyframes pulse-text { 0%, 100% { opacity: 0.4; transform: scale(0.9); } 50% { opacity: 1; transform: scale(1.1); } }
 
-        /* زر إضافة وحدة */
         .sell-card-trigger { background: linear-gradient(135deg, #1c2226, #252d33); border: 2px dashed var(--secondary); border-radius: 15px; padding: 18px; text-align: center; cursor: pointer; margin-bottom: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
         .sell-card-trigger span { color: var(--secondary); font-weight: 900; font-size: 16px; }
 
-        /* النافذة المنبثقة (Modal) */
         .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 20000; padding: 15px; backdrop-filter: blur(8px); overflow-y: auto; }
         .modal-box { background: var(--card-bg); border-radius: 20px; padding: 25px; border: 1px solid var(--secondary); max-width: 420px; margin: 10px auto; }
         .modal-box h2 { color: var(--secondary); text-align: center; margin-bottom: 20px; font-size: 20px; font-weight: 900; }
@@ -134,10 +132,25 @@
                 over: document.getElementById('sOver').value || "0", fullPrice: document.getElementById('sFullPrice').value || "0",
                 remaining: document.getElementById('sRem').value || "0", installment: document.getElementById('sInstAmt').value || "0"
             };
-            fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
-            alert("✅ تم تسجيل بياناتك في الشيت بنجاح!");
-            window.open(`https://wa.me/201212229797?text=تم إضافة وحدة: ${payload.region}`);
-            closeM();
+
+            if(!payload.city || !payload.building || !payload.status) {
+                return alert("من فضلك أكمل البيانات الأساسية");
+            }
+
+            const btn = document.querySelector('.btn-submit-wa');
+            btn.innerText = "جاري الحفظ... ⏳";
+            btn.disabled = true;
+
+            try {
+                await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
+                alert("✅ تم إرسال البيانات بنجاح وستظهر فور مراجعتها!");
+                closeM();
+            } catch(e) {
+                alert("حدث خطأ، يرجى المحاولة مرة أخرى");
+            } finally {
+                btn.innerText = "إرسال أوتوماتيك للشيت";
+                btn.disabled = false;
+            }
         }
 
         async function fetchD() {
@@ -171,4 +184,5 @@
     </script>
 </body>
 </html>
+
 
