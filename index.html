@@ -23,7 +23,6 @@
         .loader-logo { font-family: 'Montserrat'; font-size: 32px; font-weight: 900; color: var(--secondary); animation: pulse-text 1.2s infinite ease-in-out; }
         @keyframes pulse-text { 0%, 100% { opacity: 0.4; transform: scale(0.9); } 50% { opacity: 1; transform: scale(1.1); } }
 
-        /* نافذة الإضافة */
         .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 20000; padding: 15px; backdrop-filter: blur(8px); overflow-y: auto; }
         .modal-box { background: var(--card-bg); border-radius: 20px; padding: 25px; border: 1px solid var(--secondary); max-width: 420px; margin: 10px auto; }
         .modal-box input, .modal-box select { width: 100%; padding: 12px; margin-top: 8px; border-radius: 12px; border: 1px solid #333; background: #0b0d0e; color: #fff; font-family: 'Cairo'; text-align: right; }
@@ -123,6 +122,9 @@
                 </div>
                 <input type="number" id="sRem" placeholder="المتبقي">
             </div>
+            <div id="fCash" style="display:none;">
+                <input type="number" id="sTotalPrice" placeholder="السعر الإجمالي الكاش">
+            </div>
             <button class="btn-submit-auto" onclick="autoSend()">إرسال وتأكيد الإضافة</button>
             <button onclick="closeM()" style="width:100%; background:none; border:none; color:#666; margin-top:15px; cursor:pointer; font-weight:700;">إلغاء</button>
         </div>
@@ -149,7 +151,6 @@
     <div class="container">
         <div id="step1">
             <div class="sell-card-trigger" onclick="openM()"><span>🏠 اضغط هنا لإضافة وحدتك الخاصة فوراً</span></div>
-            
             <h2 class="section-title">اختر المدينة</h2>
             <div class="card-city" onclick="goToStep2('المنصورة الجديدة')"><h3>المنصورة الجديدة</h3><p>مستقبل الدلتا على البحر مباشرة</p></div>
             <div class="card-city" onclick="goToStep2('دمياط الجديدة')"><h3>دمياط الجديدة</h3><p>الرقي والاستثمار المضمون</p></div>
@@ -171,35 +172,47 @@
 
         function openM() { document.getElementById('sellModal').style.display = 'block'; }
         function closeM() { document.getElementById('sellModal').style.display = 'none'; }
+        
         function toggleFields() {
             const s = document.getElementById('sStatus').value;
-            document.getElementById('fI').style.display = (s==='خالصة'?'none':'block');
+            const fI = document.getElementById('fI');
+            const fCash = document.getElementById('fCash');
+            if(s === 'خالصة') {
+                fI.style.display = 'none';
+                fCash.style.display = 'block';
+            } else {
+                fI.style.display = 'block';
+                fCash.style.display = 'none';
+            }
         }
+
         function upModProj() {
             const c = document.getElementById('sCity').value;
             const p = document.getElementById('sProj');
             let opts = '<option value="">المشروع</option>';
-            const m = {'المنصورة الجديدة':['جنة','سكن مصر','زاهية'], 'دمياط الجديدة':['جنة','سكن مصر','دار مصر']};
+            const m = {'المنصورة الجديدة':['جنة','سكن مصر','زاهية شقق','زاهية فلل','إسكان ساحلي'], 'دمياط الجديدة':['جنة','سكن مصر','دار مصر','أهالي']};
             if(m[c]) m[c].forEach(x => opts+=`<option value="${x}">${x}</option>`);
             p.innerHTML = opts;
         }
 
         async function autoSend() {
+            const status = document.getElementById('sStatus').value;
             const payload = {
                 city: document.getElementById('sCity').value, region: document.getElementById('sProj').value,
                 building: document.getElementById('sBld').value, unit: document.getElementById('sUnt').value,
-                floor: document.getElementById('sFloor').value, status: document.getElementById('sStatus').value,
-                size: document.getElementById('sSize').value, paid: document.getElementById('sPaid').value || "0",
-                over: document.getElementById('sOver').value || "0", remaining: document.getElementById('sRem').value || "0"
+                floor: document.getElementById('sFloor').value, status: status,
+                size: document.getElementById('sSize').value, 
+                paid: status === 'خالصة' ? document.getElementById('sTotalPrice').value : document.getElementById('sPaid').value || "0",
+                over: status === 'خالصة' ? "0" : document.getElementById('sOver').value || "0", 
+                remaining: status === 'خالصة' ? "0" : document.getElementById('sRem').value || "0"
             };
             if(!payload.city || !payload.building || !payload.status) return alert("كمل البيانات الأساسية يا بطل");
             
             const btn = document.querySelector('.btn-submit-auto');
-            btn.innerText = "جاري الحفظ في الشيت... ⏳";
-            
+            btn.innerText = "جاري الحفظ... ⏳";
             try {
                 await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
-                alert("✅ تم استلام بيانات وحدتك بنجاح، ستظهر في الموقع بعد المراجعة.");
+                alert("✅ تم استلام بيانات وحدتك بنجاح.");
                 closeM();
             } catch(e) { alert("حصل خطأ، حاول تاني"); }
             finally { btn.innerText = "إرسال وتأكيد الإضافة"; }
@@ -234,18 +247,18 @@
             const list = document.getElementById('apartmentList');
             let filtered = allData.filter(r => (r[0]||"").toString().trim() === window.curCity && (r[1]||"").toString().includes(kw));
             filtered.sort((a, b) => (a[11]||"").toString().includes("تم البيع") - (b[11]||"").toString().includes("تم البيع"));
-            document.getElementById('unitCounter').innerText = `متاح ${filtered.filter(r => !(r[11]||"").toString().includes("تم البيع")).length} وحدة حالياً`;
+            document.getElementById('unitCounter').innerText = `متاح ${filtered.filter(r => !(r[11]||"").toString().includes("تم البيع")).length} وحدة`;
 
             let h = '';
             filtered.forEach(r => {
                 let sold = (r[11]||"").toString().includes("تم البيع");
+                let isCash = (r[8]||"").toString().includes("خالصة");
                 let img = getImg(r[12]);
                 const fmt = (v) => isNaN(parseFloat(v)) ? '--' : parseFloat(v).toLocaleString();
+                
                 let paid = parseFloat(r[6]) || 0;
                 let over = parseFloat(r[7]) || 0;
                 let cashNow = paid + over;
-                let totalValue = parseFloat(r[15]) || 0;
-                let remaining = totalValue - cashNow;
 
                 h += `<div class="apt-card ${sold ? 'is-sold' : 'is-available'}">
                     ${img ? `<div class="img-container"><img src="${img}" loading="lazy"></div>` : ''}
@@ -254,17 +267,21 @@
                         <div class="apt-title">عمارة ${r[2]} • وحدة ${r[3]}</div>
                         <div class="apt-specs">
                             <div class="spec-item"><span class="spec-label">الدور</span><span class="spec-value">${r[4]||'--'}</span></div>
-                            <div class="spec-item"><span class="spec-label">الإطلالة</span><span class="spec-value">${r[5]||'--'}</span></div>
                             <div class="spec-item"><span class="spec-label">المساحة</span><span class="spec-value">${r[13]||'--'} م²</span></div>
-                            <div class="spec-item"><span class="spec-label">نظام السداد</span><span class="spec-value">${r[9]||'--'} سنوات</span></div>
                         </div>
                         <div class="price-box-container">
-                            <div class="price-line"><span class="pl-label">المدفوع:</span><span class="pl-val">${fmt(paid)} ج.م</span></div>
-                            <div class="price-line"><span class="pl-label">قيمة الأوفر:</span><span class="pl-val">+ ${fmt(over)} ج.م</span></div>
-                            <div style="margin-top: 15px; background: rgba(57,255,20,0.1); padding: 15px; border-radius: 12px; border: 2px solid var(--available); text-align: center;">
-                                <div style="color: var(--available); font-weight: 900; font-size: 17px;">كاش الاستلام</div>
-                                <div style="color:#fff; font-size: 24px; font-weight: 900;">${fmt(cashNow)} <span style="font-size:12px;">ج.م</span></div>
-                            </div>
+                            ${isCash ? 
+                                `<div style="text-align:center; padding:10px;">
+                                    <span class="pl-label">السعر الإجمالي الكاش:</span>
+                                    <div class="pl-val" style="font-size:20px; color:var(--available);">${fmt(paid)} ج.م</div>
+                                 </div>` : 
+                                `<div class="price-line"><span class="pl-label">المدفوع:</span><span class="pl-val">${fmt(paid)} ج.م</span></div>
+                                 <div class="price-line"><span class="pl-label">الأوفر:</span><span class="pl-val">+ ${fmt(over)} ج.م</span></div>
+                                 <div style="margin-top:10px; background:rgba(57,255,20,0.1); padding:10px; border-radius:10px; text-align:center;">
+                                    <div style="color:var(--available); font-weight:900;">كاش الاستلام</div>
+                                    <div style="color:#fff; font-size:22px; font-weight:900;">${fmt(cashNow)}</div>
+                                 </div>`
+                            }
                         </div>
                         ${sold ? '<div style="text-align:center; color:var(--sold); font-weight:900;">تـم البيـع</div>' : 
                         `<a href="https://wa.me/201212229797?text=معاينة عمارة ${r[2]}" class="btn-preview-neon">طلب معاينة</a>`}
@@ -274,7 +291,14 @@
             list.innerHTML = h;
         }
 
-        function goToStep2(c) { window.curCity = c; switchStep('step2'); let projects = c === 'المنصورة الجديدة' ? ['جنة', 'سكن مصر', 'زاهية', 'إسكان ساحلي', 'تجارية وإدارية'] : ['جنة', 'سكن مصر', 'دار مصر', 'أهالي', 'تجارية وإدارية']; let html = ''; projects.forEach(p => html += `<div class="card-project" onclick="showU('${p}')">${p}</div>`); document.getElementById('projectButtons').innerHTML = html; }
+        function goToStep2(c) { 
+            window.curCity = c; 
+            switchStep('step2'); 
+            let projects = c === 'المنصورة الجديدة' ? ['جنة', 'سكن مصر', 'زاهية شقق', 'زاهية فلل', 'إسكان ساحلي'] : ['جنة', 'سكن مصر', 'دار مصر', 'أهالي']; 
+            let html = ''; 
+            projects.forEach(p => html += `<div class="card-project" onclick="showU('${p}')">${p}</div>`); 
+            document.getElementById('projectButtons').innerHTML = html; 
+        }
         function showU(kw) { switchStep('step3'); render(kw); }
         function switchStep(id) { ['step1','step2','step3'].forEach(s => document.getElementById(s).classList.add('hidden')); document.getElementById(id).classList.remove('hidden'); window.scrollTo(0,0); }
         function goBack(s) { switchStep('step' + s); }
