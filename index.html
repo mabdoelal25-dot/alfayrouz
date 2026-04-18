@@ -23,7 +23,6 @@
         .loader-logo { font-family: 'Montserrat'; font-size: 32px; font-weight: 900; color: var(--secondary); animation: pulse-text 1.2s infinite ease-in-out; }
         @keyframes pulse-text { 0%, 100% { opacity: 0.4; transform: scale(0.9); } 50% { opacity: 1; transform: scale(1.1); } }
 
-        /* ستايل زرار التواصل المتعدد */
         .social-menu { position: fixed; bottom: 25px; left: 25px; z-index: 10000; display: flex; flex-direction: column-reverse; align-items: center; gap: 15px; }
         .social-btn { width: 55px; height: 55px; background: var(--secondary); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5); border: 2px solid #fff; cursor: pointer; transition: 0.3s; z-index: 10001; }
         .sub-menu { display: flex; flex-direction: column-reverse; gap: 12px; opacity: 0; visibility: hidden; transform: translateY(20px); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
@@ -43,16 +42,15 @@
         .container { width: 100%; max-width: 450px; margin: auto; padding: 15px; }
         .section-title { font-size: 22px; color: #fff; font-weight: 900; text-align: center; margin-bottom: 25px; }
 
-        /* زر إضافة شقة */
         .add-unit-btn { background: rgba(197, 160, 18, 0.1); border: 2px dashed var(--secondary); color: var(--secondary); border-radius: 20px; padding: 18px; text-align: center; cursor: pointer; margin-bottom: 30px; font-weight: 900; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 18px; }
 
-        /* المودال المطور */
         .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 20000; padding: 15px; backdrop-filter: blur(10px); overflow-y: auto; }
         .modal-box { background: #1c2226; border-radius: 25px; padding: 25px; border: 1px solid var(--secondary); max-width: 420px; margin: 10px auto; box-shadow: 0 0 30px rgba(197, 160, 18, 0.2); }
         .modal-box h2 { text-align: center; color: var(--secondary); margin-bottom: 20px; font-size: 22px; }
-        .form-group { margin-bottom: 15px; }
-        .modal-box input, .modal-box select { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid #333; background: #0f1214; color: #fff; font-family: 'Cairo'; font-size: 14px; }
-        .btn-submit-form { background: linear-gradient(90deg, var(--secondary), #e6bc15); color: #000; width: 100%; padding: 16px; border-radius: 15px; font-weight: 900; border: none; cursor: pointer; font-size: 16px; margin-top: 10px; }
+        .form-group { margin-bottom: 12px; }
+        .modal-box input, .modal-box select { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid #333; background: #0f1214; color: #fff; font-family: 'Cairo'; font-size: 14px; transition: 0.3s; }
+        .modal-box input:focus { border-color: var(--secondary); }
+        .btn-submit-form { background: linear-gradient(90deg, var(--secondary), #e6bc15); color: #000; width: 100%; padding: 16px; border-radius: 15px; font-weight: 900; border: none; cursor: pointer; font-size: 16px; margin-top: 10px; box-shadow: 0 5px 15px rgba(197, 160, 18, 0.3); }
 
         .card-city { background: linear-gradient(135deg, #1c2226 0%, #252d33 100%); border-radius: 20px; padding: 30px 20px; text-align: center; border: 2px solid rgba(197, 160, 18, 0.3); cursor: pointer; margin-bottom: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); transition: 0.3s; }
         .card-city:active { transform: scale(0.95); }
@@ -82,12 +80,7 @@
         .pl-label { font-size: 12px; color: #aaa; font-weight: 700; }
         .pl-val { font-size: 14px; color: var(--secondary); font-weight: 900; }
 
-        .btn-preview-neon { 
-            background: var(--available); color: #000; text-align: center; padding: 16px; 
-            border-radius: 15px; cursor: pointer; font-weight: 900; margin-top: 10px; 
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-            box-shadow: 0 5px 20px rgba(57, 255, 20, 0.4); border: none; width: 100%; font-size: 16px; text-decoration: none;
-        }
+        .btn-preview-neon { background: var(--available); color: #000; text-align: center; padding: 16px; border-radius: 15px; cursor: pointer; font-weight: 900; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 5px 20px rgba(57, 255, 20, 0.4); border: none; width: 100%; font-size: 16px; text-decoration: none; }
 
         .hidden { display: none !important; }
         .units-counter { background: rgba(197, 160, 18, 0.1); color: var(--secondary); text-align: center; padding: 12px; border-radius: 12px; margin-bottom: 20px; font-size: 15px; font-weight: 900; border: 1px dashed var(--secondary); }
@@ -99,25 +92,26 @@
 
     <div id="unitModal" class="modal-overlay">
         <div class="modal-box">
-            <h2>إضافة وحدة جديدة</h2>
+            <h2>عرض وحدة للبيع</h2>
             <div class="form-group"><select id="fCity" onchange="updateFProj()"><option value="">اختر المدينة</option><option>المنصورة الجديدة</option><option>دمياط الجديدة</option></select></div>
             <div class="form-group"><select id="fProj" onchange="checkZahia()"><option value="">اختر المشروع</option></select></div>
             <div id="boxNormal" class="form-group" style="display:flex; gap:10px;"><input type="number" id="fBld" placeholder="رقم العمارة"><input type="number" id="fUnt" placeholder="رقم الشقة"></div>
             <div id="boxVilla" class="form-group hidden"><input type="number" id="fVilla" placeholder="رقم الفيلا"></div>
-            <div class="form-group"><input type="text" id="fFloor" placeholder="الدور"></div>
-            <div class="form-group"><input type="number" id="fSize" placeholder="المساحة"></div>
+            <div class="form-group"><input type="text" id="fFloor" placeholder="الدور (مثال: الثالث)"></div>
+            <div class="form-group"><input type="number" id="fSize" placeholder="المساحة بالمتر"></div>
+            <div class="form-group"><input type="tel" id="fPhone" placeholder="رقم الموبايل للتواصل"></div>
             <div class="form-group"><select id="fStatus" onchange="togglePay()"><option value="">نظام البيع</option><option value="أقساط">أقساط</option><option value="كاش">كاش</option></select></div>
             
             <div id="payInstall" class="hidden">
                 <div class="form-group"><input type="number" id="fPaid" placeholder="المدفوع الحالي"></div>
                 <div class="form-group"><input type="number" id="fOver" placeholder="الأوفر المطلوب"></div>
-                <div class="form-group"><input type="number" id="fInstallVal" placeholder="دفعة التقسيط"></div>
-                <div class="form-group"><input type="number" id="fYears" placeholder="سنوات التقسيط"></div>
-                <div class="form-group"><input type="number" id="fMeter" placeholder="سعر المتر"></div>
+                <div class="form-group"><input type="number" id="fInstallVal" placeholder="قيمة القسط"></div>
+                <div class="form-group"><input type="number" id="fYears" placeholder="عدد سنوات التقسيط"></div>
+                <div class="form-group"><input type="number" id="fMeter" placeholder="سعر المتر التقريبي"></div>
             </div>
 
             <div id="payCash" class="hidden">
-                <div class="form-group"><input type="number" id="fPrice" placeholder="السعر المطلوب كاش"></div>
+                <div class="form-group"><input type="number" id="fPrice" placeholder="السعر الكاش النهائي"></div>
             </div>
 
             <button class="btn-submit-form" onclick="sendUnit()">إرسال البيانات</button>
@@ -176,56 +170,88 @@
         function closeModal() { document.getElementById('unitModal').style.display = 'none'; }
 
         function togglePay() {
-            const s = document.getElementById('fStatus').value;
-            document.getElementById('payInstall').classList.toggle('hidden', s !== 'أقساط');
-            document.getElementById('payCash').classList.toggle('hidden', s !== 'كاش');
+            const status = document.getElementById('fStatus').value;
+            document.getElementById('payInstall').classList.toggle('hidden', status !== 'أقساط');
+            document.getElementById('payCash').classList.toggle('hidden', status !== 'كاش');
         }
 
         function updateFProj() {
-            const c = document.getElementById('fCity').value;
-            const p = document.getElementById('fProj');
+            const city = document.getElementById('fCity').value;
+            const projSelect = document.getElementById('fProj');
             let opts = '<option value="">اختر المشروع</option>';
             const maps = { 'المنصورة الجديدة':['جنة','سكن مصر','زاهية','إسكان ساحلي','تجارية وإدارية'], 'دمياط الجديدة':['جنة','سكن مصر','دار مصر','أهالي','تجارية وإدارية'] };
-            if(maps[c]) maps[c].forEach(x => opts += `<option>${x}</option>`);
-            p.innerHTML = opts;
+            if(maps[city]) maps[city].forEach(p => opts += `<option>${p}</option>`);
+            projSelect.innerHTML = opts;
         }
 
         function checkZahia() {
-            const isZ = document.getElementById('fProj').value === 'زاهية';
-            document.getElementById('boxNormal').classList.toggle('hidden', isZ);
-            document.getElementById('boxVilla').classList.toggle('hidden', !isZ);
+            const isZahia = document.getElementById('fProj').value === 'زاهية';
+            document.getElementById('boxNormal').classList.toggle('hidden', isZahia);
+            document.getElementById('boxVilla').classList.toggle('hidden', !isZahia);
         }
 
-        function sendUnit() {
+        // وظيفة الإرسال المحدثة (ترسل رقم الهاتف وتتحقق من الخانات)
+        async function sendUnit() {
             const status = document.getElementById('fStatus').value;
-            const common = ['fCity','fProj','fFloor','fSize','fStatus'];
-            let extra = (status === 'أقساط') ? ['fPaid','fOver','fInstallVal','fYears','fMeter'] : ['fPrice'];
-            let all = [...common, ...extra];
-            
-            for(let id of all) {
-                if(!document.getElementById(id).value) { alert("يرجى ملء جميع البيانات المطلوبة!"); return; }
+            const phone = document.getElementById('fPhone').value;
+            const commonFields = ['fCity', 'fProj', 'fFloor', 'fSize', 'fPhone', 'fStatus'];
+            let activeFields = [...commonFields];
+
+            if (status === 'أقساط') {
+                activeFields.push('fPaid', 'fOver', 'fInstallVal', 'fYears', 'fMeter');
+            } else if (status === 'كاش') {
+                activeFields.push('fPrice');
             }
 
-            alert("تم إرسال طلبك بنجاح، سنقوم بمراجعته والتواصل معك.");
+            // التأكد من ملء كل الخانات الظاهرة
+            for (let id of activeFields) {
+                let el = document.getElementById(id);
+                if (!el.value) { alert("يرجى إكمال جميع البيانات المطلوبة!"); el.focus(); return; }
+            }
+
+            // تجميع البيانات لإرسالها للجيت (العمود S هو الخانة الـ 19)
+            const formData = {
+                city: document.getElementById('fCity').value,
+                project: document.getElementById('fProj').value,
+                bld: document.getElementById('fBld').value || document.getElementById('fVilla').value,
+                unit: document.getElementById('fUnt').value || "Villa",
+                floor: document.getElementById('fFloor').value,
+                size: document.getElementById('fSize').value,
+                phone: phone, // سيتم ربطه بالعمود S في السكريبت
+                status: status,
+                paid: document.getElementById('fPaid').value || 0,
+                over: document.getElementById('fOver').value || 0,
+                install: document.getElementById('fInstallVal').value || 0,
+                years: document.getElementById('fYears').value || 0,
+                meter: document.getElementById('fMeter').value || 0,
+                price: document.getElementById('fPrice').value || 0
+            };
+
+            // إشعار المستخدم بالنجاح
+            alert("تم إرسال بياناتك بنجاح! سيتم التواصل معكم قريباً.");
             closeModal();
+            
+            // فتح واتساب لإبلاغ الإدارة
+            const msg = `طلب إضافة وحدة جديدة:\nالمدينة: ${formData.city}\nالمشروع: ${formData.project}\nرقم العمارة/الفيلا: ${formData.bld}\nالمساحة: ${formData.size}م\nرقم الموبايل: ${formData.phone}\nالنظام: ${formData.status}`;
+            window.open(`https://wa.me/201212229797?text=${encodeURIComponent(msg)}`);
         }
 
         async function fetchD() {
             try {
-                const response = await fetch(API_URL + "?v=" + Math.random());
-                const data = await response.json();
+                const res = await fetch(API_URL + "?v=" + Math.random());
+                const data = await res.json();
                 allData = data.slice(1);
                 document.getElementById('loadingScreen').style.display = 'none';
-            } catch(e) { console.error(e); }
+            } catch(e) { console.error("Error loading data", e); }
         }
 
-        function getImg(url) {
-            if (!url) return "";
-            if (url.toString().includes('drive.google.com')) {
-                let id = url.includes('id=') ? url.split('id=')[1].split('&')[0] : url.split('/d/')[1].split('/')[0];
+        function getImg(u) {
+            if (!u) return "";
+            if (u.toString().includes('drive.google.com')) {
+                let id = u.includes('id=') ? u.split('id=')[1].split('&')[0] : u.split('/d/')[1].split('/')[0];
                 return `https://drive.google.com/thumbnail?sz=1000&id=${id}`;
             }
-            return url;
+            return u;
         }
 
         function render(kw) {
@@ -242,8 +268,7 @@
                 let paid = parseFloat(r[6]) || 0;
                 let over = parseFloat(r[7]) || 0;
                 let cashNow = paid + over;
-                let totalValue = parseFloat(r[15]) || 0;
-                let remaining = totalValue - cashNow;
+                let totalVal = parseFloat(r[15]) || 0;
 
                 h += `<div class="apt-card ${sold ? 'is-sold' : 'is-available'}">
                     ${img ? `<div class="img-container"><img src="${img}" loading="lazy"></div>` : ''}
@@ -254,26 +279,18 @@
                             <div class="spec-item"><span class="spec-label">الدور</span><span class="spec-value">${r[4]||'--'}</span></div>
                             <div class="spec-item"><span class="spec-label">الإطلالة</span><span class="spec-value">${r[5]||'--'}</span></div>
                             <div class="spec-item"><span class="spec-label">المساحة</span><span class="spec-value">${r[13]||'--'} م²</span></div>
-                            <div class="spec-item"><span class="spec-label">نظام السداد</span><span class="spec-value">${r[9]||'--'} سنوات</span></div>
+                            <div class="spec-item"><span class="spec-label">السنوات</span><span class="spec-value">${r[9]||'--'}</span></div>
                         </div>
                         <div class="price-box-container">
-                            <div style="font-size: 11px; color: var(--secondary); margin-bottom: 12px; border-bottom: 1px solid #333; padding-bottom: 8px; font-weight: bold; text-align: center;">التفاصيل المالية والتعاقدية</div>
-                            <div class="price-line"><span class="pl-label">المدفوع:</span><span class="pl-val" style="color:#eee">${fmt(paid)} ج.م</span></div>
-                            <div class="price-line"><span class="pl-label">قيمة الأوفر:</span><span class="pl-val" style="color:#ef5350">+ ${fmt(over)} ج.م</span></div>
-                            <div style="margin-top: 15px; background: linear-gradient(135deg, rgba(57,255,20,0.15) 0%, rgba(0,0,0,0.3) 100%); padding: 15px; border-radius: 12px; border: 2px solid var(--available); text-align: center; box-shadow: 0 0 15px rgba(57,255,20,0.15);">
-                                <div style="color: var(--available); font-weight: 900; font-size: 17px; margin-bottom: 5px; text-shadow: 0 0 10px rgba(57,255,20,0.3);">استلم مفتاحك الآن</div>
-                                <div style="color:#fff; font-size: 24px; font-weight: 900;">${fmt(cashNow)} <span style="font-size:14px; color:var(--available)">جنية كاش</span></div>
-                            </div>
-                            <div style="margin-top: 20px; border-top: 1px dashed #444; padding-top: 15px;">
-                                <div class="price-line" style="flex-direction:column; align-items:flex-start;">
-                                    <span class="pl-label" style="font-size:10px; margin-bottom:5px;">صافي الأقساط المتبقية بدون فائدة البنك:</span>
-                                    <span class="pl-val" style="color: #fff; font-size: 18px;">${fmt(remaining)} ج.م</span>
-                                </div>
-                                <div style="font-size: 10px; color: #666; margin-top: 5px;">(القيمة الكلية ${fmt(totalValue)} ج.م)</div>
+                            <div class="price-line"><span class="pl-label">المدفوع:</span><span class="pl-val">${fmt(paid)} ج.م</span></div>
+                            <div class="price-line"><span class="pl-label">الأوفر:</span><span class="pl-val">+ ${fmt(over)} ج.م</span></div>
+                            <div style="margin-top:10px; padding:12px; border-radius:10px; background:rgba(57,255,20,0.1); border:1px solid var(--available); text-align:center;">
+                                <div style="color:var(--available); font-size:12px; font-weight:700;">إجمالي الكاش الآن</div>
+                                <div style="color:#fff; font-size:22px; font-weight:900;">${fmt(cashNow)} ج.م</div>
                             </div>
                         </div>
-                        ${sold ? '<div style="text-align:center; color:var(--sold); font-weight:900; font-size:24px;">تـم التعاقـد</div>' : 
-                        `<a href="https://wa.me/201212229797?text=معاينة عمارة ${r[2]}" class="btn-preview-neon">طلب معاينة</a>`}
+                        ${sold ? '<div style="text-align:center; color:var(--sold); font-weight:900;">تـم البيـع</div>' : 
+                        `<a href="https://wa.me/201212229797?text=معاينة وحدة ${r[2]}" class="btn-preview-neon">طلب معاينة</a>`}
                     </div>
                 </div>`;
             });
