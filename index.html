@@ -243,24 +243,29 @@
             btn.disabled = true;
             btn.innerText = "جاري الإرسال...";
 
+            // تعديل ذكي: لو كاش، السعر الكاش يروح لخانة المدفوع (paid) عشان المعادلة في الشيت تشتغل
+            let finalPaid = document.getElementById('mPayType').value === 'كاش' 
+                            ? document.getElementById('mTotalCash').value 
+                            : document.getElementById('mPaid').value;
+
             const data = {
                 action: "addUnit",
                 city: document.getElementById('mCity').value,
                 project: document.getElementById('mProject').value,
                 bld: document.getElementById('mBld').value,
-                apt: document.getElementById('mApt').value, // هيروح لعمود D
+                apt: document.getElementById('mApt').value, 
                 floor: document.getElementById('mFloor').value,
-                view: document.getElementById('mView').value, // هيروح لعمود F
-                paid: document.getElementById('mPaid').value || document.getElementById('mTotalCash').value || 0,
+                view: document.getElementById('mView').value, 
+                paid: finalPaid || 0, // القيمة بتروح لعمود G
                 over: document.getElementById('mOver').value || 0,
-                status: "تحت المراجعة", // هيروح لعمود L
+                status: "تحت المراجعة", 
                 size: document.getElementById('mSize').value || 0,
                 pricePerMeter: document.getElementById('mPricePerMeter').value || 0,
                 installYears: document.getElementById('mInstallYears').value || 0,
                 installValue: document.getElementById('mInstallValue').value || 0,
                 yearsLeft: document.getElementById('mYearsLeft').value || 0,
-                totalCash: document.getElementById('mTotalCash').value || 0,
-                phone: document.getElementById('mPhone').value // هيروح لعمود R
+                totalCash: "", // بنبعت فاضي لعمود P عشان نحمي المعادلة من الـ REF
+                phone: document.getElementById('mPhone').value 
             };
 
             try {
@@ -346,3 +351,4 @@
     </script>
 </body>
 </html>
+
