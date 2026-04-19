@@ -243,7 +243,6 @@
             btn.disabled = true;
             btn.innerText = "جاري الإرسال...";
 
-            // تعديل ذكي: لو كاش، السعر الكاش يروح لخانة المدفوع (paid) عشان المعادلة في الشيت تشتغل
             let finalPaid = document.getElementById('mPayType').value === 'كاش' 
                             ? document.getElementById('mTotalCash').value 
                             : document.getElementById('mPaid').value;
@@ -256,7 +255,7 @@
                 apt: document.getElementById('mApt').value, 
                 floor: document.getElementById('mFloor').value,
                 view: document.getElementById('mView').value, 
-                paid: finalPaid || 0, // القيمة بتروح لعمود G
+                paid: finalPaid || 0,
                 over: document.getElementById('mOver').value || 0,
                 status: "تحت المراجعة", 
                 size: document.getElementById('mSize').value || 0,
@@ -264,7 +263,7 @@
                 installYears: document.getElementById('mInstallYears').value || 0,
                 installValue: document.getElementById('mInstallValue').value || 0,
                 yearsLeft: document.getElementById('mYearsLeft').value || 0,
-                totalCash: "", // بنبعت فاضي لعمود P عشان نحمي المعادلة من الـ REF
+                totalCash: "", 
                 phone: document.getElementById('mPhone').value 
             };
 
@@ -281,9 +280,11 @@
 
         async function fetchD() {
             try {
-                const response = await fetch(API_URL + "?v=" + Math.random());
+                // ده السطر اللي بيمنع "ساعتين تحميل"
+                const response = await fetch(API_URL);
                 const data = await response.json();
                 allData = data.slice(1);
+                // إخفاء شاشة التحميل فور وصول البيانات
                 document.getElementById('loadingScreen').style.display = 'none';
             } catch(e) { console.error(e); }
         }
@@ -291,6 +292,12 @@
         function render(kw) {
             const list = document.getElementById('apartmentList');
             
+            // لو البيانات لسه ما جتش من جوجل شيت
+            if (allData.length === 0) {
+                list.innerHTML = `<div style="text-align:center; padding:50px; color:#888;">جاري تحميل الوحدات...</div>`;
+                return;
+            }
+
             let filtered = allData.filter(r => {
                 let cityMatch = (r[0]||"").toString().trim() === window.curCity;
                 let projMatch = (r[1]||"").toString().includes(kw);
@@ -340,7 +347,7 @@
                     </div>
                 </div>`;
             });
-            list.innerHTML = h;
+            list.innerHTML = h || '<div style="text-align:center; padding:50px; color:#888;">لا توجد وحدات متاحة في هذا المشروع</div>';
         }
 
         function goToStep2(c) { window.curCity = c; switchStep('step2'); let projects = c === 'المنصورة الجديدة' ? ['جنة', 'سكن مصر', 'زاهية', 'إسكان ساحلي', 'تجارية وإدارية'] : ['جنة', 'سكن مصر', 'دار مصر', 'أهالي', 'تجارية وإدارية']; let html = ''; projects.forEach(p => html += `<div class="card-project" onclick="showU('${p}')">${p}</div>`); document.getElementById('projectButtons').innerHTML = html; }
