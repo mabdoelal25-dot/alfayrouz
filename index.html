@@ -101,10 +101,6 @@
 
         .hidden { display: none !important; }
         .units-counter { background: rgba(197, 160, 18, 0.1); color: var(--secondary); text-align: center; padding: 12px; border-radius: 12px; margin-bottom: 20px; font-size: 15px; font-weight: 900; border: 1px dashed var(--secondary); }
-        
-        /* Skeleton Loading Animation */
-        .skeleton { background: linear-gradient(90deg, #1c2226 25%, #252d33 50%, #1c2226 75%); background-size: 200% 100%; animation: skeleton-loading 1.5s infinite; border-radius: 15px; height: 150px; margin-bottom: 15px; }
-        @keyframes skeleton-loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
     </style>
 </head>
 <body oncontextmenu="return false;">
@@ -209,57 +205,41 @@
     <script>
         const API_URL = "https://script.google.com/macros/s/AKfycbxQsS6y6NgU_HdYXZOKsiV7xyzh7EBvYWLUeOacsqf7ERu93gnVyiOnNDUxqG6UUzcA/exec";
         let allData = [];
-        let isFetching = false;
 
-        // --- نظام السرعة القصوى ---
         window.onload = () => {
-            // محاولة جلب الداتا من ذاكرة المتصفح أولاً (فتحة لحظية)
             const cached = localStorage.getItem('alFayrouz_data');
             if (cached) {
                 allData = JSON.parse(cached);
-                console.log("تم تحميل البيانات من الكاش للسرعة");
             }
-            
-            // إخفاء شاشة التحميل فوراً (الموقع يفتح في وش العميل)
             setTimeout(() => {
                 const loader = document.getElementById('loadingScreen');
                 loader.style.opacity = '0';
                 setTimeout(() => loader.style.display = 'none', 500);
-            }, 400);
-
-            // بدء تحديث البيانات من الشيت في الخلفية بدون تعطيل المستخدم
+            }, 300);
             fetchD();
         };
 
         async function fetchD() {
-            if (isFetching) return;
-            isFetching = true;
             try {
-                const response = await fetch(API_URL + "?v=" + Math.random());
+                const response = await fetch(API_URL + "?t=" + new Date().getTime());
                 const data = await response.json();
-                allData = data.slice(1);
-                // حفظ نسخة جديدة في الكاش للمرة القادمة
-                localStorage.setItem('alFayrouz_data', JSON.stringify(allData));
-                isFetching = false;
-            } catch(e) { 
-                console.error("فشل تحديث البيانات:", e);
-                isFetching = false;
-            }
+                if (data && data.length > 0) {
+                    allData = data.slice(1);
+                    localStorage.setItem('alFayrouz_data', JSON.stringify(allData));
+                    if (!document.getElementById('step3').classList.contains('hidden')) {
+                        render(window.currentProj);
+                    }
+                }
+            } catch(e) { console.error(e); }
         }
 
         function render(kw) {
+            window.currentProj = kw;
             const list = document.getElementById('apartmentList');
             const counter = document.getElementById('unitCounter');
             
-            // لو الداتا لسه ما وصلتش خالص (لا كاش ولا شيت)
             if (allData.length === 0) {
-                list.innerHTML = `
-                    <div style="text-align:center; padding:30px; color:var(--secondary);">
-                        <div class="loader-logo" style="font-size:18px;">جاري تجهيز الوحدات...</div>
-                        <p style="font-size:12px; color:#666; margin-top:10px;">نبحث لك عن أفضل الفرص حالياً</p>
-                        <div class="skeleton"></div><div class="skeleton"></div>
-                    </div>`;
-                counter.innerText = "جاري التحميل...";
+                list.innerHTML = `<div style="text-align:center; padding:50px; color:#888;">جاري جلب أحدث الوحدات...</div>`;
                 return;
             }
 
@@ -271,11 +251,15 @@
                 return cityMatch && projMatch && !isHidden;
             });
 
+            if (filtered.length === 0) {
+                list.innerHTML = `<div style="text-align:center; padding:50px; color:#888;">لا توجد وحدات متاحة حالياً في ${kw}</div>`;
+                counter.innerText = "متاح 0 وحدة";
+                return;
+            }
+
             filtered.sort((a, b) => (a[11]||"").toString().includes("تم البيع") - (b[11]||"").toString().includes("تم البيع"));
-            
             counter.innerText = `متاح ${filtered.filter(r => !(r[11]||"").toString().includes("تم البيع")).length} وحدة حالياً`;
 
-            // عرض أول 10 وحدات فوراً للسرعة، والباقي يظهر بعدها (Lazy Load)
             displayUnits(filtered);
         }
 
@@ -321,7 +305,6 @@
             list.innerHTML = h;
         }
 
-        // باقي دوال التحكم
         function toggleSocial() {
             const menu = document.getElementById('subSocialMenu');
             const btn = document.getElementById('mainSocialBtn');
@@ -404,3 +387,4 @@
     </script>
 </body>
 </html>
+
