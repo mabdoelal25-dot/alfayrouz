@@ -16,7 +16,6 @@
     <style>
         :root { --primary: #00838f; --secondary: #c5a012; --bg-dark: #0f1214; --card-bg: #1c2226; --sold: #ff1100; --available: #39FF14; }
         
-        /* إعدادات ثبات الموقع ومنع الـ Zoom Out/In */
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; touch-action: pan-y; }
         html, body { 
             overflow-x: hidden; width: 100%; height: 100%; margin: 0; padding: 0; 
@@ -27,7 +26,6 @@
             position: relative; overflow-y: auto; -webkit-overflow-scrolling: touch;
         }
 
-        /* شاشة التحميل بشكل احترافي */
         #loadingScreen { position: fixed; inset: 0; background: var(--bg-dark); z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .loader-logo { font-family: 'Montserrat'; font-size: 35px; font-weight: 900; color: var(--secondary); animation: pulse-text 1.5s infinite ease-in-out; letter-spacing: 3px; }
         @keyframes pulse-text { 0%, 100% { opacity: 0.3; transform: scale(0.95); } 50% { opacity: 1; transform: scale(1.05); } }
@@ -211,7 +209,6 @@
             btn.style.transform = menu.classList.contains('active') ? 'rotate(45deg)' : 'rotate(0deg)';
         }
 
-        // إجبار المستخدم على ملء البيانات قبل الإرسال
         function validateForm() {
             const form = document.getElementById('unitForm');
             const btn = document.getElementById('submitBtn');
@@ -251,18 +248,19 @@
                 city: document.getElementById('mCity').value,
                 project: document.getElementById('mProject').value,
                 bld: document.getElementById('mBld').value,
-                apt: document.getElementById('mApt').value, // شقة حرف D
+                apt: document.getElementById('mApt').value, // هيروح لعمود D
                 floor: document.getElementById('mFloor').value,
-                view: document.getElementById('mView').value, // اتجاه حرف F
-                paid: document.getElementById('mPaid').value || document.getElementById('mTotalCash').value,
+                view: document.getElementById('mView').value, // هيروح لعمود F
+                paid: document.getElementById('mPaid').value || document.getElementById('mTotalCash').value || 0,
                 over: document.getElementById('mOver').value || 0,
-                status: "تحت المراجعة", // حالة حرف L
-                size: document.getElementById('mSize').value,
+                status: "تحت المراجعة", // هيروح لعمود L
+                size: document.getElementById('mSize').value || 0,
                 pricePerMeter: document.getElementById('mPricePerMeter').value || 0,
                 installYears: document.getElementById('mInstallYears').value || 0,
                 installValue: document.getElementById('mInstallValue').value || 0,
                 yearsLeft: document.getElementById('mYearsLeft').value || 0,
-                phone: document.getElementById('mPhone').value // تواصل حرف R
+                totalCash: document.getElementById('mTotalCash').value || 0,
+                phone: document.getElementById('mPhone').value // هيروح لعمود R
             };
 
             try {
@@ -292,7 +290,6 @@
                 let cityMatch = (r[0]||"").toString().trim() === window.curCity;
                 let projMatch = (r[1]||"").toString().includes(kw);
                 let status = (r[11]||"").toString().trim();
-                // منطق عرض الحالات: إخفاء تحت المراجعة أو لم تعرض، وإظهار المنشور أو تم البيع أو الفارق
                 let isHidden = status === "تحت المراجعة" || status === "لم تعرض بعد";
                 return cityMatch && projMatch && !isHidden;
             });
@@ -312,7 +309,7 @@
                 let over = parseFloat(r[7]) || 0;
                 let cashNow = paid + over;
                 let totalValue = parseFloat(r[15]) || 0;
-                let phone = (r[17]||"").toString().replace(/\s/g, '') || '201212229797'; // قراءة من العمود R
+                let phone = (r[17]||"").toString().replace(/\s/g, '') || '201212229797'; 
 
                 h += `<div class="apt-card ${sold ? 'is-sold' : 'is-available'}">
                     ${img ? `<div class="img-container"><img src="${img}" loading="lazy"></div>` : ''}
