@@ -166,6 +166,7 @@
     </div>
     <script>
         const API_URL = "https://script.google.com/macros/s/AKfycbxQsS6y6NgU_HdYXZOKsiV7xyzh7EBvYWLUeOacsqf7ERu93gnVyiOnNDUxqG6UUzcA/exec";
+        const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQWKx4v-nn6JEM3O4En9ELAAKvDxF-NyAnNLPS1c3dLk3Hqvx9MLK9mEfGRP0XTT33P9QC6SOLUt9jM/pub?output=csv";
         let allData = [];
 
         function toggleSocial() {
@@ -195,7 +196,6 @@
             let list = city === 'المنصورة الجديدة' ? ['جنة', 'سكن مصر', 'زاهية', 'إسكان ساحلي', 'تجارية وإدارية'] : ['جنة', 'سكن مصر', 'دار مصر', 'أهالي', 'تجارية وإدارية'];
             list.forEach(p => proj.innerHTML += `<option value="${p}">${p}</option>`);
             
-            // Reset villa logic
             document.getElementById('mFloor').classList.remove('hidden');
             document.getElementById('mFloor').required = true;
             document.getElementById('mBld').placeholder = "رقم العمارة";
@@ -222,41 +222,19 @@
                 } else if (proj === 'زاهية') {
                     for(let i=1; i<=4; i++) zone.innerHTML += `<option value="المرحلة ${i}">المرحلة ${i}</option>`;
                     showZone = true;
-                    // Villa logic
                     floorInput.classList.add('hidden');
                     floorInput.required = false;
                     bldInput.placeholder = "رقم المنطقة";
                     aptInput.placeholder = "رقم الفيلا";
-                } else {
-                    floorInput.classList.remove('hidden');
-                    floorInput.required = true;
-                    bldInput.placeholder = "رقم العمارة";
-                    aptInput.placeholder = "رقم الشقة";
                 }
             } else if (city === 'دمياط الجديدة') {
-                if (proj === 'جنة') {
+                if (proj === 'جنة' || proj === 'سكن مصر' || proj === 'دار مصر') {
                     for(let i=1; i<=3; i++) zone.innerHTML += `<option value="منطقة ${i}">منطقة ${i}</option>`;
-                    showZone = true;
-                } else if (proj === 'سكن مصر') {
-                    for(let i=1; i<=3; i++) zone.innerHTML += `<option value="منطقة ${i}">منطقة ${i}</option>`;
-                    showZone = true;
-                } else if (proj === 'دار مصر') {
-                    for(let i=1; i<=2; i++) zone.innerHTML += `<option value="منطقة ${i}">منطقة ${i}</option>`;
                     showZone = true;
                 }
-                floorInput.classList.remove('hidden');
-                floorInput.required = true;
-                bldInput.placeholder = "رقم العمارة";
-                aptInput.placeholder = "رقم الشقة";
             }
 
-            if(showZone) {
-                zone.classList.remove('hidden');
-                zone.required = true;
-            } else {
-                zone.classList.add('hidden');
-                zone.required = false;
-            }
+            if(showZone) { zone.classList.remove('hidden'); zone.required = true; } else { zone.classList.add('hidden'); zone.required = false; }
             validateForm();
         }
 
@@ -272,11 +250,8 @@
             btn.disabled = true;
             btn.innerText = "جاري الإرسال...";
             let finalPaid = document.getElementById('mPayType').value === 'كاش' ? document.getElementById('mTotalCash').value : document.getElementById('mPaid').value;
-            
             let fullProject = document.getElementById('mProject').value;
-            if(!document.getElementById('mZone').classList.contains('hidden')) {
-                fullProject += " - " + document.getElementById('mZone').value;
-            }
+            if(!document.getElementById('mZone').classList.contains('hidden')) { fullProject += " - " + document.getElementById('mZone').value; }
 
             const data = { action: "addUnit", city: document.getElementById('mCity').value, project: fullProject, bld: document.getElementById('mBld').value, apt: document.getElementById('mApt').value, floor: document.getElementById('mFloor').value || "فيلا", view: document.getElementById('mView').value, paid: finalPaid || 0, over: document.getElementById('mOver').value || 0, status: "تحت المراجعة", size: document.getElementById('mSize').value || 0, pricePerMeter: document.getElementById('mPricePerMeter').value || 0, installYears: document.getElementById('mInstallYears').value || 0, installValue: document.getElementById('mInstallValue').value || 0, yearsLeft: document.getElementById('mYearsLeft').value || 0, totalCash: "", phone: document.getElementById('mPhone').value };
             try { await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) }); showSuccess(); } catch(e) { showSuccess(); }
@@ -286,23 +261,23 @@
 
         async function fetchD() {
             try {
-                const response = await fetch(API_URL);
-                const data = await response.json();
-                allData = data.slice(1);
+                const response = await fetch(CSV_URL);
+                const text = await response.text();
+                // تحويل الـ CSV لمصفوفة صفوف
+                const rows = text.split('\n').map(row => {
+                    // معالجة بسيطة للفواصل داخل الخلايا (اختياري حسب بياناتك)
+                    return row.split(',');
+                });
+                allData = rows.slice(1); // تجاهل العناوين
                 document.getElementById('loadingScreen').style.display = 'none';
-                if(!document.getElementById('step3').classList.contains('hidden')) {
-                    render(window.currentKw);
-                }
+                if(!document.getElementById('step3').classList.contains('hidden')) { render(window.currentKw); }
             } catch(e) { console.error(e); }
         }
 
         function render(kw) {
             window.currentKw = kw;
             const list = document.getElementById('apartmentList');
-            if(allData.length === 0) {
-                list.innerHTML = '<div style="text-align:center; padding:50px; color:#888;">جاري تحميل الوحدات...</div>';
-                return;
-            }
+            if(allData.length === 0) { list.innerHTML = '<div style="text-align:center; padding:50px; color:#888;">جاري تحميل الوحدات...</div>'; return; }
             let filtered = allData.filter(r => {
                 let cityMatch = (r[0]||"").toString().trim() === window.curCity;
                 let projMatch = (r[1]||"").toString().includes(kw);
@@ -318,7 +293,6 @@
                 let img = (r[12] && r[12].includes('drive')) ? `https://drive.google.com/thumbnail?sz=1000&id=${r[12].split('id=')[1]}` : r[12];
                 const fmt = (v) => isNaN(parseFloat(v)) ? '0' : parseFloat(v).toLocaleString();
                 let paid = parseFloat(r[6]) || 0; let over = parseFloat(r[7]) || 0; let cashNow = paid + over; let totalValue = parseFloat(r[15]) || 0; let phone = (r[17]||"").toString().replace(/\s/g, '') || '201212229797';
-                
                 let bldLabel = r[1].includes("زاهية") ? "منطقة" : "عمارة";
                 let aptLabel = r[1].includes("زاهية") ? "فيلا" : "شقة";
                 let floorDisplay = r[1].includes("زاهية") ? "---" : r[4];
@@ -336,3 +310,4 @@
     </script>
 </body>
 </html>
+
