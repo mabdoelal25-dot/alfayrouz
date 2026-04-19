@@ -150,11 +150,12 @@
         function openM() { document.getElementById('addUnitModal').style.display = 'flex'; document.getElementById('formContent').style.display = 'block'; document.getElementById('successState').style.display = 'none'; }
         function closeM() { document.getElementById('addUnitModal').style.display = 'none'; }
 
+        // تم حذف خيار تجارية وإدارية من هنا
         function updateMProjects() {
             const city = document.getElementById('mCity').value, proj = document.getElementById('mProject'), zone = document.getElementById('mZone');
             proj.innerHTML = '<option value="" disabled selected>اختر المشروع/المنطقة</option>';
             zone.classList.add('hidden'); zone.required = false;
-            let list = city === 'المنصورة الجديدة' ? ['جنة', 'سكن مصر', 'زاهية', 'إسكان ساحلي', 'تجارية وإدارية'] : ['جنة', 'سكن مصر', 'دار مصر', 'أهالي', 'تجارية وإدارية'];
+            let list = city === 'المنصورة الجديدة' ? ['جنة', 'سكن مصر', 'زاهية', 'إسكان ساحلي'] : ['جنة', 'سكن مصر', 'دار مصر', 'أهالي'];
             list.forEach(p => proj.innerHTML += `<option value="${p}">${p}</option>`);
             document.getElementById('mFloor').classList.remove('hidden'); document.getElementById('mFloor').required = true;
             document.getElementById('mBld').placeholder = "رقم العمارة"; document.getElementById('mApt').placeholder = "رقم الشقة";
@@ -165,22 +166,15 @@
             const city = document.getElementById('mCity').value, proj = document.getElementById('mProject').value, zone = document.getElementById('mZone'), floorInput = document.getElementById('mFloor'), bldInput = document.getElementById('mBld'), aptInput = document.getElementById('mApt');
             zone.innerHTML = '<option value="" disabled selected>اختر المنطقة/المرحلة</option>';
             let showZone = false;
-
-            // إعادة تعيين المسميات الافتراضية
-            bldInput.placeholder = "رقم العمارة";
-            aptInput.placeholder = "رقم الشقة";
+            bldInput.placeholder = "رقم العمارة"; aptInput.placeholder = "رقم الشقة";
             floorInput.classList.remove('hidden'); floorInput.required = true;
 
-            if (proj === 'تجارية وإدارية') {
-                bldInput.placeholder = "اسم المول/المبنى";
-                aptInput.placeholder = "رقم المحل/المكتب";
-            } else if (city === 'المنصورة الجديدة') {
+            if (city === 'المنصورة الجديدة') {
                 if (proj === 'جنة' || proj === 'سكن مصر') { for(let i=1; i<=6; i++) zone.innerHTML += `<option value="منطقة ${i}">منطقة ${i}</option>`; showZone = true; } 
                 else if (proj === 'زاهية') { for(let i=1; i<=4; i++) zone.innerHTML += `<option value="المرحلة ${i}">المرحلة ${i}</option>`; showZone = true; floorInput.classList.add('hidden'); floorInput.required = false; bldInput.placeholder = "رقم المنطقة"; aptInput.placeholder = "رقم الفيلا"; }
             } else if (city === 'دمياط الجديدة') { 
                 if (proj === 'جنة' || proj === 'سكن مصر' || proj === 'دار مصر') { for(let i=1; i<=3; i++) zone.innerHTML += `<option value="منطقة ${i}">منطقة ${i}</option>`; showZone = true; } 
             }
-            
             if(showZone) { zone.classList.remove('hidden'); zone.required = true; } else { zone.classList.add('hidden'); zone.required = false; }
             validateForm();
         }
@@ -230,7 +224,6 @@
                 let paid = parseFloat(r[6]) || 0, over = parseFloat(r[7]) || 0, cashNow = paid + over, totalValue = parseFloat(r[15]) || 0;
                 let phone = (r[17]||"").toString().replace(/\s/g, '') || '201212229797';
                 
-                // تخصيص المسميات في العرض
                 let bldLabel = "عمارة", aptLabel = "شقة";
                 if(r[1].includes("زاهية")) { bldLabel = "منطقة"; aptLabel = "فيلا"; }
                 else if(r[1].includes("تجارية")) { bldLabel = "مبنى"; aptLabel = "محل/مكتب"; }
