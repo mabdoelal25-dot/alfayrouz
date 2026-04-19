@@ -23,7 +23,6 @@
         .loader-logo { font-family: 'Montserrat'; font-size: 32px; font-weight: 900; color: var(--secondary); animation: pulse-text 1.2s infinite ease-in-out; }
         @keyframes pulse-text { 0%, 100% { opacity: 0.4; transform: scale(0.9); } 50% { opacity: 1; transform: scale(1.1); } }
 
-        /* ستايل المودال - إضافة وحدة */
         .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 50000; padding: 15px; backdrop-filter: blur(10px); align-items: center; justify-content: center; }
         .modal-box { background: var(--card-bg); border-radius: 25px; padding: 20px; border: 1px solid var(--secondary); max-width: 420px; width: 100%; max-height: 90vh; overflow-y: auto; }
         .modal-box h3 { color: var(--secondary); text-align: center; margin-bottom: 20px; font-weight: 900; }
@@ -38,9 +37,6 @@
         .sub-menu.active { opacity: 1; visibility: visible; transform: translateY(0); }
         .sub-item { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.4); text-decoration: none; border: 1.5px solid #fff; transition: 0.2s; }
         .sub-item svg { width: 24px; height: 24px; fill: #fff; }
-        .bg-tiktok { background: #000; }
-        .bg-insta { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%); }
-        .bg-fb { background: #1877F2; }
         .bg-wa { background: #25D366; }
         .bg-call { background: #34b7f1; }
 
@@ -98,7 +94,6 @@
     <div id="addUnitModal" class="modal-overlay">
         <div class="modal-box">
             <h3>أضف وحدتك العقارية مجاناً ✨</h3>
-            
             <select id="mCity" class="m-select" onchange="updateMProjects()">
                 <option value="" disabled selected>اختر المدينة</option>
                 <option value="المنصورة الجديدة">المنصورة الجديدة</option>
@@ -107,48 +102,34 @@
             <select id="mProject" class="m-select">
                 <option value="" disabled selected>اختر المشروع/المنطقة</option>
             </select>
-
             <div class="grid-inputs">
                 <input type="text" id="mBld" class="m-input" placeholder="رقم العمارة">
                 <input type="text" id="mApt" class="m-input" placeholder="رقم الشقة">
             </div>
-
             <div class="grid-inputs">
                 <input type="text" id="mFloor" class="m-input" placeholder="الدور">
-                <input type="text" id="mView" class="m-input" placeholder="الإطلالة (مثلاً: بحري)">
+                <input type="text" id="mView" class="m-input" placeholder="الإطلالة">
             </div>
-
             <div class="grid-inputs">
                 <input type="number" id="mSize" class="m-input" placeholder="المساحة (م²)">
-                <input type="number" id="mPriceM" class="m-input" placeholder="سعر المتر">
+                <input type="tel" id="mPhone" class="m-input" placeholder="رقم الهاتف">
             </div>
-
             <select id="mPayType" class="m-select" onchange="togglePayFields()">
                 <option value="" disabled selected>نظام السداد</option>
                 <option value="كاش">كاش</option>
                 <option value="أقساط">أقساط</option>
             </select>
-
             <div id="mCashSec" class="hidden">
-                <input type="number" id="mTotalCash" class="m-input" placeholder="السعر الكلي كاش">
+                <input type="number" id="mTotalCash" class="m-input" placeholder="السعر الكلي">
             </div>
-
             <div id="mInstallSec" class="hidden">
                 <div class="grid-inputs">
                     <input type="number" id="mPaid" class="m-input" placeholder="المدفوع">
                     <input type="number" id="mOver" class="m-input" placeholder="الأوفر">
                 </div>
-                <div class="grid-inputs">
-                    <input type="number" id="mYears" class="m-input" placeholder="سنوات التقسيط">
-                    <input type="number" id="mDafaa" class="m-input" placeholder="دفعة القسط">
-                </div>
-                <input type="number" id="mRemainY" class="m-input" placeholder="متبقي كم سنة تقسيط">
-                <input type="number" id="mFullPrice" class="m-input" placeholder="السعر الكلي (بالأقساط)">
+                <input type="number" id="mFullPrice" class="m-input" placeholder="السعر الكلي">
             </div>
-
-            <input type="tel" id="mPhone" class="m-input" placeholder="رقم الهاتف">
-            
-            <button class="btn-send-data" onclick="submitMUnit()">إرسال البيانات للمراجعة</button>
+            <button class="btn-send-data" onclick="submitMUnit()">إرسال للمراجعة</button>
             <div onclick="closeM()" style="color:#666; text-align:center; margin-top:15px; font-size:13px; cursor:pointer;">إلغاء</div>
         </div>
     </div>
@@ -215,41 +196,24 @@
         }
 
         async function submitMUnit() {
-            const payType = document.getElementById('mPayType').value;
-            let finalPaid = document.getElementById('mPaid').value;
-            let finalTotal = document.getElementById('mFullPrice').value;
-
-            // ذكاء الإدخال: لو كاش يرمي السعر في المدفوع G
-            if(payType === "كاش") {
-                finalPaid = document.getElementById('mTotalCash').value;
-                finalTotal = document.getElementById('mTotalCash').value;
-            }
-
             const data = {
                 action: "addUnit",
-                city: document.getElementById('mCity').value, // A
-                project: document.getElementById('mProject').value, // B
-                bld: document.getElementById('mBld').value, // C
-                apt: document.getElementById('mApt').value, // D
-                floor: document.getElementById('mFloor').value, // E
-                view: document.getElementById('mView').value, // F
-                paid: finalPaid, // G (المدفوع)
-                over: document.getElementById('mOver').value || 0, // H
-                years: document.getElementById('mYears').value || 0, // J
-                dafaa: document.getElementById('mDafaa').value || 0, // K
-                status: "تحت المراجعة", // L (عمود الحالة الجديد)
-                size: document.getElementById('mSize').value, // N
-                remainY: document.getElementById('mRemainY').value || 0, // O
-                total: finalTotal, // P (السعر الكلي)
-                phone: document.getElementById('mPhone').value // R (عمود التليفون الجديد)
+                city: document.getElementById('mCity').value,
+                project: document.getElementById('mProject').value,
+                bld: document.getElementById('mBld').value,
+                apt: document.getElementById('mApt').value,
+                floor: document.getElementById('mFloor').value,
+                view: document.getElementById('mView').value,
+                paid: document.getElementById('mPaid').value || document.getElementById('mTotalCash').value,
+                over: document.getElementById('mOver').value || 0,
+                status: "تحت المراجعة",
+                size: document.getElementById('mSize').value,
+                total: document.getElementById('mFullPrice').value || document.getElementById('mTotalCash').value,
+                phone: document.getElementById('mPhone').value
             };
-
-            if (!data.city || !data.phone) { alert("⚠️ رجاءً إكمال البيانات الأساسية"); return; }
-
             try {
                 await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) });
-                alert("✅ تم الإرسال بنجاح.. وهي الآن تحت المراجعة.");
-                closeM();
+                alert("✅ تم الإرسال للمراجعة"); closeM();
             } catch(e) { alert("✅ تم الإرسال"); closeM(); }
         }
 
@@ -264,10 +228,8 @@
 
         function render(kw) {
             const list = document.getElementById('apartmentList');
-            // فلترة: لا يعرض أي شيء كُتب في الحالة L "تحت المراجعة"
-            let filtered = allData.filter(r => (r[0]||"").toString().trim() === window.curCity && (r[1]||"").toString().includes(kw) && (r[11]||"").toString() !== "تحت المراجعة");
-            
-            // ترتيب: المباع ينزل تحت
+            // فلترة "تحت المراجعة" (L)
+            let filtered = allData.filter(r => (r[0]||"").toString().trim() === window.curCity && (r[1]||"").toString().includes(kw) && (r[11]||"").toString().trim() !== "تحت المراجعة");
             filtered.sort((a, b) => (a[11]||"").toString().includes("تم البيع") - (b[11]||"").toString().includes("تم البيع"));
             
             document.getElementById('unitCounter').innerText = `متاح ${filtered.filter(r => !(r[11]||"").toString().includes("تم البيع")).length} وحدة حالياً`;
@@ -282,32 +244,28 @@
                 let over = parseFloat(r[7]) || 0;
                 let cashNow = paid + over;
                 let totalValue = parseFloat(r[15]) || 0;
-                let remaining = totalValue - cashNow;
 
                 h += `<div class="apt-card ${sold ? 'is-sold' : 'is-available'}">
                     ${img ? `<div class="img-container"><img src="${img}" loading="lazy"></div>` : ''}
                     <div class="apt-content">
                         <span class="apt-location">${r[1] || '---'}</span>
-                        <div class="apt-title">عمارة ${r[2]} • وحدة ${r[3]}</div>
+                        <div class="apt-title">عمارة ${r[2] || '--'} • شقة ${r[3] || '--'}</div>
                         <div class="apt-specs">
                             <div class="spec-item"><span class="spec-label">الدور</span><span class="spec-value">${r[4]||'--'}</span></div>
                             <div class="spec-item"><span class="spec-label">الإطلالة</span><span class="spec-value">${r[5]||'--'}</span></div>
                             <div class="spec-item"><span class="spec-label">المساحة</span><span class="spec-value">${r[13]||'--'} م²</span></div>
-                            <div class="spec-item"><span class="spec-label">نظام السداد</span><span class="spec-value">${r[9]||'0'} سنوات</span></div>
+                            <div class="spec-item"><span class="spec-label">السعر الكلي</span><span class="spec-value">${fmt(totalValue)} ج.م</span></div>
                         </div>
                         <div class="price-box-container">
                             <div class="price-line"><span class="pl-label">المدفوع:</span><span class="pl-val" style="color:#eee">${fmt(paid)} ج.م</span></div>
-                            <div class="price-line"><span class="pl-label">الأوفر:</span><span class="pl-val" style="color:#ef5350">+ ${fmt(over)} ج.م</span></div>
+                            ${over > 0 ? `<div class="price-line"><span class="pl-label">الأوفر:</span><span class="pl-val" style="color:#ef5350">+ ${fmt(over)} ج.م</span></div>` : ''}
                             <div style="margin-top: 15px; background: rgba(57,255,20,0.1); padding: 15px; border-radius: 12px; border: 2px solid var(--available); text-align: center;">
                                 <div style="color: var(--available); font-weight: 900; font-size: 15px;">المطلوب كاش حالياً</div>
                                 <div style="color:#fff; font-size: 22px; font-weight: 900;">${fmt(cashNow)} ج.م</div>
                             </div>
-                            <div style="margin-top: 10px; text-align:center;">
-                                <span style="font-size:11px; color:#666;">المتبقي أقساط: ${fmt(remaining)} ج.م</span>
-                            </div>
                         </div>
                         ${sold ? '<div style="text-align:center; color:var(--sold); font-weight:900; font-size:24px;">تـم التعاقـد</div>' : 
-                        `<a href="https://wa.me/${r[17] || '201212229797'}?text=استفسار عن وحدة عمارة ${r[2]}" class="btn-preview-neon">طلب معاينة</a>`}
+                        `<a href="https://wa.me/${(r[17]||"").toString().replace(/\s/g, '') || '201212229797'}?text=استفسار عن وحدة عمارة ${r[2]} شقة ${r[3]}" class="btn-preview-neon">طلب معاينة</a>`}
                     </div>
                 </div>`;
             });
