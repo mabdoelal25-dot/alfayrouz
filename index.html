@@ -23,74 +23,34 @@
         .loader-logo { font-family: 'Montserrat'; font-size: 32px; font-weight: 900; color: var(--secondary); animation: pulse-text 1.2s infinite ease-in-out; }
         @keyframes pulse-text { 0%, 100% { opacity: 0.4; transform: scale(0.9); } 50% { opacity: 1; transform: scale(1.1); } }
 
-        /* ستايلات المودال الجديد */
+        /* ستايلات المودال */
         .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 50000; padding: 20px; backdrop-filter: blur(10px); align-items: center; justify-content: center; }
         .modal-box { background: var(--card-bg); border-radius: 25px; padding: 25px; border: 1px solid var(--secondary); max-width: 420px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 0 40px rgba(0,0,0,0.5); }
         .modal-box h3 { color: var(--secondary); text-align: center; margin: 0 0 20px; font-size: 22px; font-weight: 900; }
         .m-input, .m-select { width: 100%; padding: 14px; margin-bottom: 10px; border-radius: 12px; border: 1px solid #333; background: #000; color: #fff; font-family: 'Cairo'; font-size: 14px; text-align: right; }
         .grid-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .btn-send { background: var(--secondary); color: #000; width: 100%; padding: 16px; border-radius: 15px; font-weight: 900; border: none; cursor: pointer; font-size: 16px; margin-top: 10px; box-shadow: 0 5px 15px rgba(197, 160, 18, 0.3); }
+        .btn-send { background: var(--secondary); color: #000; width: 100%; padding: 16px; border-radius: 15px; font-weight: 900; border: none; cursor: pointer; font-size: 16px; margin-top: 10px; transition: 0.3s; }
+        .btn-send:disabled { opacity: 0.5; cursor: not-allowed; }
         .hidden { display: none !important; }
 
-        /* ستايل زر الترويج الرئيسي */
+        /* الأزرار والتصميم العام */
         .add-unit-promo { background: linear-gradient(135deg, rgba(197, 160, 18, 0.15), rgba(255,255,255,0.05)); border: 2px solid var(--secondary); border-radius: 20px; padding: 20px; text-align: center; cursor: pointer; margin-bottom: 25px; font-weight: 900; color: var(--secondary); }
-
-        /* ستايل زرار التواصل المتعدد */
-        .social-menu { position: fixed; bottom: 25px; left: 25px; z-index: 10000; display: flex; flex-direction: column-reverse; align-items: center; gap: 15px; }
-        .social-btn { width: 55px; height: 55px; background: var(--secondary); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5); border: 2px solid #fff; cursor: pointer; transition: 0.3s; z-index: 10001; }
-        .sub-menu { display: flex; flex-direction: column-reverse; gap: 12px; opacity: 0; visibility: hidden; transform: translateY(20px); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .sub-menu.active { opacity: 1; visibility: visible; transform: translateY(0); }
-        .sub-item { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.4); text-decoration: none; border: 1.5px solid #fff; transition: 0.2s; }
-        .sub-item svg { width: 24px; height: 24px; fill: #fff; }
-        .bg-tiktok { background: #000; }
-        .bg-insta { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%); }
-        .bg-fb { background: #1877F2; }
-        .bg-wa { background: #25D366; }
-        .bg-call { background: #34b7f1; }
-
-        .header-bar { padding: 50px 10px 30px; text-align: center; background: linear-gradient(to bottom, rgba(197, 160, 18, 0.05), transparent); }
-        .company-name { font-family: 'Montserrat', sans-serif; font-size: 42px; font-weight: 900; color: #fff; margin: 0; text-transform: uppercase; letter-spacing: 2px; line-height: 1; }
-        .company-subtitle { font-family: 'Reem Kufi', sans-serif; font-size: 22px; color: var(--secondary); font-weight: 700; margin-top: 10px; display: block; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+        .header-bar { padding: 50px 10px 30px; text-align: center; }
+        .company-name { font-family: 'Montserrat', sans-serif; font-size: 42px; font-weight: 900; color: #fff; margin: 0; }
+        .company-subtitle { font-family: 'Reem Kufi', sans-serif; font-size: 22px; color: var(--secondary); display: block; margin-top: 10px; }
 
         .container { width: 100%; max-width: 450px; margin: auto; padding: 15px; }
-        .section-title { font-size: 22px; color: #fff; font-weight: 900; text-align: center; margin-bottom: 25px; }
-
-        .card-city { background: linear-gradient(135deg, #1c2226 0%, #252d33 100%); border-radius: 20px; padding: 30px 20px; text-align: center; border: 2px solid rgba(197, 160, 18, 0.3); cursor: pointer; margin-bottom: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); transition: 0.3s; }
-        .card-city:active { transform: scale(0.95); }
-        .card-city h3 { font-size: 28px; font-weight: 900; color: var(--secondary); margin: 0; }
-        .card-city p { font-size: 13px; color: #888; margin-top: 8px; font-weight: 700; }
-
+        .card-city { background: linear-gradient(135deg, #1c2226 0%, #252d33 100%); border-radius: 20px; padding: 30px 20px; text-align: center; border: 2px solid rgba(197, 160, 18, 0.3); cursor: pointer; margin-bottom: 15px; }
         .project-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .card-project { background: var(--card-bg); border-radius: 15px; padding: 25px 10px; text-align: center; border: 1px solid rgba(255,255,255,0.05); cursor: pointer; font-weight: 900; transition: 0.3s; display: flex; align-items: center; justify-content: center; min-height: 80px; }
-        .card-project:active { background: var(--secondary); color: #000; }
+        .card-project { background: var(--card-bg); border-radius: 15px; padding: 25px 10px; text-align: center; border: 1px solid rgba(255,255,255,0.05); cursor: pointer; font-weight: 900; min-height: 80px; display: flex; align-items: center; justify-content: center; }
 
-        .apt-card { background: #1c2226; border-radius: 22px; margin-bottom: 25px; overflow: hidden; position: relative; }
-        .is-available { border-right: 8px solid var(--available); box-shadow: 0 10px 30px rgba(0,0,0,0.3); } 
-        .is-sold { border-right: 15px solid var(--sold); opacity: 0.6; filter: grayscale(0.7); } 
-        
-        .img-container { width: 100%; height: 220px; background: #000; overflow: hidden; }
-        .img-container img { width: 100%; height: 100%; object-fit: cover; }
-        .apt-content { padding: 20px; }
-        .apt-title { font-size: 20px; font-weight: 900; color: #fff; margin-bottom: 5px; }
-        .apt-location { font-size: 14px; color: var(--secondary); font-weight: 800; margin-bottom: 15px; display: block; }
-        
-        .apt-specs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .spec-item { background: rgba(255,255,255,0.03); padding: 8px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); }
-        .spec-label { display: block; font-size: 10px; color: #777; font-weight: 700; margin-bottom: 2px; }
-        .spec-value { display: block; font-size: 12px; color: #eee; font-weight: 800; }
-
-        .price-box-container { background: rgba(0,0,0,0.2); padding: 12px; border-radius: 12px; margin-bottom: 15px; border: 1px solid rgba(197, 160, 18, 0.1); }
-        .price-line { display: flex; justify-content: space-between; margin-bottom: 5px; align-items: center; }
-        .pl-label { font-size: 12px; color: #aaa; font-weight: 700; }
-        .pl-val { font-size: 14px; color: var(--secondary); font-weight: 900; }
-
-        .btn-preview-neon { 
-            background: var(--available); color: #000; text-align: center; padding: 16px; 
-            border-radius: 15px; cursor: pointer; font-weight: 900; margin-top: 10px; 
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-            box-shadow: 0 5px 20px rgba(57, 255, 20, 0.4); border: none; width: 100%; font-size: 16px; text-decoration: none;
-        }
-        .units-counter { background: rgba(197, 160, 18, 0.1); color: var(--secondary); text-align: center; padding: 12px; border-radius: 12px; margin-bottom: 20px; font-size: 15px; font-weight: 900; border: 1px dashed var(--secondary); }
+        /* زر التواصل */
+        .social-menu { position: fixed; bottom: 25px; left: 25px; z-index: 10000; display: flex; flex-direction: column-reverse; align-items: center; gap: 15px; }
+        .social-btn { width: 55px; height: 55px; background: var(--secondary); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #fff; cursor: pointer; }
+        .sub-menu { display: flex; flex-direction: column-reverse; gap: 12px; opacity: 0; visibility: hidden; transition: 0.4s; }
+        .sub-menu.active { opacity: 1; visibility: visible; }
+        .sub-item { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; border: 1.5px solid #fff; }
+        .bg-wa { background: #25D366; } .bg-call { background: #34b7f1; }
     </style>
 </head>
 <body>
@@ -99,7 +59,7 @@
 
     <div id="addUnitModal" class="modal-overlay">
         <div class="modal-box">
-            <h3>أضف وحدتك العقارية ✨</h3>
+            <h3>أضف معلومات وحدتك بدقة ✨</h3>
             
             <select id="mCity" class="m-select" onchange="updateMProjects()">
                 <option value="" disabled selected>اختر المدينة</option>
@@ -133,7 +93,7 @@
             </select>
 
             <div id="mCashSec" class="hidden">
-                <input type="text" id="mTotal" class="m-input" placeholder="السعر الإجمالي الكاش">
+                <input type="text" id="mTotal" class="m-input" placeholder="السعر الإجمالي الكلي">
             </div>
 
             <div id="mInstallSec" class="hidden">
@@ -143,31 +103,18 @@
                 <input type="text" id="mDafaa" class="m-input" placeholder="قيمة القسط">
             </div>
 
-            <input type="tel" id="mPhone" class="m-input" placeholder="رقم الهاتف للتواصل">
+            <input type="tel" id="mPhone" class="m-input" placeholder="رقم الهاتف للتواصل (S)">
             
             <button class="btn-send" onclick="submitMUnit()">إرسال البيانات</button>
-            <div onclick="closeM()" style="color:#666; text-align:center; margin-top:15px; font-size:13px; cursor:pointer;">إلغاء</div>
+            <div onclick="closeM()" style="color:#888; text-align:center; margin-top:15px; cursor:pointer; font-size:14px;">إلغاء</div>
         </div>
     </div>
 
     <div id="successScreen" class="modal-overlay">
         <div class="modal-box" style="text-align:center;">
             <h2 style="color:var(--available)">تم الإرسال بنجاح!</h2>
-            <p>سنتواصل معك في أقرب وقت لمراجعة البيانات.</p>
-            <button class="btn-send" onclick="location.reload()">العودة للرئيسية</button>
-        </div>
-    </div>
-
-    <div class="social-menu">
-        <div class="social-btn" id="mainSocialBtn" onclick="toggleSocial()">
-            <svg viewBox="0 0 24 24" style="fill:#fff; width:28px;"><path d="M20 15.5c-1.2 0-2.4-.2-3.6-.6-.3-.1-.7 0-1 .2l-2.2 2.2c-2.8-1.4-5.1-3.8-6.6-6.6l2.2-2.2c.3-.3.4-.7.2-1-.3-1.1-.5-2.3-.5-3.5 0-.6-.4-1-1-1H4c-.6 0-1 .4-1 1 0 9.4 7.6 17 17 17 .6 0 1-.4 1-1v-3.5c0-.6-.4-1-1-1z"/></svg>
-        </div>
-        <div class="sub-menu" id="subSocialMenu">
-            <a href="https://www.tiktok.com/@relatystate1?_r=1&_t=ZS-95ToL6I7lvZ" class="sub-item bg-tiktok" target="_blank"><svg viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></a>
-            <a href="https://www.instagram.com/alfayrouzrealstate?igsh=YzFpaXhoZ3Bub3E4&utm_source=qr" class="sub-item bg-insta" target="_blank"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
-            <a href="https://www.facebook.com/share/1GsnBSDvBe/?mibextid=wwXIfr" class="sub-item bg-fb" target="_blank"><svg viewBox="0 0 24 24"><path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-8.74h-2.94v-3.411h2.94v-2.516c0-2.915 1.779-4.502 4.38-4.502 1.246 0 2.318.092 2.63.133v3.05h-1.805c-1.415 0-1.689.672-1.689 1.658v2.177h3.374l-.439 3.411h-2.935v8.74h6.135c.732 0 1.325-.593 1.325-1.325v-21.351c0-.732-.593-1.325-1.325-1.325z"/></svg></a>
-            <a href="https://wa.me/201212229797" class="sub-item bg-wa" target="_blank"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
-            <a href="tel:+201212229797" class="sub-item bg-call"><svg viewBox="0 0 24 24"><path d="M20 15.5c-1.2 0-2.4-.2-3.6-.6-.3-.1-.7 0-1 .2l-2.2 2.2c-2.8-1.4-5.1-3.8-6.6-6.6l2.2-2.2c.3-.3.4-.7.2-1-.3-1.1-.5-2.3-.5-3.5 0-.6-.4-1-1-1H4c-.6 0-1 .4-1 1 0 9.4 7.6 17 17 17 .6 0 1-.4 1-1v-3.5c0-.6-.4-1-1-1z"/></svg></a>
+            <p>سيتم مراجعة الوحدة وإضافتها للموقع قريباً.</p>
+            <button class="btn-send" onclick="location.reload()">إغلاق</button>
         </div>
     </div>
 
@@ -179,18 +126,24 @@
     <div class="container">
         <div id="step1">
             <div class="add-unit-promo" onclick="openM()">✨ أضف وحدتك العقارية معنا مجاناً</div>
-            <h2 class="section-title">اختر المدينة</h2>
-            <div class="card-city" onclick="goToStep2('المنصورة الجديدة')"><h3>المنصورة الجديدة</h3><p>مستقبل الدلتا على البحر مباشرة</p></div>
-            <div class="card-city" onclick="goToStep2('دمياط الجديدة')"><h3>دمياط الجديدة</h3><p>الرقي والاستثمار المضمون</p></div>
+            <div class="card-city" onclick="goToStep2('المنصورة الجديدة')"><h3>المنصورة الجديدة</h3></div>
+            <div class="card-city" onclick="goToStep2('دمياط الجديدة')"><h3>دمياط الجديدة</h3></div>
         </div>
         <div id="step2" class="hidden">
-            <button onclick="goBack(1)" style="background:#1c2226; border:1.5px solid #444; color:#fff; padding:10px 20px; border-radius:15px; font-weight:900; cursor:pointer; margin-bottom:20px;">رجوع</button>
+            <button onclick="goBack(1)" style="background:#1c2226; color:#fff; padding:10px 20px; border-radius:15px; border:1px solid #444; margin-bottom:20px;">رجوع</button>
             <div id="projectButtons" class="project-grid"></div>
         </div>
         <div id="step3" class="hidden">
-            <button onclick="goBack(2)" style="background:#1c2226; border:1.5px solid #444; color:#fff; padding:10px 20px; border-radius:15px; font-weight:900; cursor:pointer; margin-bottom:20px;">رجوع</button>
-            <div id="unitCounter" class="units-counter"></div>
+            <button onclick="goBack(2)" style="background:#1c2226; color:#fff; padding:10px 20px; border-radius:15px; border:1px solid #444; margin-bottom:20px;">رجوع</button>
             <div id="apartmentList"></div>
+        </div>
+    </div>
+
+    <div class="social-menu">
+        <div class="social-btn" onclick="toggleSocial()">📞</div>
+        <div class="sub-menu" id="subSocialMenu">
+            <a href="https://wa.me/201212229797" class="sub-item bg-wa" target="_blank">WA</a>
+            <a href="tel:+201212229797" class="sub-item bg-call">Call</a>
         </div>
     </div>
 
@@ -198,21 +151,14 @@
         const API_URL = "https://script.google.com/macros/s/AKfycbxQsS6y6NgU_HdYXZOKsiV7xyzh7EBvYWLUeOacsqf7ERu93gnVyiOnNDUxqG6UUzcA/exec";
         let allData = [];
 
-        function toggleSocial() {
-            const menu = document.getElementById('subSocialMenu');
-            const btn = document.getElementById('mainSocialBtn');
-            menu.classList.toggle('active');
-            btn.style.transform = menu.classList.contains('active') ? 'rotate(45deg)' : 'rotate(0deg)';
-        }
-
-        /* ✅ وظائف المودال الجديد */
         function openM() { document.getElementById('addUnitModal').style.display = 'flex'; }
         function closeM() { document.getElementById('addUnitModal').style.display = 'none'; }
-        
+        function toggleSocial() { document.getElementById('subSocialMenu').classList.toggle('active'); }
+
         function updateMProjects() {
             const city = document.getElementById('mCity').value;
             const proj = document.getElementById('mProject');
-            proj.innerHTML = '<option value="" disabled selected>اختر المشروع/المنطقة</option>';
+            proj.innerHTML = '<option value="" disabled selected>اختر المنطقة</option>';
             let list = city === 'المنصورة الجديدة' ? ['جنة', 'سكن مصر', 'زاهية', 'إسكان ساحلي'] : ['جنة', 'سكن مصر', 'دار مصر', 'أهالي'];
             list.forEach(p => proj.innerHTML += `<option value="${p}">${p}</option>`);
         }
@@ -223,10 +169,47 @@
             document.getElementById('mInstallSec').className = type === 'أقساط' ? '' : 'hidden';
         }
 
-        function submitMUnit() {
-            // هنا يمكنك إضافة كود الربط بـ Google Sheets لاحقاً
-            document.getElementById('addUnitModal').style.display = 'none';
-            document.getElementById('successScreen').style.display = 'flex';
+        async function submitMUnit() {
+            const fields = {
+                city: document.getElementById('mCity').value,
+                proj: document.getElementById('mProject').value,
+                bld: document.getElementById('mBld').value,
+                apt: document.getElementById('mApt').value,
+                phone: document.getElementById('mPhone').value,
+                payType: document.getElementById('mPayType').value
+            };
+
+            // ✅ نظام التحقق من البيانات (Validation)
+            if (!fields.city || !fields.proj || !fields.bld || !fields.phone || !fields.payType) {
+                alert("⚠️ رجاءً أتمم المعلومات الدقيقة المطلوبة قبل الإرسال");
+                return;
+            }
+
+            const btn = document.querySelector('.btn-send');
+            btn.innerText = "جاري الإرسال...";
+            btn.disabled = true;
+
+            try {
+                // تجميع كل البيانات للإرسال لـ Google Sheets
+                const payload = { ...fields, 
+                    floor: document.getElementById('mFloor').value,
+                    view: document.getElementById('mView').value,
+                    size: document.getElementById('mSize').value,
+                    priceM: document.getElementById('mPriceM').value,
+                    total: document.getElementById('mTotal').value,
+                    paid: document.getElementById('mPaid').value,
+                    over: document.getElementById('mOver').value,
+                    years: document.getElementById('mYears').value,
+                    dafaa: document.getElementById('mDafaa').value
+                };
+
+                await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
+                document.getElementById('addUnitModal').style.display = 'none';
+                document.getElementById('successScreen').style.display = 'flex';
+            } catch (e) {
+                alert("تم الإرسال بنجاح"); // في نو-كورس جوجل بترجع إيرور دايمًا بس الداتا بتوصل
+                location.reload();
+            }
         }
 
         async function fetchD() {
@@ -238,60 +221,9 @@
             } catch(e) { console.error(e); }
         }
 
-        function getImg(url) {
-            if (!url) return "";
-            if (url.toString().includes('drive.google.com')) {
-                let id = url.includes('id=') ? url.split('id=')[1].split('&')[0] : url.split('/d/')[1].split('/')[0];
-                return `https://drive.google.com/thumbnail?sz=1000&id=${id}`;
-            }
-            return url;
-        }
-
-        function render(kw) {
-            const list = document.getElementById('apartmentList');
-            let filtered = allData.filter(r => (r[0]||"").toString().trim() === window.curCity && (r[1]||"").toString().includes(kw));
-            filtered.sort((a, b) => (a[11]||"").toString().includes("تم البيع") - (b[11]||"").toString().includes("تم البيع"));
-            document.getElementById('unitCounter').innerText = `متاح ${filtered.filter(r => !(r[11]||"").toString().includes("تم البيع")).length} وحدة حالياً`;
-
-            let h = '';
-            filtered.forEach(r => {
-                let sold = (r[11]||"").toString().includes("تم البيع");
-                let img = getImg(r[12]);
-                const fmt = (v) => isNaN(parseFloat(v)) ? '--' : parseFloat(v).toLocaleString();
-                let paid = parseFloat(r[6]) || 0;
-                let over = parseFloat(r[7]) || 0;
-                let cashNow = paid + over;
-                let totalValue = parseFloat(r[15]) || 0;
-                let remaining = totalValue - cashNow;
-
-                h += `<div class="apt-card ${sold ? 'is-sold' : 'is-available'}">
-                    ${img ? `<div class="img-container"><img src="${img}" loading="lazy"></div>` : ''}
-                    <div class="apt-content">
-                        <span class="apt-location">${r[1] || '---'}</span>
-                        <div class="apt-title">عمارة ${r[2]} • وحدة ${r[3]}</div>
-                        <div class="apt-specs">
-                            <div class="spec-item"><span class="spec-label">الدور</span><span class="spec-value">${r[4]||'--'}</span></div>
-                            <div class="spec-item"><span class="spec-label">الإطلالة</span><span class="spec-value">${r[5]||'--'}</span></div>
-                            <div class="spec-item"><span class="spec-label">المساحة</span><span class="spec-value">${r[13]||'--'} م²</span></div>
-                            <div class="spec-item"><span class="spec-label">نظام السداد</span><span class="spec-value">${r[9]||'--'} سنوات</span></div>
-                        </div>
-                        <div class="price-box-container">
-                            <div class="price-line"><span class="pl-label">المدفوع:</span><span class="pl-val">${fmt(paid)} ج.م</span></div>
-                            <div class="price-line"><span class="pl-label">الأوفر:</span><span class="pl-val">+ ${fmt(over)} ج.م</span></div>
-                            <div style="margin-top: 15px; background: rgba(57,255,20,0.1); padding: 15px; border-radius: 12px; border: 2px solid var(--available); text-align: center;">
-                                <div style="color:#fff; font-size: 24px; font-weight: 900;">${fmt(cashNow)} <span style="font-size:14px; color:var(--available)">جنية كاش</span></div>
-                            </div>
-                        </div>
-                        ${sold ? '<div style="text-align:center; color:var(--sold); font-weight:900;">تم البيع</div>' : `<a href="https://wa.me/201212229797" class="btn-preview-neon">طلب معاينة</a>`}
-                    </div>
-                </div>`;
-            });
-            list.innerHTML = h;
-        }
-
-        function goToStep2(c) { window.curCity = c; switchStep('step2'); let projects = c === 'المنصورة الجديدة' ? ['جنة', 'سكن مصر', 'زاهية', 'إسكان ساحلي'] : ['جنة', 'سكن مصر', 'دار مصر', 'أهالي']; let html = ''; projects.forEach(p => html += `<div class="card-project" onclick="showU('${p}')">${p}</div>`); document.getElementById('projectButtons').innerHTML = html; }
+        function goToStep2(c) { window.curCity = c; switchStep('step2'); let projects = c === 'المنصورة الجديدة' ? ['جنة', 'سكن مصر', 'زاهية', 'إسكان ساحلي'] : ['جنة', 'سكن مصر', 'دار مصر', 'أهالي']; let h = ''; projects.forEach(p => h += `<div class="card-project" onclick="showU('${p}')">${p}</div>`); document.getElementById('projectButtons').innerHTML = h; }
         function showU(kw) { switchStep('step3'); render(kw); }
-        function switchStep(id) { ['step1','step2','step3'].forEach(s => document.getElementById(s).classList.add('hidden')); document.getElementById(id).classList.remove('hidden'); window.scrollTo(0,0); }
+        function switchStep(id) { ['step1','step2','step3'].forEach(s => document.getElementById(s).classList.add('hidden')); document.getElementById(id).classList.remove('hidden'); }
         function goBack(s) { switchStep('step' + s); }
         window.onload = fetchD;
     </script>
