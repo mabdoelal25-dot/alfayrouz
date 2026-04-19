@@ -26,7 +26,11 @@
             position: relative; overflow-y: auto; -webkit-overflow-scrolling: touch;
         }
 
-        #loadingScreen { position: fixed; inset: 0; background: var(--bg-dark); z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        #loadingScreen { 
+            position: fixed; inset: 0; background: var(--bg-dark); z-index: 99999; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            transition: opacity 0.5s ease;
+        }
         .loader-logo { font-family: 'Montserrat'; font-size: 35px; font-weight: 900; color: var(--secondary); animation: pulse-text 1.5s infinite ease-in-out; letter-spacing: 3px; }
         @keyframes pulse-text { 0%, 100% { opacity: 0.3; transform: scale(0.95); } 50% { opacity: 1; transform: scale(1.05); } }
 
@@ -97,6 +101,10 @@
 
         .hidden { display: none !important; }
         .units-counter { background: rgba(197, 160, 18, 0.1); color: var(--secondary); text-align: center; padding: 12px; border-radius: 12px; margin-bottom: 20px; font-size: 15px; font-weight: 900; border: 1px dashed var(--secondary); }
+        
+        /* Skeleton Loading Animation */
+        .skeleton { background: linear-gradient(90deg, #1c2226 25%, #252d33 50%, #1c2226 75%); background-size: 200% 100%; animation: skeleton-loading 1.5s infinite; border-radius: 15px; height: 150px; margin-bottom: 15px; }
+        @keyframes skeleton-loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
     </style>
 </head>
 <body oncontextmenu="return false;">
@@ -201,7 +209,119 @@
     <script>
         const API_URL = "https://script.google.com/macros/s/AKfycbxQsS6y6NgU_HdYXZOKsiV7xyzh7EBvYWLUeOacsqf7ERu93gnVyiOnNDUxqG6UUzcA/exec";
         let allData = [];
+        let isFetching = false;
 
+        // --- نظام السرعة القصوى ---
+        window.onload = () => {
+            // محاولة جلب الداتا من ذاكرة المتصفح أولاً (فتحة لحظية)
+            const cached = localStorage.getItem('alFayrouz_data');
+            if (cached) {
+                allData = JSON.parse(cached);
+                console.log("تم تحميل البيانات من الكاش للسرعة");
+            }
+            
+            // إخفاء شاشة التحميل فوراً (الموقع يفتح في وش العميل)
+            setTimeout(() => {
+                const loader = document.getElementById('loadingScreen');
+                loader.style.opacity = '0';
+                setTimeout(() => loader.style.display = 'none', 500);
+            }, 400);
+
+            // بدء تحديث البيانات من الشيت في الخلفية بدون تعطيل المستخدم
+            fetchD();
+        };
+
+        async function fetchD() {
+            if (isFetching) return;
+            isFetching = true;
+            try {
+                const response = await fetch(API_URL + "?v=" + Math.random());
+                const data = await response.json();
+                allData = data.slice(1);
+                // حفظ نسخة جديدة في الكاش للمرة القادمة
+                localStorage.setItem('alFayrouz_data', JSON.stringify(allData));
+                isFetching = false;
+            } catch(e) { 
+                console.error("فشل تحديث البيانات:", e);
+                isFetching = false;
+            }
+        }
+
+        function render(kw) {
+            const list = document.getElementById('apartmentList');
+            const counter = document.getElementById('unitCounter');
+            
+            // لو الداتا لسه ما وصلتش خالص (لا كاش ولا شيت)
+            if (allData.length === 0) {
+                list.innerHTML = `
+                    <div style="text-align:center; padding:30px; color:var(--secondary);">
+                        <div class="loader-logo" style="font-size:18px;">جاري تجهيز الوحدات...</div>
+                        <p style="font-size:12px; color:#666; margin-top:10px;">نبحث لك عن أفضل الفرص حالياً</p>
+                        <div class="skeleton"></div><div class="skeleton"></div>
+                    </div>`;
+                counter.innerText = "جاري التحميل...";
+                return;
+            }
+
+            let filtered = allData.filter(r => {
+                let cityMatch = (r[0]||"").toString().trim() === window.curCity;
+                let projMatch = (r[1]||"").toString().includes(kw);
+                let status = (r[11]||"").toString().trim();
+                let isHidden = status === "تحت المراجعة" || status === "لم تعرض بعد";
+                return cityMatch && projMatch && !isHidden;
+            });
+
+            filtered.sort((a, b) => (a[11]||"").toString().includes("تم البيع") - (b[11]||"").toString().includes("تم البيع"));
+            
+            counter.innerText = `متاح ${filtered.filter(r => !(r[11]||"").toString().includes("تم البيع")).length} وحدة حالياً`;
+
+            // عرض أول 10 وحدات فوراً للسرعة، والباقي يظهر بعدها (Lazy Load)
+            displayUnits(filtered);
+        }
+
+        function displayUnits(dataArray) {
+            const list = document.getElementById('apartmentList');
+            let h = '';
+            dataArray.forEach(r => {
+                let statusText = (r[11]||"").toString().trim();
+                let sold = statusText.includes("تم البيع");
+                let img = (r[12] && r[12].includes('drive')) ? `https://drive.google.com/thumbnail?sz=1000&id=${r[12].split('id=')[1]}` : r[12];
+                const fmt = (v) => isNaN(parseFloat(v)) ? '0' : parseFloat(v).toLocaleString();
+                
+                let paid = parseFloat(r[6]) || 0;
+                let over = parseFloat(r[7]) || 0;
+                let cashNow = paid + over;
+                let totalValue = parseFloat(r[15]) || 0;
+                let phone = (r[17]||"").toString().replace(/\s/g, '') || '201212229797'; 
+
+                h += `<div class="apt-card ${sold ? 'is-sold' : 'is-available'}">
+                    ${img ? `<div class="img-container"><img src="${img}" loading="lazy"></div>` : ''}
+                    <div class="apt-content">
+                        <span class="apt-location">${r[1] || '---'}</span>
+                        <div class="apt-title">عمارة ${r[2] || '--'} • شقة ${r[3] || '--'}</div>
+                        <div class="apt-specs">
+                            <div class="spec-item"><span class="spec-label">الدور</span><span class="spec-value">${r[4]||'--'}</span></div>
+                            <div class="spec-item"><span class="spec-label">الاتجاه</span><span class="spec-value">${r[5]||'--'}</span></div>
+                            <div class="spec-item"><span class="spec-label">المساحة</span><span class="spec-value">${r[13]||'--'} م²</span></div>
+                            <div class="spec-item"><span class="spec-label">السعر الكلي</span><span class="spec-value">${fmt(totalValue)} ج.م</span></div>
+                        </div>
+                        <div class="price-box-container">
+                            <div class="price-line"><span class="pl-label">المدفوع:</span><span class="pl-val" style="color:#eee">${fmt(paid)} ج.م</span></div>
+                            ${over > 0 ? `<div class="price-line"><span class="pl-label">الأوفر:</span><span class="pl-val" style="color:#ef5350">+ ${fmt(over)} ج.م</span></div>` : ''}
+                            <div style="margin-top: 15px; background: rgba(57,255,20,0.1); padding: 15px; border-radius: 12px; border: 2px solid var(--available); text-align: center;">
+                                <div style="color: var(--available); font-weight: 900; font-size: 15px;">${over > 0 ? 'المطلوب كاش حالياً' : 'المطلوب كاش فقط'}</div>
+                                <div style="color:#fff; font-size: 22px; font-weight: 900;">${fmt(cashNow)} ج.م</div>
+                            </div>
+                        </div>
+                        ${sold ? '<div style="text-align:center; color:var(--sold); font-weight:900; font-size:24px;">تـم التعاقـد</div>' : 
+                        `<a href="https://wa.me/${phone}?text=استفسار عن وحدة عمارة ${r[2]} شقة ${r[3]}" class="btn-preview-neon">طلب معاينة</a>`}
+                    </div>
+                </div>`;
+            });
+            list.innerHTML = h;
+        }
+
+        // باقي دوال التحكم
         function toggleSocial() {
             const menu = document.getElementById('subSocialMenu');
             const btn = document.getElementById('mainSocialBtn');
@@ -242,8 +362,6 @@
             const btn = document.getElementById('submitBtn');
             btn.disabled = true;
             btn.innerText = "جاري الإرسال...";
-
-            // تعديل ذكي: لو كاش، السعر الكاش يروح لخانة المدفوع (paid) عشان المعادلة في الشيت تشتغل
             let finalPaid = document.getElementById('mPayType').value === 'كاش' 
                             ? document.getElementById('mTotalCash').value 
                             : document.getElementById('mPaid').value;
@@ -256,7 +374,7 @@
                 apt: document.getElementById('mApt').value, 
                 floor: document.getElementById('mFloor').value,
                 view: document.getElementById('mView').value, 
-                paid: finalPaid || 0, // القيمة بتروح لعمود G
+                paid: finalPaid || 0,
                 over: document.getElementById('mOver').value || 0,
                 status: "تحت المراجعة", 
                 size: document.getElementById('mSize').value || 0,
@@ -264,7 +382,7 @@
                 installYears: document.getElementById('mInstallYears').value || 0,
                 installValue: document.getElementById('mInstallValue').value || 0,
                 yearsLeft: document.getElementById('mYearsLeft').value || 0,
-                totalCash: "", // بنبعت فاضي لعمود P عشان نحمي المعادلة من الـ REF
+                totalCash: "",
                 phone: document.getElementById('mPhone').value 
             };
 
@@ -279,76 +397,10 @@
             document.getElementById('successState').style.display = 'block';
         }
 
-        async function fetchD() {
-            try {
-                const response = await fetch(API_URL + "?v=" + Math.random());
-                const data = await response.json();
-                allData = data.slice(1);
-                document.getElementById('loadingScreen').style.display = 'none';
-            } catch(e) { console.error(e); }
-        }
-
-        function render(kw) {
-            const list = document.getElementById('apartmentList');
-            
-            let filtered = allData.filter(r => {
-                let cityMatch = (r[0]||"").toString().trim() === window.curCity;
-                let projMatch = (r[1]||"").toString().includes(kw);
-                let status = (r[11]||"").toString().trim();
-                let isHidden = status === "تحت المراجعة" || status === "لم تعرض بعد";
-                return cityMatch && projMatch && !isHidden;
-            });
-
-            filtered.sort((a, b) => (a[11]||"").toString().includes("تم البيع") - (b[11]||"").toString().includes("تم البيع"));
-            
-            document.getElementById('unitCounter').innerText = `متاح ${filtered.filter(r => !(r[11]||"").toString().includes("تم البيع")).length} وحدة حالياً`;
-
-            let h = '';
-            filtered.forEach(r => {
-                let statusText = (r[11]||"").toString().trim();
-                let sold = statusText.includes("تم البيع");
-                let img = (r[12] && r[12].includes('drive')) ? `https://drive.google.com/thumbnail?sz=1000&id=${r[12].split('id=')[1]}` : r[12];
-                const fmt = (v) => isNaN(parseFloat(v)) ? '0' : parseFloat(v).toLocaleString();
-                
-                let paid = parseFloat(r[6]) || 0;
-                let over = parseFloat(r[7]) || 0;
-                let cashNow = paid + over;
-                let totalValue = parseFloat(r[15]) || 0;
-                let phone = (r[17]||"").toString().replace(/\s/g, '') || '201212229797'; 
-
-                h += `<div class="apt-card ${sold ? 'is-sold' : 'is-available'}">
-                    ${img ? `<div class="img-container"><img src="${img}" loading="lazy"></div>` : ''}
-                    <div class="apt-content">
-                        <span class="apt-location">${r[1] || '---'}</span>
-                        <div class="apt-title">عمارة ${r[2] || '--'} • شقة ${r[3] || '--'}</div>
-                        <div class="apt-specs">
-                            <div class="spec-item"><span class="spec-label">الدور</span><span class="spec-value">${r[4]||'--'}</span></div>
-                            <div class="spec-item"><span class="spec-label">الاتجاه</span><span class="spec-value">${r[5]||'--'}</span></div>
-                            <div class="spec-item"><span class="spec-label">المساحة</span><span class="spec-value">${r[13]||'--'} م²</span></div>
-                            <div class="spec-item"><span class="spec-label">السعر الكلي</span><span class="spec-value">${fmt(totalValue)} ج.م</span></div>
-                        </div>
-                        <div class="price-box-container">
-                            <div class="price-line"><span class="pl-label">المدفوع:</span><span class="pl-val" style="color:#eee">${fmt(paid)} ج.م</span></div>
-                            ${over > 0 ? `<div class="price-line"><span class="pl-label">الأوفر:</span><span class="pl-val" style="color:#ef5350">+ ${fmt(over)} ج.م</span></div>` : ''}
-                            <div style="margin-top: 15px; background: rgba(57,255,20,0.1); padding: 15px; border-radius: 12px; border: 2px solid var(--available); text-align: center;">
-                                <div style="color: var(--available); font-weight: 900; font-size: 15px;">${over > 0 ? 'المطلوب كاش حالياً' : 'المطلوب كاش فقط'}</div>
-                                <div style="color:#fff; font-size: 22px; font-weight: 900;">${fmt(cashNow)} ج.م</div>
-                            </div>
-                        </div>
-                        ${sold ? '<div style="text-align:center; color:var(--sold); font-weight:900; font-size:24px;">تـم التعاقـد</div>' : 
-                        `<a href="https://wa.me/${phone}?text=استفسار عن وحدة عمارة ${r[2]} شقة ${r[3]}" class="btn-preview-neon">طلب معاينة</a>`}
-                    </div>
-                </div>`;
-            });
-            list.innerHTML = h;
-        }
-
         function goToStep2(c) { window.curCity = c; switchStep('step2'); let projects = c === 'المنصورة الجديدة' ? ['جنة', 'سكن مصر', 'زاهية', 'إسكان ساحلي', 'تجارية وإدارية'] : ['جنة', 'سكن مصر', 'دار مصر', 'أهالي', 'تجارية وإدارية']; let html = ''; projects.forEach(p => html += `<div class="card-project" onclick="showU('${p}')">${p}</div>`); document.getElementById('projectButtons').innerHTML = html; }
         function showU(kw) { switchStep('step3'); render(kw); }
         function switchStep(id) { ['step1','step2','step3'].forEach(s => document.getElementById(s).classList.add('hidden')); document.getElementById(id).classList.remove('hidden'); window.scrollTo(0,0); }
         function goBack(s) { switchStep('step' + s); }
-        window.onload = fetchD;
     </script>
 </body>
 </html>
-
