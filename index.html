@@ -259,19 +259,31 @@
 
         function showSuccess() { document.getElementById('formContent').style.display = 'none'; document.getElementById('successState').style.display = 'block'; }
 
+        // دالة التحميل السريعة الجديدة (بدون الـ 10 ثواني انتظار)
         async function fetchD() {
-            try {
-                const response = await fetch(CSV_URL);
-                const text = await response.text();
-                // تحويل الـ CSV لمصفوفة صفوف
-                const rows = text.split('\n').map(row => {
-                    // معالجة بسيطة للفواصل داخل الخلايا (اختياري حسب بياناتك)
-                    return row.split(',');
-                });
-                allData = rows.slice(1); // تجاهل العناوين
+            // 1. عرض فوري من الكاش (لو العميل دخل قبل كدة)
+            const cached = localStorage.getItem('fayrouz_cache');
+            if (cached) {
+                allData = JSON.parse(cached);
                 document.getElementById('loadingScreen').style.display = 'none';
-                if(!document.getElementById('step3').classList.contains('hidden')) { render(window.currentKw); }
-            } catch(e) { console.error(e); }
+                if(!document.getElementById('step3').classList.contains('hidden')) render(window.currentKw);
+            }
+
+            try {
+                // 2. سحب البيانات من جوجل مع "كسر الكاش" لسرعة الرد
+                const response = await fetch(`${CSV_URL}&cb=${Date.now()}`);
+                const text = await response.text();
+                const rows = text.split('\n').map(row => row.split(','));
+                allData = rows.slice(1);
+                
+                // 3. تحديث الكاش وإخفاء شاشة التحميل
+                localStorage.setItem('fayrouz_cache', JSON.stringify(allData));
+                document.getElementById('loadingScreen').style.display = 'none';
+                if(!document.getElementById('step3').classList.contains('hidden')) render(window.currentKw);
+            } catch(e) { 
+                console.error(e);
+                document.getElementById('loadingScreen').style.display = 'none';
+            }
         }
 
         function render(kw) {
