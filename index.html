@@ -50,7 +50,6 @@
         .card-city p { font-size: 13px; color: #888; margin-top: 8px; font-weight: 700; }
         .project-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .card-project { background: var(--card-bg); border-radius: 15px; padding: 25px 10px; text-align: center; border: 1px solid rgba(255,255,255,0.05); cursor: pointer; font-weight: 900; transition: 0.3s; display: flex; align-items: center; justify-content: center; min-height: 80px; }
-        .card-project:active { background: var(--secondary); color: #000; }
         .apt-card { background: #1c2226; border-radius: 22px; margin-bottom: 25px; overflow: hidden; position: relative; }
         .is-available { border-right: 8px solid var(--available); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
         .is-sold { border-right: 15px solid var(--sold); opacity: 0.6; filter: grayscale(0.7); }
@@ -74,6 +73,30 @@
 </head>
 <body oncontextmenu="return false;">
     <div id="loadingScreen"><div class="loader-logo">AL-FAYROUZ</div></div>
+
+    <div class="header-bar">
+        <h1 class="company-name">Al-Fayrouz</h1>
+        <span class="company-subtitle">الفيروز للتسويق العقاري</span>
+    </div>
+
+    <div class="container">
+        <div id="step1">
+            <div class="add-unit-btn" onclick="openM()">🏡 أضف وحدتك العقارية معنا مجاناً</div>
+            <h2 class="section-title">اختر المدينة</h2>
+            <div class="card-city" onclick="goToStep2('المنصورة الجديدة')"><h3>المنصورة الجديدة</h3><p>مستقبل الدلتا على البحر مباشرة</p></div>
+            <div class="card-city" onclick="goToStep2('دمياط الجديدة')"><h3>دمياط الجديدة</h3><p>الرقي والاستثمار المضمون</p></div>
+        </div>
+        <div id="step2" class="hidden">
+            <button onclick="goBack(1)" style="background:#1c2226; border:1.5px solid #444; color:#fff; padding:10px 20px; border-radius:15px; font-weight:900; cursor:pointer; margin-bottom:20px;">رجوع</button>
+            <div id="projectButtons" class="project-grid"></div>
+        </div>
+        <div id="step3" class="hidden">
+            <button onclick="goBack(2)" style="background:#1c2226; border:1.5px solid #444; color:#fff; padding:10px 20px; border-radius:15px; font-weight:900; cursor:pointer; margin-bottom:20px;">رجوع</button>
+            <div id="unitCounter" class="units-counter"></div>
+            <div id="apartmentList"></div>
+        </div>
+    </div>
+
     <div id="addUnitModal" class="modal-overlay">
         <div class="modal-box">
             <div id="formContent">
@@ -123,7 +146,7 @@
                         <input type="number" id="mYearsLeft" class="m-input" placeholder="متبقي كم سنة">
                     </div>
                     <button id="submitBtn" class="btn-send-data" disabled onclick="submitMUnit()">إرسال للمراجعة</button>
-                    <div id="cancelBtn" onclick="closeM()" style="color:#666; text-align:center; margin-top:15px; font-size:13px; cursor:pointer;">إلغاء</div>
+                    <div onclick="closeM()" style="color:#666; text-align:center; margin-top:15px; font-size:13px; cursor:pointer;">إلغاء</div>
                 </form>
             </div>
             <div id="successState">
@@ -134,6 +157,7 @@
             </div>
         </div>
     </div>
+
     <div class="social-menu">
         <div class="social-btn" id="mainSocialBtn" onclick="toggleSocial()">
             <svg viewBox="0 0 24 24" style="fill:#fff; width:28px;"><path d="M20 15.5c-1.2 0-2.4-.2-3.6-.6-.3-.1-.7 0-1 .2l-2.2 2.2c-2.8-1.4-5.1-3.8-6.6-6.6l2.2-2.2c.3-.3.4-.7.2-1-.3-1.1-.5-2.3-.5-3.5 0-.6-.4-1-1-1H4c-.6 0-1 .4-1 1 0 9.4 7.6 17 17 17 .6 0 1-.4 1-1v-3.5c0-.6-.4-1-1-1z"/></svg>
@@ -143,152 +167,51 @@
             <a href="tel:+201212229797" class="sub-item bg-call"><svg viewBox="0 0 24 24"><path d="M20 15.5c-1.2 0-2.4-.2-3.6-.6-.3-.1-.7 0-1 .2l-2.2 2.2c-2.8-1.4-5.1-3.8-6.6-6.6l2.2-2.2c.3-.3.4-.7.2-1-.3-1.1-.5-2.3-.5-3.5 0-.6-.4-1-1-1H4c-.6 0-1 .4-1 1 0 9.4 7.6 17 17 17 .6 0 1-.4 1-1v-3.5c0-.6-.4-1-1-1z"/></svg></a>
         </div>
     </div>
-    <div class="header-bar">
-        <h1 class="company-name">Al-Fayrouz</h1>
-        <span class="company-subtitle">الفيروز للتسويق العقاري</span>
-    </div>
-    <div class="container">
-        <div id="step1">
-            <div class="add-unit-btn" onclick="openM()">🏡 أضف وحدتك العقارية معنا مجاناً</div>
-            <h2 class="section-title">اختر المدينة</h2>
-            <div class="card-city" onclick="goToStep2('المنصورة الجديدة')"><h3>المنصورة الجديدة</h3><p>مستقبل الدلتا على البحر مباشرة</p></div>
-            <div class="card-city" onclick="goToStep2('دمياط الجديدة')"><h3>دمياط الجديدة</h3><p>الرقي والاستثمار المضمون</p></div>
-        </div>
-        <div id="step2" class="hidden">
-            <button onclick="goBack(1)" style="background:#1c2226; border:1.5px solid #444; color:#fff; padding:10px 20px; border-radius:15px; font-weight:900; cursor:pointer; margin-bottom:20px;">رجوع</button>
-            <div id="projectButtons" class="project-grid"></div>
-        </div>
-        <div id="step3" class="hidden">
-            <button onclick="goBack(2)" style="background:#1c2226; border:1.5px solid #444; color:#fff; padding:10px 20px; border-radius:15px; font-weight:900; cursor:pointer; margin-bottom:20px;">رجوع</button>
-            <div id="unitCounter" class="units-counter"></div>
-            <div id="apartmentList"></div>
-        </div>
-    </div>
+
     <script>
         const API_URL = "https://script.google.com/macros/s/AKfycbxQsS6y6NgU_HdYXZOKsiV7xyzh7EBvYWLUeOacsqf7ERu93gnVyiOnNDUxqG6UUzcA/exec";
         const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQWKx4v-nn6JEM3O4En9ELAAKvDxF-NyAnNLPS1c3dLk3Hqvx9MLK9mEfGRP0XTT33P9QC6SOLUt9jM/pub?output=csv";
         let allData = [];
 
-        function toggleSocial() {
-            const menu = document.getElementById('subSocialMenu');
-            const btn = document.getElementById('mainSocialBtn');
-            menu.classList.toggle('active');
-            btn.style.transform = menu.classList.contains('active') ? 'rotate(45deg)' : 'rotate(0deg)';
-        }
-
-        function validateForm() {
-            const form = document.getElementById('unitForm');
-            const btn = document.getElementById('submitBtn');
-            btn.disabled = !form.checkValidity();
-        }
-
-        function openM() { document.getElementById('addUnitModal').style.display = 'flex'; document.getElementById('formContent').style.display = 'block'; document.getElementById('successState').style.display = 'none'; }
-        function closeM() { document.getElementById('addUnitModal').style.display = 'none'; }
-
-        function updateMProjects() {
-            const city = document.getElementById('mCity').value;
-            const proj = document.getElementById('mProject');
-            const zone = document.getElementById('mZone');
-            proj.innerHTML = '<option value="" disabled selected>اختر المشروع/المنطقة</option>';
-            zone.classList.add('hidden');
-            zone.required = false;
-            
-            let list = city === 'المنصورة الجديدة' ? ['جنة', 'سكن مصر', 'زاهية', 'إسكان ساحلي', 'تجارية وإدارية'] : ['جنة', 'سكن مصر', 'دار مصر', 'أهالي', 'تجارية وإدارية'];
-            list.forEach(p => proj.innerHTML += `<option value="${p}">${p}</option>`);
-            
-            document.getElementById('mFloor').classList.remove('hidden');
-            document.getElementById('mFloor').required = true;
-            document.getElementById('mBld').placeholder = "رقم العمارة";
-            document.getElementById('mApt').placeholder = "رقم الشقة";
-            
-            validateForm();
-        }
-
-        function updateSubZones() {
-            const city = document.getElementById('mCity').value;
-            const proj = document.getElementById('mProject').value;
-            const zone = document.getElementById('mZone');
-            const floorInput = document.getElementById('mFloor');
-            const bldInput = document.getElementById('mBld');
-            const aptInput = document.getElementById('mApt');
-            
-            zone.innerHTML = '<option value="" disabled selected>اختر المنطقة/المرحلة</option>';
-            let showZone = false;
-
-            if (city === 'المنصورة الجديدة') {
-                if (proj === 'جنة' || proj === 'سكن مصر') {
-                    for(let i=1; i<=6; i++) zone.innerHTML += `<option value="منطقة ${i}">منطقة ${i}</option>`;
-                    showZone = true;
-                } else if (proj === 'زاهية') {
-                    for(let i=1; i<=4; i++) zone.innerHTML += `<option value="المرحلة ${i}">المرحلة ${i}</option>`;
-                    showZone = true;
-                    floorInput.classList.add('hidden');
-                    floorInput.required = false;
-                    bldInput.placeholder = "رقم المنطقة";
-                    aptInput.placeholder = "رقم الفيلا";
-                }
-            } else if (city === 'دمياط الجديدة') {
-                if (proj === 'جنة' || proj === 'سكن مصر' || proj === 'دار مصر') {
-                    for(let i=1; i<=3; i++) zone.innerHTML += `<option value="منطقة ${i}">منطقة ${i}</option>`;
-                    showZone = true;
-                }
-            }
-
-            if(showZone) { zone.classList.remove('hidden'); zone.required = true; } else { zone.classList.add('hidden'); zone.required = false; }
-            validateForm();
-        }
-
-        function togglePayFields() {
-            const type = document.getElementById('mPayType').value;
-            document.getElementById('mCashSec').className = type === 'كاش' ? '' : 'hidden';
-            document.getElementById('mInstallSec').className = type === 'أقساط' ? '' : 'hidden';
-            validateForm();
-        }
-
-        async function submitMUnit() {
-            const btn = document.getElementById('submitBtn');
-            btn.disabled = true;
-            btn.innerText = "جاري الإرسال...";
-            let finalPaid = document.getElementById('mPayType').value === 'كاش' ? document.getElementById('mTotalCash').value : document.getElementById('mPaid').value;
-            let fullProject = document.getElementById('mProject').value;
-            if(!document.getElementById('mZone').classList.contains('hidden')) { fullProject += " - " + document.getElementById('mZone').value; }
-
-            const data = { action: "addUnit", city: document.getElementById('mCity').value, project: fullProject, bld: document.getElementById('mBld').value, apt: document.getElementById('mApt').value, floor: document.getElementById('mFloor').value || "فيلا", view: document.getElementById('mView').value, paid: finalPaid || 0, over: document.getElementById('mOver').value || 0, status: "تحت المراجعة", size: document.getElementById('mSize').value || 0, pricePerMeter: document.getElementById('mPricePerMeter').value || 0, installYears: document.getElementById('mInstallYears').value || 0, installValue: document.getElementById('mInstallValue').value || 0, yearsLeft: document.getElementById('mYearsLeft').value || 0, totalCash: "", phone: document.getElementById('mPhone').value };
-            try { await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) }); showSuccess(); } catch(e) { showSuccess(); }
-        }
-
-        function showSuccess() { document.getElementById('formContent').style.display = 'none'; document.getElementById('successState').style.display = 'block'; }
-
-        async function fetchD() {
+        // --- سرعة البرق: قراءة فورية قبل أي شيء ---
+        (function initialLoad() {
             const cached = localStorage.getItem('fayrouz_cache');
             if (cached) {
                 allData = JSON.parse(cached);
-                document.getElementById('loadingScreen').style.display = 'none';
-                if(window.currentKw) render(window.currentKw);
+                // إخفاء شاشة اللودينج فوراً إذا كان هناك كاش
+                setTimeout(() => {
+                    const loader = document.getElementById('loadingScreen');
+                    if(loader) loader.style.display = 'none';
+                }, 100); 
             }
+        })();
 
+        async function fetchD() {
             try {
+                // سحب البيانات من جوجل في الخلفية
                 const response = await fetch(`${CSV_URL}&cb=${Date.now()}`);
                 const text = await response.text();
                 const rows = text.split('\n').map(row => row.split(','));
                 const newData = rows.slice(1);
                 
-                if (JSON.stringify(newData) !== JSON.stringify(allData)) {
-                    allData = newData;
-                    localStorage.setItem('fayrouz_cache', JSON.stringify(allData));
-                    if(window.currentKw) render(window.currentKw);
-                }
+                // تحديث الذاكرة
+                allData = newData;
+                localStorage.setItem('fayrouz_cache', JSON.stringify(allData));
+                
+                // لو المستخدم فاتح صفحة معينة، حدثها "سكتة"
+                if(window.currentKw) render(window.currentKw);
+                
+                // تأكيد إخفاء اللودينج في حال لم يتم إخفاؤه
                 document.getElementById('loadingScreen').style.display = 'none';
             } catch(e) { 
-                console.error(e);
                 document.getElementById('loadingScreen').style.display = 'none';
             }
         }
 
+        // --- وظائف العرض (كما هي بدون تغيير) ---
         function render(kw) {
             window.currentKw = kw;
             const list = document.getElementById('apartmentList');
-            if(allData.length === 0) { list.innerHTML = '<div style="text-align:center; padding:50px; color:#888;">جاري تحميل الوحدات...</div>'; return; }
             let filtered = allData.filter(r => {
                 let cityMatch = (r[0]||"").toString().trim() === window.curCity;
                 let projMatch = (r[1]||"").toString().includes(kw);
@@ -310,17 +233,20 @@
 
                 h += `<div class="apt-card ${sold ? 'is-sold' : 'is-available'}"> ${img ? `<div class="img-container"><img src="${img}" loading="lazy"></div>` : ''} <div class="apt-content"> <span class="apt-location">${r[1] || '---'}</span> <div class="apt-title">${bldLabel} ${r[2] || '--'} • ${aptLabel} ${r[3] || '--'}</div> <div class="apt-specs"> <div class="spec-item"><span class="spec-label">الدور</span><span class="spec-value">${floorDisplay||'--'}</span></div> <div class="spec-item"><span class="spec-label">الاتجاه</span><span class="spec-value">${r[5]||'--'}</span></div> <div class="spec-item"><span class="spec-label">المساحة</span><span class="spec-value">${r[13]||'--'} م²</span></div> <div class="spec-item"><span class="spec-label">السعر الكلي</span><span class="spec-value">${fmt(totalValue)} ج.م</span></div> </div> <div class="price-box-container"> <div class="price-line"><span class="pl-label">المدفوع:</span><span class="pl-val" style="color:#eee">${fmt(paid)} ج.م</span></div> ${over > 0 ? `<div class="price-line"><span class="pl-label">الأوفر:</span><span class="pl-val" style="color:#ef5350">+ ${fmt(over)} ج.م</span></div>` : ''} <div style="margin-top: 15px; background: rgba(57,255,20,0.1); padding: 15px; border-radius: 12px; border: 2px solid var(--available); text-align: center;"> <div style="color: var(--available); font-weight: 900; font-size: 15px;">${over > 0 ? 'المطلوب كاش حالياً' : 'المطلوب كاش فقط'}</div> <div style="color:#fff; font-size: 22px; font-weight: 900;">${fmt(cashNow)} ج.م</div> </div> </div> ${sold ? '<div style="text-align:center; color:var(--sold); font-weight:900; font-size:24px;">تـم التعاقـد</div>' : `<a href="https://wa.me/${phone}?text=استفسار عن وحدة ${bldLabel} ${r[2]} ${aptLabel} ${r[3]}" class="btn-preview-neon">طلب معاينة</a>`} </div> </div>`;
             });
-            list.innerHTML = h || '<div style="text-align:center; padding:50px; color:#888;">لا توجد وحدات متاحة في هذا المشروع حالياً</div>';
+            list.innerHTML = h || '<div style="text-align:center; padding:50px; color:#888;">لا توجد وحدات متاحة حالياً</div>';
         }
 
+        // بقية الوظائف الأساسية
+        function toggleSocial() { const m = document.getElementById('subSocialMenu'); m.classList.toggle('active'); }
         function goToStep2(c) { window.curCity = c; switchStep('step2'); let projects = c === 'المنصورة الجديدة' ? ['جنة', 'سكن مصر', 'زاهية', 'إسكان ساحلي', 'تجارية وإدارية'] : ['جنة', 'سكن مصر', 'دار مصر', 'أهالي', 'تجارية وإدارية']; let html = ''; projects.forEach(p => html += `<div class="card-project" onclick="showU('${p}')">${p}</div>`); document.getElementById('projectButtons').innerHTML = html; }
         function showU(kw) { switchStep('step3'); render(kw); }
         function switchStep(id) { ['step1','step2','step3'].forEach(s => document.getElementById(s).classList.add('hidden')); document.getElementById(id).classList.remove('hidden'); window.scrollTo(0,0); }
         function goBack(s) { switchStep('step' + s); }
+        function openM() { document.getElementById('addUnitModal').style.display = 'flex'; }
+        function closeM() { document.getElementById('addUnitModal').style.display = 'none'; }
+        
         window.onload = fetchD;
     </script>
 </body>
 </html>
-
-
 
