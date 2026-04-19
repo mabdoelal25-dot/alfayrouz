@@ -15,34 +15,22 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;800;900&family=Montserrat:wght@900&family=Reem+Kufi:wght@700&display=swap" rel="stylesheet">
     <style>
         :root { --primary: #00838f; --secondary: #c5a012; --bg-dark: #0f1214; --card-bg: #1c2226; --sold: #ff1100; --available: #39FF14; }
-        
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; touch-action: pan-y; }
-        html, body { 
-            overflow-x: hidden; width: 100%; height: 100%; margin: 0; padding: 0; 
-            position: fixed; 
-        }
-        body { 
-            font-family: 'Cairo', sans-serif; color: #f0f0f0; background: var(--bg-dark); 
-            position: relative; overflow-y: auto; -webkit-overflow-scrolling: touch;
-        }
-
+        html, body { overflow-x: hidden; width: 100%; height: 100%; margin: 0; padding: 0; position: fixed; }
+        body { font-family: 'Cairo', sans-serif; color: #f0f0f0; background: var(--bg-dark); position: relative; overflow-y: auto; -webkit-overflow-scrolling: touch; }
         #loadingScreen { position: fixed; inset: 0; background: var(--bg-dark); z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .loader-logo { font-family: 'Montserrat'; font-size: 35px; font-weight: 900; color: var(--secondary); animation: pulse-text 1.5s infinite ease-in-out; letter-spacing: 3px; }
         @keyframes pulse-text { 0%, 100% { opacity: 0.3; transform: scale(0.95); } 50% { opacity: 1; transform: scale(1.05); } }
-
         .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 50000; padding: 15px; backdrop-filter: blur(10px); align-items: center; justify-content: center; }
         .modal-box { background: var(--card-bg); border-radius: 25px; padding: 20px; border: 1px solid var(--secondary); max-width: 420px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; }
         .modal-box h3 { color: var(--secondary); text-align: center; margin-bottom: 20px; font-weight: 900; }
         .m-input, .m-select { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 10px; border: 1px solid #333; background: #000; color: #fff; font-family: 'Cairo'; font-size: 14px; text-align: right; }
         .grid-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-        
         .btn-send-data { background: var(--secondary); color: #000; width: 100%; padding: 15px; border-radius: 12px; font-weight: 900; border: none; cursor: pointer; font-size: 16px; margin-top: 10px; transition: 0.3s; }
         .btn-send-data:disabled { background: #333; color: #666; cursor: not-allowed; opacity: 0.7; }
-
         #successState { display: none; text-align: center; padding: 20px; }
         .success-icon { font-size: 60px; margin-bottom: 15px; display: block; }
         .btn-home { background: #fff; color: #000; padding: 12px 25px; border-radius: 10px; text-decoration: none; display: inline-block; margin-top: 20px; font-weight: 900; }
-
         .add-unit-btn { background: linear-gradient(135deg, rgba(197, 160, 18, 0.2), rgba(255,255,255,0.05)); border: 2px solid var(--secondary); border-radius: 15px; padding: 15px; text-align: center; cursor: pointer; margin-bottom: 20px; font-weight: 900; color: var(--secondary); }
         .social-menu { position: fixed; bottom: 25px; left: 25px; z-index: 10000; display: flex; flex-direction: column-reverse; align-items: center; gap: 15px; }
         .social-btn { width: 55px; height: 55px; background: var(--secondary); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5); border: 2px solid #fff; cursor: pointer; transition: 0.3s; z-index: 10001; }
@@ -52,57 +40,40 @@
         .sub-item svg { width: 24px; height: 24px; fill: #fff; }
         .bg-wa { background: #25D366; }
         .bg-call { background: #34b7f1; }
-
         .header-bar { padding: 50px 10px 30px; text-align: center; background: linear-gradient(to bottom, rgba(197, 160, 18, 0.05), transparent); }
         .company-name { font-family: 'Montserrat', sans-serif; font-size: 42px; font-weight: 900; color: #fff; margin: 0; text-transform: uppercase; letter-spacing: 2px; line-height: 1; }
         .company-subtitle { font-family: 'Reem Kufi', sans-serif; font-size: 22px; color: var(--secondary); font-weight: 700; margin-top: 10px; display: block; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
-
         .container { width: 100%; max-width: 450px; margin: auto; padding: 15px; }
         .section-title { font-size: 22px; color: #fff; font-weight: 900; text-align: center; margin-bottom: 25px; }
-
         .card-city { background: linear-gradient(135deg, #1c2226 0%, #252d33 100%); border-radius: 20px; padding: 30px 20px; text-align: center; border: 2px solid rgba(197, 160, 18, 0.3); cursor: pointer; margin-bottom: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); transition: 0.3s; }
         .card-city h3 { font-size: 28px; font-weight: 900; color: var(--secondary); margin: 0; }
         .card-city p { font-size: 13px; color: #888; margin-top: 8px; font-weight: 700; }
-
         .project-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .card-project { background: var(--card-bg); border-radius: 15px; padding: 25px 10px; text-align: center; border: 1px solid rgba(255,255,255,0.05); cursor: pointer; font-weight: 900; transition: 0.3s; display: flex; align-items: center; justify-content: center; min-height: 80px; }
         .card-project:active { background: var(--secondary); color: #000; }
-
         .apt-card { background: #1c2226; border-radius: 22px; margin-bottom: 25px; overflow: hidden; position: relative; }
-        .is-available { border-right: 8px solid var(--available); box-shadow: 0 10px 30px rgba(0,0,0,0.3); } 
-        .is-sold { border-right: 15px solid var(--sold); opacity: 0.6; filter: grayscale(0.7); } 
-        
+        .is-available { border-right: 8px solid var(--available); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .is-sold { border-right: 15px solid var(--sold); opacity: 0.6; filter: grayscale(0.7); }
         .img-container { width: 100%; height: 220px; background: #000; overflow: hidden; }
         .img-container img { width: 100%; height: 100%; object-fit: cover; }
         .apt-content { padding: 20px; }
         .apt-title { font-size: 20px; font-weight: 900; color: #fff; margin-bottom: 5px; }
         .apt-location { font-size: 14px; color: var(--secondary); font-weight: 800; margin-bottom: 15px; display: block; }
-        
         .apt-specs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
         .spec-item { background: rgba(255,255,255,0.03); padding: 8px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); }
         .spec-label { display: block; font-size: 10px; color: #777; font-weight: 700; margin-bottom: 2px; }
         .spec-value { display: block; font-size: 12px; color: #eee; font-weight: 800; }
-
         .price-box-container { background: rgba(0,0,0,0.2); padding: 12px; border-radius: 12px; margin-bottom: 15px; border: 1px solid rgba(197, 160, 18, 0.1); }
         .price-line { display: flex; justify-content: space-between; margin-bottom: 5px; align-items: center; }
         .pl-label { font-size: 12px; color: #aaa; font-weight: 700; }
         .pl-val { font-size: 14px; color: var(--secondary); font-weight: 900; }
-
-        .btn-preview-neon { 
-            background: var(--available); color: #000; text-align: center; padding: 16px; 
-            border-radius: 15px; cursor: pointer; font-weight: 900; margin-top: 10px; 
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-            box-shadow: 0 5px 20px rgba(57, 255, 20, 0.4); border: none; width: 100%; font-size: 16px; text-decoration: none;
-        }
-
+        .btn-preview-neon { background: var(--available); color: #000; text-align: center; padding: 16px; border-radius: 15px; cursor: pointer; font-weight: 900; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 5px 20px rgba(57, 255, 20, 0.4); border: none; width: 100%; font-size: 16px; text-decoration: none; }
         .hidden { display: none !important; }
         .units-counter { background: rgba(197, 160, 18, 0.1); color: var(--secondary); text-align: center; padding: 12px; border-radius: 12px; margin-bottom: 20px; font-size: 15px; font-weight: 900; border: 1px dashed var(--secondary); }
     </style>
 </head>
 <body oncontextmenu="return false;">
-
     <div id="loadingScreen"><div class="loader-logo">AL-FAYROUZ</div></div>
-
     <div id="addUnitModal" class="modal-overlay">
         <div class="modal-box">
             <div id="formContent">
@@ -133,11 +104,9 @@
                         <option value="كاش">كاش</option>
                         <option value="أقساط">أقساط</option>
                     </select>
-
                     <div id="mCashSec" class="hidden">
                         <input type="number" id="mTotalCash" class="m-input" placeholder="السعر المطلوب كاش">
                     </div>
-
                     <div id="mInstallSec" class="hidden">
                         <div class="grid-inputs">
                             <input type="number" id="mPaid" class="m-input" placeholder="المدفوع">
@@ -150,12 +119,10 @@
                         </div>
                         <input type="number" id="mYearsLeft" class="m-input" placeholder="متبقي كم سنة">
                     </div>
-
                     <button id="submitBtn" class="btn-send-data" disabled onclick="submitMUnit()">إرسال للمراجعة</button>
                     <div id="cancelBtn" onclick="closeM()" style="color:#666; text-align:center; margin-top:15px; font-size:13px; cursor:pointer;">إلغاء</div>
                 </form>
             </div>
-
             <div id="successState">
                 <span class="success-icon">✅</span>
                 <h2 style="color:var(--available)">تم الإرسال بنجاح</h2>
@@ -164,7 +131,6 @@
             </div>
         </div>
     </div>
-
     <div class="social-menu">
         <div class="social-btn" id="mainSocialBtn" onclick="toggleSocial()">
             <svg viewBox="0 0 24 24" style="fill:#fff; width:28px;"><path d="M20 15.5c-1.2 0-2.4-.2-3.6-.6-.3-.1-.7 0-1 .2l-2.2 2.2c-2.8-1.4-5.1-3.8-6.6-6.6l2.2-2.2c.3-.3.4-.7.2-1-.3-1.1-.5-2.3-.5-3.5 0-.6-.4-1-1-1H4c-.6 0-1 .4-1 1 0 9.4 7.6 17 17 17 .6 0 1-.4 1-1v-3.5c0-.6-.4-1-1-1z"/></svg>
@@ -174,12 +140,10 @@
             <a href="tel:+201212229797" class="sub-item bg-call"><svg viewBox="0 0 24 24"><path d="M20 15.5c-1.2 0-2.4-.2-3.6-.6-.3-.1-.7 0-1 .2l-2.2 2.2c-2.8-1.4-5.1-3.8-6.6-6.6l2.2-2.2c.3-.3.4-.7.2-1-.3-1.1-.5-2.3-.5-3.5 0-.6-.4-1-1-1H4c-.6 0-1 .4-1 1 0 9.4 7.6 17 17 17 .6 0 1-.4 1-1v-3.5c0-.6-.4-1-1-1z"/></svg></a>
         </div>
     </div>
-
     <div class="header-bar">
         <h1 class="company-name">Al-Fayrouz</h1>
         <span class="company-subtitle">الفيروز للتسويق العقاري</span>
     </div>
-
     <div class="container">
         <div id="step1">
             <div class="add-unit-btn" onclick="openM()">🏡 أضف وحدتك العقارية معنا مجاناً</div>
@@ -197,7 +161,6 @@
             <div id="apartmentList"></div>
         </div>
     </div>
-
     <script>
         const API_URL = "https://script.google.com/macros/s/AKfycbxQsS6y6NgU_HdYXZOKsiV7xyzh7EBvYWLUeOacsqf7ERu93gnVyiOnNDUxqG6UUzcA/exec";
         let allData = [];
@@ -215,13 +178,9 @@
             btn.disabled = !form.checkValidity();
         }
 
-        function openM() { 
-            document.getElementById('addUnitModal').style.display = 'flex'; 
-            document.getElementById('formContent').style.display = 'block';
-            document.getElementById('successState').style.display = 'none';
-        }
+        function openM() { document.getElementById('addUnitModal').style.display = 'flex'; document.getElementById('formContent').style.display = 'block'; document.getElementById('successState').style.display = 'none'; }
         function closeM() { document.getElementById('addUnitModal').style.display = 'none'; }
-        
+
         function updateMProjects() {
             const city = document.getElementById('mCity').value;
             const proj = document.getElementById('mProject');
@@ -242,112 +201,51 @@
             const btn = document.getElementById('submitBtn');
             btn.disabled = true;
             btn.innerText = "جاري الإرسال...";
-
-            let finalPaid = document.getElementById('mPayType').value === 'كاش' 
-                            ? document.getElementById('mTotalCash').value 
-                            : document.getElementById('mPaid').value;
-
-            const data = {
-                action: "addUnit",
-                city: document.getElementById('mCity').value,
-                project: document.getElementById('mProject').value,
-                bld: document.getElementById('mBld').value,
-                apt: document.getElementById('mApt').value, 
-                floor: document.getElementById('mFloor').value,
-                view: document.getElementById('mView').value, 
-                paid: finalPaid || 0,
-                over: document.getElementById('mOver').value || 0,
-                status: "تحت المراجعة", 
-                size: document.getElementById('mSize').value || 0,
-                pricePerMeter: document.getElementById('mPricePerMeter').value || 0,
-                installYears: document.getElementById('mInstallYears').value || 0,
-                installValue: document.getElementById('mInstallValue').value || 0,
-                yearsLeft: document.getElementById('mYearsLeft').value || 0,
-                totalCash: "", 
-                phone: document.getElementById('mPhone').value 
-            };
-
-            try {
-                await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) });
-                showSuccess();
-            } catch(e) { showSuccess(); }
+            let finalPaid = document.getElementById('mPayType').value === 'كاش' ? document.getElementById('mTotalCash').value : document.getElementById('mPaid').value;
+            const data = { action: "addUnit", city: document.getElementById('mCity').value, project: document.getElementById('mProject').value, bld: document.getElementById('mBld').value, apt: document.getElementById('mApt').value, floor: document.getElementById('mFloor').value, view: document.getElementById('mView').value, paid: finalPaid || 0, over: document.getElementById('mOver').value || 0, status: "تحت المراجعة", size: document.getElementById('mSize').value || 0, pricePerMeter: document.getElementById('mPricePerMeter').value || 0, installYears: document.getElementById('mInstallYears').value || 0, installValue: document.getElementById('mInstallValue').value || 0, yearsLeft: document.getElementById('mYearsLeft').value || 0, totalCash: "", phone: document.getElementById('mPhone').value };
+            try { await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) }); showSuccess(); } catch(e) { showSuccess(); }
         }
 
-        function showSuccess() {
-            document.getElementById('formContent').style.display = 'none';
-            document.getElementById('successState').style.display = 'block';
-        }
+        function showSuccess() { document.getElementById('formContent').style.display = 'none'; document.getElementById('successState').style.display = 'block'; }
 
         async function fetchD() {
             try {
-                // ده السطر اللي بيمنع "ساعتين تحميل"
                 const response = await fetch(API_URL);
                 const data = await response.json();
                 allData = data.slice(1);
-                // إخفاء شاشة التحميل فور وصول البيانات
                 document.getElementById('loadingScreen').style.display = 'none';
+                // إذا كنا في الخطوة الثالثة أصلاً، أعد الرندر
+                if(!document.getElementById('step3').classList.contains('hidden')) {
+                    render(window.currentKw);
+                }
             } catch(e) { console.error(e); }
         }
 
         function render(kw) {
+            window.currentKw = kw;
             const list = document.getElementById('apartmentList');
-            
-            // لو البيانات لسه ما جتش من جوجل شيت
-            if (allData.length === 0) {
-                list.innerHTML = `<div style="text-align:center; padding:50px; color:#888;">جاري تحميل الوحدات...</div>`;
+            if(allData.length === 0) {
+                list.innerHTML = '<div style="text-align:center; padding:50px; color:#888;">جاري تحميل الوحدات...</div>';
                 return;
             }
-
             let filtered = allData.filter(r => {
                 let cityMatch = (r[0]||"").toString().trim() === window.curCity;
                 let projMatch = (r[1]||"").toString().includes(kw);
                 let status = (r[11]||"").toString().trim();
-                let isHidden = status === "تحت المراجعة" || status === "لم تعرض بعد";
-                return cityMatch && projMatch && !isHidden;
+                return cityMatch && projMatch && status !== "تحت المراجعة" && status !== "لم تعرض بعد";
             });
-
             filtered.sort((a, b) => (a[11]||"").toString().includes("تم البيع") - (b[11]||"").toString().includes("تم البيع"));
-            
             document.getElementById('unitCounter').innerText = `متاح ${filtered.filter(r => !(r[11]||"").toString().includes("تم البيع")).length} وحدة حالياً`;
-
             let h = '';
             filtered.forEach(r => {
                 let statusText = (r[11]||"").toString().trim();
                 let sold = statusText.includes("تم البيع");
                 let img = (r[12] && r[12].includes('drive')) ? `https://drive.google.com/thumbnail?sz=1000&id=${r[12].split('id=')[1]}` : r[12];
                 const fmt = (v) => isNaN(parseFloat(v)) ? '0' : parseFloat(v).toLocaleString();
-                
-                let paid = parseFloat(r[6]) || 0;
-                let over = parseFloat(r[7]) || 0;
-                let cashNow = paid + over;
-                let totalValue = parseFloat(r[15]) || 0;
-                let phone = (r[17]||"").toString().replace(/\s/g, '') || '201212229797'; 
-
-                h += `<div class="apt-card ${sold ? 'is-sold' : 'is-available'}">
-                    ${img ? `<div class="img-container"><img src="${img}" loading="lazy"></div>` : ''}
-                    <div class="apt-content">
-                        <span class="apt-location">${r[1] || '---'}</span>
-                        <div class="apt-title">عمارة ${r[2] || '--'} • شقة ${r[3] || '--'}</div>
-                        <div class="apt-specs">
-                            <div class="spec-item"><span class="spec-label">الدور</span><span class="spec-value">${r[4]||'--'}</span></div>
-                            <div class="spec-item"><span class="spec-label">الاتجاه</span><span class="spec-value">${r[5]||'--'}</span></div>
-                            <div class="spec-item"><span class="spec-label">المساحة</span><span class="spec-value">${r[13]||'--'} م²</span></div>
-                            <div class="spec-item"><span class="spec-label">السعر الكلي</span><span class="spec-value">${fmt(totalValue)} ج.م</span></div>
-                        </div>
-                        <div class="price-box-container">
-                            <div class="price-line"><span class="pl-label">المدفوع:</span><span class="pl-val" style="color:#eee">${fmt(paid)} ج.م</span></div>
-                            ${over > 0 ? `<div class="price-line"><span class="pl-label">الأوفر:</span><span class="pl-val" style="color:#ef5350">+ ${fmt(over)} ج.م</span></div>` : ''}
-                            <div style="margin-top: 15px; background: rgba(57,255,20,0.1); padding: 15px; border-radius: 12px; border: 2px solid var(--available); text-align: center;">
-                                <div style="color: var(--available); font-weight: 900; font-size: 15px;">${over > 0 ? 'المطلوب كاش حالياً' : 'المطلوب كاش فقط'}</div>
-                                <div style="color:#fff; font-size: 22px; font-weight: 900;">${fmt(cashNow)} ج.م</div>
-                            </div>
-                        </div>
-                        ${sold ? '<div style="text-align:center; color:var(--sold); font-weight:900; font-size:24px;">تـم التعاقـد</div>' : 
-                        `<a href="https://wa.me/${phone}?text=استفسار عن وحدة عمارة ${r[2]} شقة ${r[3]}" class="btn-preview-neon">طلب معاينة</a>`}
-                    </div>
-                </div>`;
+                let paid = parseFloat(r[6]) || 0; let over = parseFloat(r[7]) || 0; let cashNow = paid + over; let totalValue = parseFloat(r[15]) || 0; let phone = (r[17]||"").toString().replace(/\s/g, '') || '201212229797';
+                h += `<div class="apt-card ${sold ? 'is-sold' : 'is-available'}"> ${img ? `<div class="img-container"><img src="${img}" loading="lazy"></div>` : ''} <div class="apt-content"> <span class="apt-location">${r[1] || '---'}</span> <div class="apt-title">عمارة ${r[2] || '--'} • شقة ${r[3] || '--'}</div> <div class="apt-specs"> <div class="spec-item"><span class="spec-label">الدور</span><span class="spec-value">${r[4]||'--'}</span></div> <div class="spec-item"><span class="spec-label">الاتجاه</span><span class="spec-value">${r[5]||'--'}</span></div> <div class="spec-item"><span class="spec-label">المساحة</span><span class="spec-value">${r[13]||'--'} م²</span></div> <div class="spec-item"><span class="spec-label">السعر الكلي</span><span class="spec-value">${fmt(totalValue)} ج.م</span></div> </div> <div class="price-box-container"> <div class="price-line"><span class="pl-label">المدفوع:</span><span class="pl-val" style="color:#eee">${fmt(paid)} ج.م</span></div> ${over > 0 ? `<div class="price-line"><span class="pl-label">الأوفر:</span><span class="pl-val" style="color:#ef5350">+ ${fmt(over)} ج.م</span></div>` : ''} <div style="margin-top: 15px; background: rgba(57,255,20,0.1); padding: 15px; border-radius: 12px; border: 2px solid var(--available); text-align: center;"> <div style="color: var(--available); font-weight: 900; font-size: 15px;">${over > 0 ? 'المطلوب كاش حالياً' : 'المطلوب كاش فقط'}</div> <div style="color:#fff; font-size: 22px; font-weight: 900;">${fmt(cashNow)} ج.م</div> </div> </div> ${sold ? '<div style="text-align:center; color:var(--sold); font-weight:900; font-size:24px;">تـم التعاقـد</div>' : `<a href="https://wa.me/${phone}?text=استفسار عن وحدة عمارة ${r[2]} شقة ${r[3]}" class="btn-preview-neon">طلب معاينة</a>`} </div> </div>`;
             });
-            list.innerHTML = h || '<div style="text-align:center; padding:50px; color:#888;">لا توجد وحدات متاحة في هذا المشروع</div>';
+            list.innerHTML = h || '<div style="text-align:center; padding:50px; color:#888;">لا توجد وحدات متاحة في هذا المشروع حالياً</div>';
         }
 
         function goToStep2(c) { window.curCity = c; switchStep('step2'); let projects = c === 'المنصورة الجديدة' ? ['جنة', 'سكن مصر', 'زاهية', 'إسكان ساحلي', 'تجارية وإدارية'] : ['جنة', 'سكن مصر', 'دار مصر', 'أهالي', 'تجارية وإدارية']; let html = ''; projects.forEach(p => html += `<div class="card-project" onclick="showU('${p}')">${p}</div>`); document.getElementById('projectButtons').innerHTML = html; }
@@ -358,3 +256,4 @@
     </script>
 </body>
 </html>
+
