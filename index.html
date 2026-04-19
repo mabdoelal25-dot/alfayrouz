@@ -173,12 +173,10 @@
         const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQWKx4v-nn6JEM3O4En9ELAAKvDxF-NyAnNLPS1c3dLk3Hqvx9MLK9mEfGRP0XTT33P9QC6SOLUt9jM/pub?output=csv";
         let allData = [];
 
-        // --- سرعة البرق: قراءة فورية قبل أي شيء ---
         (function initialLoad() {
             const cached = localStorage.getItem('fayrouz_cache');
             if (cached) {
                 allData = JSON.parse(cached);
-                // إخفاء شاشة اللودينج فوراً إذا كان هناك كاش
                 setTimeout(() => {
                     const loader = document.getElementById('loadingScreen');
                     if(loader) loader.style.display = 'none';
@@ -188,27 +186,42 @@
 
         async function fetchD() {
             try {
-                // سحب البيانات من جوجل في الخلفية
                 const response = await fetch(`${CSV_URL}&cb=${Date.now()}`);
                 const text = await response.text();
                 const rows = text.split('\n').map(row => row.split(','));
                 const newData = rows.slice(1);
-                
-                // تحديث الذاكرة
                 allData = newData;
                 localStorage.setItem('fayrouz_cache', JSON.stringify(allData));
-                
-                // لو المستخدم فاتح صفحة معينة، حدثها "سكتة"
                 if(window.currentKw) render(window.currentKw);
-                
-                // تأكيد إخفاء اللودينج في حال لم يتم إخفاؤه
                 document.getElementById('loadingScreen').style.display = 'none';
-            } catch(e) { 
-                document.getElementById('loadingScreen').style.display = 'none';
-            }
+            } catch(e) { document.getElementById('loadingScreen').style.display = 'none'; }
         }
 
-        // --- وظائف العرض (كما هي بدون تغيير) ---
+        // --- تعديل قائمة الإضافة (المودال) فقط ---
+        function updateMProjects() {
+            const city = document.getElementById('mCity').value;
+            const proj = document.getElementById('mProject');
+            proj.innerHTML = '<option value="" disabled selected>اختر المشروع/المنطقة</option>';
+            
+            // هنا تم حذف "تجارية وإدارية" من القائمة عشان العميل ما يختارهاش في الإضافة
+            let list = city === 'المنصورة الجديدة' ? ['جنة', 'سكن مصر', 'زاهية', 'إسكان ساحلي'] : ['جنة', 'سكن مصر', 'دار مصر', 'أهالي'];
+            
+            list.forEach(p => proj.innerHTML += `<option value="${p}">${p}</option>`);
+            document.getElementById('mZone').classList.add('hidden');
+            validateForm();
+        }
+
+        // --- عرض الأزرار في الموقع (كما هي لإظهار الإداري) ---
+        function goToStep2(c) { 
+            window.curCity = c; 
+            switchStep('step2'); 
+            // هنا الإداري موجود عادي عشان العميل يشوف الوحدات
+            let projects = c === 'المنصورة الجديدة' ? ['جنة', 'سكن مصر', 'زاهية', 'إسكان ساحلي', 'تجارية وإدارية'] : ['جنة', 'سكن مصر', 'دار مصر', 'أهالي', 'تجارية وإدارية']; 
+            let html = ''; 
+            projects.forEach(p => html += `<div class="card-project" onclick="showU('${p}')">${p}</div>`); 
+            document.getElementById('projectButtons').innerHTML = html; 
+        }
+
         function render(kw) {
             window.currentKw = kw;
             const list = document.getElementById('apartmentList');
@@ -230,23 +243,70 @@
                 let bldLabel = r[1].includes("زاهية") ? "منطقة" : "عمارة";
                 let aptLabel = r[1].includes("زاهية") ? "فيلا" : "شقة";
                 let floorDisplay = r[1].includes("زاهية") ? "---" : r[4];
-
                 h += `<div class="apt-card ${sold ? 'is-sold' : 'is-available'}"> ${img ? `<div class="img-container"><img src="${img}" loading="lazy"></div>` : ''} <div class="apt-content"> <span class="apt-location">${r[1] || '---'}</span> <div class="apt-title">${bldLabel} ${r[2] || '--'} • ${aptLabel} ${r[3] || '--'}</div> <div class="apt-specs"> <div class="spec-item"><span class="spec-label">الدور</span><span class="spec-value">${floorDisplay||'--'}</span></div> <div class="spec-item"><span class="spec-label">الاتجاه</span><span class="spec-value">${r[5]||'--'}</span></div> <div class="spec-item"><span class="spec-label">المساحة</span><span class="spec-value">${r[13]||'--'} م²</span></div> <div class="spec-item"><span class="spec-label">السعر الكلي</span><span class="spec-value">${fmt(totalValue)} ج.م</span></div> </div> <div class="price-box-container"> <div class="price-line"><span class="pl-label">المدفوع:</span><span class="pl-val" style="color:#eee">${fmt(paid)} ج.م</span></div> ${over > 0 ? `<div class="price-line"><span class="pl-label">الأوفر:</span><span class="pl-val" style="color:#ef5350">+ ${fmt(over)} ج.م</span></div>` : ''} <div style="margin-top: 15px; background: rgba(57,255,20,0.1); padding: 15px; border-radius: 12px; border: 2px solid var(--available); text-align: center;"> <div style="color: var(--available); font-weight: 900; font-size: 15px;">${over > 0 ? 'المطلوب كاش حالياً' : 'المطلوب كاش فقط'}</div> <div style="color:#fff; font-size: 22px; font-weight: 900;">${fmt(cashNow)} ج.م</div> </div> </div> ${sold ? '<div style="text-align:center; color:var(--sold); font-weight:900; font-size:24px;">تـم التعاقـد</div>' : `<a href="https://wa.me/${phone}?text=استفسار عن وحدة ${bldLabel} ${r[2]} ${aptLabel} ${r[3]}" class="btn-preview-neon">طلب معاينة</a>`} </div> </div>`;
             });
             list.innerHTML = h || '<div style="text-align:center; padding:50px; color:#888;">لا توجد وحدات متاحة حالياً</div>';
         }
 
-        // بقية الوظائف الأساسية
+        function updateSubZones() {
+            const city = document.getElementById('mCity').value;
+            const proj = document.getElementById('mProject').value;
+            const zone = document.getElementById('mZone');
+            const floorInput = document.getElementById('mFloor');
+            const bldInput = document.getElementById('mBld');
+            const aptInput = document.getElementById('mApt');
+            zone.innerHTML = '<option value="" disabled selected>اختر المنطقة/المرحلة</option>';
+            let showZone = false;
+            if (city === 'المنصورة الجديدة') {
+                if (proj === 'جنة' || proj === 'سكن مصر') {
+                    for(let i=1; i<=6; i++) zone.innerHTML += `<option value="منطقة ${i}">منطقة ${i}</option>`;
+                    showZone = true;
+                } else if (proj === 'زاهية') {
+                    for(let i=1; i<=4; i++) zone.innerHTML += `<option value="المرحلة ${i}">المرحلة ${i}</option>`;
+                    showZone = true;
+                    floorInput.classList.add('hidden');
+                    floorInput.required = false;
+                    bldInput.placeholder = "رقم المنطقة";
+                    aptInput.placeholder = "رقم الفيلا";
+                }
+            } else if (city === 'دمياط الجديدة') {
+                if (proj === 'جنة' || proj === 'سكن مصر' || proj === 'دار مصر') {
+                    for(let i=1; i<=3; i++) zone.innerHTML += `<option value="منطقة ${i}">منطقة ${i}</option>`;
+                    showZone = true;
+                }
+            }
+            if(showZone) { zone.classList.remove('hidden'); zone.required = true; } else { zone.classList.add('hidden'); zone.required = false; }
+            validateForm();
+        }
+
+        function togglePayFields() {
+            const type = document.getElementById('mPayType').value;
+            document.getElementById('mCashSec').className = type === 'كاش' ? '' : 'hidden';
+            document.getElementById('mInstallSec').className = type === 'أقساط' ? '' : 'hidden';
+            validateForm();
+        }
+
+        async function submitMUnit() {
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+            btn.innerText = "جاري الإرسال...";
+            let finalPaid = document.getElementById('mPayType').value === 'كاش' ? document.getElementById('mTotalCash').value : document.getElementById('mPaid').value;
+            let fullProject = document.getElementById('mProject').value;
+            if(!document.getElementById('mZone').classList.contains('hidden')) { fullProject += " - " + document.getElementById('mZone').value; }
+            const data = { action: "addUnit", city: document.getElementById('mCity').value, project: fullProject, bld: document.getElementById('mBld').value, apt: document.getElementById('mApt').value, floor: document.getElementById('mFloor').value || "فيلا", view: document.getElementById('mView').value, paid: finalPaid || 0, over: document.getElementById('mOver').value || 0, status: "تحت المراجعة", size: document.getElementById('mSize').value || 0, pricePerMeter: document.getElementById('mPricePerMeter').value || 0, installYears: document.getElementById('mInstallYears').value || 0, installValue: document.getElementById('mInstallValue').value || 0, yearsLeft: document.getElementById('mYearsLeft').value || 0, totalCash: "", phone: document.getElementById('mPhone').value };
+            try { await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) }); showSuccess(); } catch(e) { showSuccess(); }
+        }
+
+        function showSuccess() { document.getElementById('formContent').style.display = 'none'; document.getElementById('successState').style.display = 'block'; }
         function toggleSocial() { const m = document.getElementById('subSocialMenu'); m.classList.toggle('active'); }
-        function goToStep2(c) { window.curCity = c; switchStep('step2'); let projects = c === 'المنصورة الجديدة' ? ['جنة', 'سكن مصر', 'زاهية', 'إسكان ساحلي', 'تجارية وإدارية'] : ['جنة', 'سكن مصر', 'دار مصر', 'أهالي', 'تجارية وإدارية']; let html = ''; projects.forEach(p => html += `<div class="card-project" onclick="showU('${p}')">${p}</div>`); document.getElementById('projectButtons').innerHTML = html; }
         function showU(kw) { switchStep('step3'); render(kw); }
         function switchStep(id) { ['step1','step2','step3'].forEach(s => document.getElementById(s).classList.add('hidden')); document.getElementById(id).classList.remove('hidden'); window.scrollTo(0,0); }
         function goBack(s) { switchStep('step' + s); }
-        function openM() { document.getElementById('addUnitModal').style.display = 'flex'; }
+        function openM() { document.getElementById('addUnitModal').style.display = 'flex'; document.getElementById('formContent').style.display = 'block'; document.getElementById('successState').style.display = 'none'; }
         function closeM() { document.getElementById('addUnitModal').style.display = 'none'; }
+        function validateForm() { const form = document.getElementById('unitForm'); const btn = document.getElementById('submitBtn'); btn.disabled = !form.checkValidity(); }
         
         window.onload = fetchD;
     </script>
 </body>
 </html>
-
