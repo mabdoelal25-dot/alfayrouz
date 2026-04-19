@@ -165,10 +165,22 @@
             const city = document.getElementById('mCity').value, proj = document.getElementById('mProject').value, zone = document.getElementById('mZone'), floorInput = document.getElementById('mFloor'), bldInput = document.getElementById('mBld'), aptInput = document.getElementById('mApt');
             zone.innerHTML = '<option value="" disabled selected>اختر المنطقة/المرحلة</option>';
             let showZone = false;
-            if (city === 'المنصورة الجديدة') {
+
+            // إعادة تعيين المسميات الافتراضية
+            bldInput.placeholder = "رقم العمارة";
+            aptInput.placeholder = "رقم الشقة";
+            floorInput.classList.remove('hidden'); floorInput.required = true;
+
+            if (proj === 'تجارية وإدارية') {
+                bldInput.placeholder = "اسم المول/المبنى";
+                aptInput.placeholder = "رقم المحل/المكتب";
+            } else if (city === 'المنصورة الجديدة') {
                 if (proj === 'جنة' || proj === 'سكن مصر') { for(let i=1; i<=6; i++) zone.innerHTML += `<option value="منطقة ${i}">منطقة ${i}</option>`; showZone = true; } 
                 else if (proj === 'زاهية') { for(let i=1; i<=4; i++) zone.innerHTML += `<option value="المرحلة ${i}">المرحلة ${i}</option>`; showZone = true; floorInput.classList.add('hidden'); floorInput.required = false; bldInput.placeholder = "رقم المنطقة"; aptInput.placeholder = "رقم الفيلا"; }
-            } else if (city === 'دمياط الجديدة') { if (proj === 'جنة' || proj === 'سكن مصر' || proj === 'دار مصر') { for(let i=1; i<=3; i++) zone.innerHTML += `<option value="منطقة ${i}">منطقة ${i}</option>`; showZone = true; } }
+            } else if (city === 'دمياط الجديدة') { 
+                if (proj === 'جنة' || proj === 'سكن مصر' || proj === 'دار مصر') { for(let i=1; i<=3; i++) zone.innerHTML += `<option value="منطقة ${i}">منطقة ${i}</option>`; showZone = true; } 
+            }
+            
             if(showZone) { zone.classList.remove('hidden'); zone.required = true; } else { zone.classList.add('hidden'); zone.required = false; }
             validateForm();
         }
@@ -180,13 +192,12 @@
             let finalPaid = document.getElementById('mPayType').value === 'كاش' ? document.getElementById('mTotalCash').value : document.getElementById('mPaid').value;
             let fullProject = document.getElementById('mProject').value;
             if(!document.getElementById('mZone').classList.contains('hidden')) fullProject += " - " + document.getElementById('mZone').value;
-            const data = { action: "addUnit", city: document.getElementById('mCity').value, project: fullProject, bld: document.getElementById('mBld').value, apt: document.getElementById('mApt').value, floor: document.getElementById('mFloor').value || "فيلا", view: document.getElementById('mView').value, paid: finalPaid || 0, over: document.getElementById('mOver').value || 0, status: "تحت المراجعة", size: document.getElementById('mSize').value || 0, pricePerMeter: document.getElementById('mPricePerMeter').value || 0, installYears: document.getElementById('mInstallYears').value || 0, installValue: document.getElementById('mInstallValue').value || 0, yearsLeft: document.getElementById('mYearsLeft').value || 0, phone: document.getElementById('mPhone').value };
+            const data = { action: "addUnit", city: document.getElementById('mCity').value, project: fullProject, bld: document.getElementById('mBld').value, apt: document.getElementById('mApt').value, floor: document.getElementById('mFloor').value || "أرضي", view: document.getElementById('mView').value, paid: finalPaid || 0, over: document.getElementById('mOver').value || 0, status: "تحت المراجعة", size: document.getElementById('mSize').value || 0, pricePerMeter: document.getElementById('mPricePerMeter').value || 0, installYears: document.getElementById('mInstallYears').value || 0, installValue: document.getElementById('mInstallValue').value || 0, yearsLeft: document.getElementById('mYearsLeft').value || 0, phone: document.getElementById('mPhone').value };
             try { await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) }); showSuccess(); } catch(e) { showSuccess(); }
         }
 
         function showSuccess() { document.getElementById('formContent').style.display = 'none'; document.getElementById('successState').style.display = 'block'; }
 
-        // إضافة 3: نظام الكاش الفوري
         async function fetchD() {
             const cached = localStorage.getItem('fayrouz_cache');
             if (cached) { allData = JSON.parse(cached); document.getElementById('loadingScreen').style.display = 'none'; if(window.currentKw) render(window.currentKw); }
@@ -217,8 +228,14 @@
                 let sold = (r[11]||"").toString().trim().includes("تم البيع"), img = (r[12] && r[12].includes('drive')) ? `https://drive.google.com/thumbnail?sz=1000&id=${r[12].split('id=')[1]}` : r[12];
                 const fmt = (v) => isNaN(parseFloat(v)) ? '0' : parseFloat(v).toLocaleString();
                 let paid = parseFloat(r[6]) || 0, over = parseFloat(r[7]) || 0, cashNow = paid + over, totalValue = parseFloat(r[15]) || 0;
-                let phone = (r[17]||"").toString().replace(/\s/g, '') || '201212229797', bldLabel = r[1].includes("زاهية") ? "منطقة" : "عمارة", aptLabel = r[1].includes("زاهية") ? "فيلا" : "شقة", floorDisplay = r[1].includes("زاهية") ? "---" : r[4];
-                h += `<div class="apt-card ${sold ? 'is-sold' : 'is-available'}">${img ? `<div class="img-container"><img src="${img}" loading="lazy"></div>` : ''}<div class="apt-content"><span class="apt-location">${r[1] || '---'}</span><div class="apt-title">${bldLabel} ${r[2] || '--'} • ${aptLabel} ${r[3] || '--'}</div><div class="apt-specs"><div class="spec-item"><span class="spec-label">الدور</span><span class="spec-value">${floorDisplay}</span></div><div class="spec-item"><span class="spec-label">الاتجاه</span><span class="spec-value">${r[5]||'--'}</span></div><div class="spec-item"><span class="spec-label">المساحة</span><span class="spec-value">${r[13]||'--'} م²</span></div><div class="spec-item"><span class="spec-label">السعر الكلي</span><span class="spec-value">${fmt(totalValue)} ج.م</span></div></div><div class="price-box-container"><div class="price-line"><span class="pl-label">المدفوع:</span><span class="pl-val" style="color:#eee">${fmt(paid)} ج.م</span></div>${over > 0 ? `<div class="price-line"><span class="pl-label">الأوفر:</span><span class="pl-val" style="color:#ef5350">+ ${fmt(over)} ج.م</span></div>` : ''}<div style="margin-top:15px; background:rgba(57,255,20,0.1); padding:15px; border-radius:12px; border:2px solid var(--available); text-align:center;"><div style="color:var(--available); font-weight:900; font-size:15px;">${over > 0 ? 'المطلوب كاش حالياً' : 'المطلوب كاش فقط'}</div><div style="color:#fff; font-size:22px; font-weight:900;">${fmt(cashNow)} ج.م</div></div></div>${sold ? '<div style="text-align:center; color:var(--sold); font-weight:900; font-size:24px;">تـم التعاقـد</div>' : `<a href="https://wa.me/${phone}?text=استفسار عن وحدة ${bldLabel} ${r[2]} ${aptLabel} ${r[3]}" class="btn-preview-neon">طلب معاينة</a>`}</div></div>`;
+                let phone = (r[17]||"").toString().replace(/\s/g, '') || '201212229797';
+                
+                // تخصيص المسميات في العرض
+                let bldLabel = "عمارة", aptLabel = "شقة";
+                if(r[1].includes("زاهية")) { bldLabel = "منطقة"; aptLabel = "فيلا"; }
+                else if(r[1].includes("تجارية")) { bldLabel = "مبنى"; aptLabel = "محل/مكتب"; }
+
+                h += `<div class="apt-card ${sold ? 'is-sold' : 'is-available'}">${img ? `<div class="img-container"><img src="${img}" loading="lazy"></div>` : ''}<div class="apt-content"><span class="apt-location">${r[1] || '---'}</span><div class="apt-title">${bldLabel} ${r[2] || '--'} • ${aptLabel} ${r[3] || '--'}</div><div class="apt-specs"><div class="spec-item"><span class="spec-label">الدور</span><span class="spec-value">${r[4]||'--'}</span></div><div class="spec-item"><span class="spec-label">الاتجاه</span><span class="spec-value">${r[5]||'--'}</span></div><div class="spec-item"><span class="spec-label">المساحة</span><span class="spec-value">${r[13]||'--'} م²</span></div><div class="spec-item"><span class="spec-label">السعر الكلي</span><span class="spec-value">${fmt(totalValue)} ج.م</span></div></div><div class="price-box-container"><div class="price-line"><span class="pl-label">المدفوع:</span><span class="pl-val" style="color:#eee">${fmt(paid)} ج.م</span></div>${over > 0 ? `<div class="price-line"><span class="pl-label">الأوفر:</span><span class="pl-val" style="color:#ef5350">+ ${fmt(over)} ج.م</span></div>` : ''}<div style="margin-top:15px; background:rgba(57,255,20,0.1); padding:15px; border-radius:12px; border:2px solid var(--available); text-align:center;"><div style="color:var(--available); font-weight:900; font-size:15px;">${over > 0 ? 'المطلوب كاش حالياً' : 'المطلوب كاش فقط'}</div><div style="color:#fff; font-size:22px; font-weight:900;">${fmt(cashNow)} ج.م</div></div></div>${sold ? '<div style="text-align:center; color:var(--sold); font-weight:900; font-size:24px;">تـم التعاقـد</div>' : `<a href="https://wa.me/${phone}?text=استفسار عن وحدة ${bldLabel} ${r[2]} ${aptLabel} ${r[3]}" class="btn-preview-neon">طلب معاينة</a>`}</div></div>`;
             });
             list.innerHTML = h || '<div style="text-align:center; padding:50px; color:#888;">لا توجد وحدات متاحة حالياً</div>';
         }
@@ -231,4 +248,3 @@
     </script>
 </body>
 </html>
-
