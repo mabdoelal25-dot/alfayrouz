@@ -23,39 +23,19 @@
         .loader-logo { font-family: 'Montserrat'; font-size: 32px; font-weight: 900; color: var(--secondary); animation: pulse-text 1.2s infinite ease-in-out; }
         @keyframes pulse-text { 0%, 100% { opacity: 0.4; transform: scale(0.9); } 50% { opacity: 1; transform: scale(1.1); } }
 
-        /* --- إضافات الميزة الجديدة (CSS) --- */
-        .add-unit-promo { 
-            background: linear-gradient(135deg, rgba(197, 160, 18, 0.15), rgba(255,255,255,0.05));
-            border: 2px solid var(--secondary); border-radius: 20px; padding: 20px;
-            text-align: center; cursor: pointer; margin-bottom: 25px; font-weight: 900;
-            color: var(--secondary); box-shadow: 0 0 15px rgba(197, 160, 18, 0.2); transition: 0.3s;
-        }
-        .add-unit-promo:active { transform: scale(0.96); }
+        /* ستايلات المودال الجديد */
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 50000; padding: 20px; backdrop-filter: blur(10px); align-items: center; justify-content: center; }
+        .modal-box { background: var(--card-bg); border-radius: 25px; padding: 25px; border: 1px solid var(--secondary); max-width: 420px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 0 40px rgba(0,0,0,0.5); }
+        .modal-box h3 { color: var(--secondary); text-align: center; margin: 0 0 20px; font-size: 22px; font-weight: 900; }
+        .m-input, .m-select { width: 100%; padding: 14px; margin-bottom: 10px; border-radius: 12px; border: 1px solid #333; background: #000; color: #fff; font-family: 'Cairo'; font-size: 14px; text-align: right; }
+        .grid-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .btn-send { background: var(--secondary); color: #000; width: 100%; padding: 16px; border-radius: 15px; font-weight: 900; border: none; cursor: pointer; font-size: 16px; margin-top: 10px; box-shadow: 0 5px 15px rgba(197, 160, 18, 0.3); }
+        .hidden { display: none !important; }
 
-        .modal-overlay { 
-            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); 
-            z-index: 20000; padding: 20px; backdrop-filter: blur(10px); align-items: center; justify-content: center;
-        }
-        .modal-box { 
-            background: var(--card-bg); border-radius: 25px; padding: 25px; 
-            border: 1px solid var(--secondary); max-width: 400px; width: 100%; animation: slideIn 0.3s ease-out;
-        }
-        @keyframes slideIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .modal-box input { 
-            width: 100%; padding: 12px; margin-bottom: 12px; border-radius: 12px; 
-            border: 1px solid #333; background: #000; color: #fff; font-family: 'Cairo';
-        }
-        .btn-send-unit { 
-            background: var(--secondary); color: #000; width: 100%; padding: 15px; 
-            border-radius: 12px; font-weight: 900; border: none; cursor: pointer; font-size: 16px;
-        }
+        /* ستايل زر الترويج الرئيسي */
+        .add-unit-promo { background: linear-gradient(135deg, rgba(197, 160, 18, 0.15), rgba(255,255,255,0.05)); border: 2px solid var(--secondary); border-radius: 20px; padding: 20px; text-align: center; cursor: pointer; margin-bottom: 25px; font-weight: 900; color: var(--secondary); }
 
-        #successScreen { 
-            display: none; position: fixed; inset: 0; background: var(--bg-dark); 
-            z-index: 30000; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px;
-        }
-        /* --- نهاية إضافات الـ CSS --- */
-
+        /* ستايل زرار التواصل المتعدد */
         .social-menu { position: fixed; bottom: 25px; left: 25px; z-index: 10000; display: flex; flex-direction: column-reverse; align-items: center; gap: 15px; }
         .social-btn { width: 55px; height: 55px; background: var(--secondary); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5); border: 2px solid #fff; cursor: pointer; transition: 0.3s; z-index: 10001; }
         .sub-menu { display: flex; flex-direction: column-reverse; gap: 12px; opacity: 0; visibility: hidden; transform: translateY(20px); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
@@ -110,8 +90,6 @@
             display: flex; align-items: center; justify-content: center; gap: 10px;
             box-shadow: 0 5px 20px rgba(57, 255, 20, 0.4); border: none; width: 100%; font-size: 16px; text-decoration: none;
         }
-
-        .hidden { display: none !important; }
         .units-counter { background: rgba(197, 160, 18, 0.1); color: var(--secondary); text-align: center; padding: 12px; border-radius: 12px; margin-bottom: 20px; font-size: 15px; font-weight: 900; border: 1px dashed var(--secondary); }
     </style>
 </head>
@@ -119,23 +97,64 @@
 
     <div id="loadingScreen"><div class="loader-logo">AL-FAYROUZ</div></div>
 
-    <div id="successScreen">
-        <div style="background:var(--card-bg); padding:40px; border-radius:30px; border:1px solid var(--secondary); width:90%; max-width:400px;">
-            <h2 style="color:var(--secondary); font-weight:900;">تم الاستلام! ✨</h2>
-            <p>شكراً لثقتك في الفيروز، سنتواصل معك قريباً.</p>
-            <button class="btn-preview-neon" onclick="closeSuccess()" style="background:var(--secondary)">العودة للرئيسية</button>
+    <div id="addUnitModal" class="modal-overlay">
+        <div class="modal-box">
+            <h3>أضف وحدتك العقارية ✨</h3>
+            
+            <select id="mCity" class="m-select" onchange="updateMProjects()">
+                <option value="" disabled selected>اختر المدينة</option>
+                <option value="المنصورة الجديدة">المنصورة الجديدة</option>
+                <option value="دمياط الجديدة">دمياط الجديدة</option>
+            </select>
+
+            <select id="mProject" class="m-select">
+                <option value="" disabled selected>اختر المشروع/المنطقة</option>
+            </select>
+
+            <div class="grid-inputs">
+                <input type="text" id="mBld" class="m-input" placeholder="رقم العمارة">
+                <input type="text" id="mApt" class="m-input" placeholder="رقم الشقة">
+            </div>
+
+            <div class="grid-inputs">
+                <input type="text" id="mFloor" class="m-input" placeholder="الدور">
+                <input type="text" id="mView" class="m-input" placeholder="الاتجاه/الإطلالة">
+            </div>
+
+            <div class="grid-inputs">
+                <input type="text" id="mSize" class="m-input" placeholder="المساحة">
+                <input type="text" id="mPriceM" class="m-input" placeholder="سعر المتر">
+            </div>
+
+            <select id="mPayType" class="m-select" onchange="togglePayFields()">
+                <option value="" disabled selected>نظام السداد</option>
+                <option value="كاش">كاش</option>
+                <option value="أقساط">أقساط</option>
+            </select>
+
+            <div id="mCashSec" class="hidden">
+                <input type="text" id="mTotal" class="m-input" placeholder="السعر الإجمالي الكاش">
+            </div>
+
+            <div id="mInstallSec" class="hidden">
+                <input type="text" id="mPaid" class="m-input" placeholder="المبلغ المدفوع">
+                <input type="text" id="mOver" class="m-input" placeholder="قيمة الأوفر">
+                <input type="text" id="mYears" class="m-input" placeholder="سنوات التقسيط">
+                <input type="text" id="mDafaa" class="m-input" placeholder="قيمة القسط">
+            </div>
+
+            <input type="tel" id="mPhone" class="m-input" placeholder="رقم الهاتف للتواصل">
+            
+            <button class="btn-send" onclick="submitMUnit()">إرسال البيانات</button>
+            <div onclick="closeM()" style="color:#666; text-align:center; margin-top:15px; font-size:13px; cursor:pointer;">إلغاء</div>
         </div>
     </div>
 
-    <div id="addUnitModal" class="modal-overlay">
-        <div class="modal-box">
-            <h3 style="color:var(--secondary); text-align:center; margin-bottom:20px;">أضف بيانات وحدتك</h3>
-            <input type="text" id="inBld" placeholder="رقم العمارة">
-            <input type="text" id="inSize" placeholder="المساحة">
-            <input type="text" id="inPrice" placeholder="السعر المطلوب">
-            <input type="tel" id="inPhone" placeholder="رقم الهاتف للتواصل">
-            <button class="btn-send-unit" onclick="submitNewUnit()">إرسال البيانات</button>
-            <button onclick="closeAddModal()" style="background:none; border:none; color:#666; width:100%; margin-top:15px; cursor:pointer;">إلغاء</button>
+    <div id="successScreen" class="modal-overlay">
+        <div class="modal-box" style="text-align:center;">
+            <h2 style="color:var(--available)">تم الإرسال بنجاح!</h2>
+            <p>سنتواصل معك في أقرب وقت لمراجعة البيانات.</p>
+            <button class="btn-send" onclick="location.reload()">العودة للرئيسية</button>
         </div>
     </div>
 
@@ -159,10 +178,7 @@
 
     <div class="container">
         <div id="step1">
-            <div class="add-unit-promo" onclick="openAddModal()">
-                ✨ أضف وحدتك العقارية معنا مجاناً
-            </div>
-
+            <div class="add-unit-promo" onclick="openM()">✨ أضف وحدتك العقارية معنا مجاناً</div>
             <h2 class="section-title">اختر المدينة</h2>
             <div class="card-city" onclick="goToStep2('المنصورة الجديدة')"><h3>المنصورة الجديدة</h3><p>مستقبل الدلتا على البحر مباشرة</p></div>
             <div class="card-city" onclick="goToStep2('دمياط الجديدة')"><h3>دمياط الجديدة</h3><p>الرقي والاستثمار المضمون</p></div>
@@ -189,21 +205,29 @@
             btn.style.transform = menu.classList.contains('active') ? 'rotate(45deg)' : 'rotate(0deg)';
         }
 
-        /* --- ✅ وظائف الميزة الجديدة --- */
-        function openAddModal() { document.getElementById('addUnitModal').style.display = 'flex'; }
-        function closeAddModal() { document.getElementById('addUnitModal').style.display = 'none'; }
+        /* ✅ وظائف المودال الجديد */
+        function openM() { document.getElementById('addUnitModal').style.display = 'flex'; }
+        function closeM() { document.getElementById('addUnitModal').style.display = 'none'; }
         
-        function submitNewUnit() {
-            // هنا تضع كود الإرسال الفعلي إذا أردت، حالياً يظهر شاشة النجاح مباشرة
-            closeAddModal();
+        function updateMProjects() {
+            const city = document.getElementById('mCity').value;
+            const proj = document.getElementById('mProject');
+            proj.innerHTML = '<option value="" disabled selected>اختر المشروع/المنطقة</option>';
+            let list = city === 'المنصورة الجديدة' ? ['جنة', 'سكن مصر', 'زاهية', 'إسكان ساحلي'] : ['جنة', 'سكن مصر', 'دار مصر', 'أهالي'];
+            list.forEach(p => proj.innerHTML += `<option value="${p}">${p}</option>`);
+        }
+
+        function togglePayFields() {
+            const type = document.getElementById('mPayType').value;
+            document.getElementById('mCashSec').className = type === 'كاش' ? '' : 'hidden';
+            document.getElementById('mInstallSec').className = type === 'أقساط' ? '' : 'hidden';
+        }
+
+        function submitMUnit() {
+            // هنا يمكنك إضافة كود الربط بـ Google Sheets لاحقاً
+            document.getElementById('addUnitModal').style.display = 'none';
             document.getElementById('successScreen').style.display = 'flex';
         }
-        
-        function closeSuccess() {
-            document.getElementById('successScreen').style.display = 'none';
-            goBack(1); // يرجعه للصفحة الرئيسية
-        }
-        /* --- نهاية وظائف الميزة الجديدة --- */
 
         async function fetchD() {
             try {
@@ -252,30 +276,20 @@
                             <div class="spec-item"><span class="spec-label">نظام السداد</span><span class="spec-value">${r[9]||'--'} سنوات</span></div>
                         </div>
                         <div class="price-box-container">
-                            <div style="font-size: 11px; color: var(--secondary); margin-bottom: 12px; border-bottom: 1px solid #333; padding-bottom: 8px; font-weight: bold; text-align: center;">التفاصيل المالية والتعاقدية</div>
-                            <div class="price-line"><span class="pl-label">المدفوع:</span><span class="pl-val" style="color:#eee">${fmt(paid)} ج.م</span></div>
-                            <div class="price-line"><span class="pl-label">قيمة الأوفر:</span><span class="pl-val" style="color:#ef5350">+ ${fmt(over)} ج.م</span></div>
-                            <div style="margin-top: 15px; background: linear-gradient(135deg, rgba(57,255,20,0.15) 0%, rgba(0,0,0,0.3) 100%); padding: 15px; border-radius: 12px; border: 2px solid var(--available); text-align: center; box-shadow: 0 0 15px rgba(57,255,20,0.15);">
-                                <div style="color: var(--available); font-weight: 900; font-size: 17px; margin-bottom: 5px; text-shadow: 0 0 10px rgba(57,255,20,0.3);">استلم مفتاحك الآن</div>
+                            <div class="price-line"><span class="pl-label">المدفوع:</span><span class="pl-val">${fmt(paid)} ج.م</span></div>
+                            <div class="price-line"><span class="pl-label">الأوفر:</span><span class="pl-val">+ ${fmt(over)} ج.م</span></div>
+                            <div style="margin-top: 15px; background: rgba(57,255,20,0.1); padding: 15px; border-radius: 12px; border: 2px solid var(--available); text-align: center;">
                                 <div style="color:#fff; font-size: 24px; font-weight: 900;">${fmt(cashNow)} <span style="font-size:14px; color:var(--available)">جنية كاش</span></div>
                             </div>
-                            <div style="margin-top: 20px; border-top: 1px dashed #444; padding-top: 15px;">
-                                <div class="price-line" style="flex-direction:column; align-items:flex-start;">
-                                    <span class="pl-label" style="font-size:10px; margin-bottom:5px;">صافي الأقساط المتبقية بدون فائدة البنك:</span>
-                                    <span class="pl-val" style="color: #fff; font-size: 18px;">${fmt(remaining)} ج.م</span>
-                                </div>
-                                <div style="font-size: 10px; color: #666; margin-top: 5px;">(القيمة الكلية ${fmt(totalValue)} ج.م)</div>
-                            </div>
                         </div>
-                        ${sold ? '<div style="text-align:center; color:var(--sold); font-weight:900; font-size:24px;">تـم التعاقـد</div>' : 
-                        `<a href="https://wa.me/201212229797?text=معاينة عمارة ${r[2]}" class="btn-preview-neon">طلب معاينة</a>`}
+                        ${sold ? '<div style="text-align:center; color:var(--sold); font-weight:900;">تم البيع</div>' : `<a href="https://wa.me/201212229797" class="btn-preview-neon">طلب معاينة</a>`}
                     </div>
                 </div>`;
             });
             list.innerHTML = h;
         }
 
-        function goToStep2(c) { window.curCity = c; switchStep('step2'); let projects = c === 'المنصورة الجديدة' ? ['جنة', 'سكن مصر', 'زاهية', 'إسكان ساحلي', 'تجارية وإدارية'] : ['جنة', 'سكن مصر', 'دار مصر', 'أهالي', 'تجارية وإدارية']; let html = ''; projects.forEach(p => html += `<div class="card-project" onclick="showU('${p}')">${p}</div>`); document.getElementById('projectButtons').innerHTML = html; }
+        function goToStep2(c) { window.curCity = c; switchStep('step2'); let projects = c === 'المنصورة الجديدة' ? ['جنة', 'سكن مصر', 'زاهية', 'إسكان ساحلي'] : ['جنة', 'سكن مصر', 'دار مصر', 'أهالي']; let html = ''; projects.forEach(p => html += `<div class="card-project" onclick="showU('${p}')">${p}</div>`); document.getElementById('projectButtons').innerHTML = html; }
         function showU(kw) { switchStep('step3'); render(kw); }
         function switchStep(id) { ['step1','step2','step3'].forEach(s => document.getElementById(s).classList.add('hidden')); document.getElementById(id).classList.remove('hidden'); window.scrollTo(0,0); }
         function goBack(s) { switchStep('step' + s); }
