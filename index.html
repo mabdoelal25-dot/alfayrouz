@@ -150,11 +150,11 @@
         function openM() { document.getElementById('addUnitModal').style.display = 'flex'; document.getElementById('formContent').style.display = 'block'; document.getElementById('successState').style.display = 'none'; }
         function closeM() { document.getElementById('addUnitModal').style.display = 'none'; }
 
-        // تم حذف خيار تجارية وإدارية من هنا
         function updateMProjects() {
             const city = document.getElementById('mCity').value, proj = document.getElementById('mProject'), zone = document.getElementById('mZone');
             proj.innerHTML = '<option value="" disabled selected>اختر المشروع/المنطقة</option>';
             zone.classList.add('hidden'); zone.required = false;
+            // حصر الإضافة في السكني فقط للجمهور
             let list = city === 'المنصورة الجديدة' ? ['جنة', 'سكن مصر', 'زاهية', 'إسكان ساحلي'] : ['جنة', 'سكن مصر', 'دار مصر', 'أهالي'];
             list.forEach(p => proj.innerHTML += `<option value="${p}">${p}</option>`);
             document.getElementById('mFloor').classList.remove('hidden'); document.getElementById('mFloor').required = true;
@@ -209,6 +209,7 @@
         function render(kw) {
             window.currentKw = kw; const list = document.getElementById('apartmentList');
             if(allData.length === 0) { list.innerHTML = '<div style="text-align:center; padding:50px; color:#888;">جاري تحميل الوحدات...</div>'; return; }
+            
             let filtered = allData.filter(r => {
                 if(!r[0]) return false;
                 let cityMatch = (r[0]||"").toString().trim() === window.curCity;
@@ -216,6 +217,14 @@
                 let status = (r[11]||"").toString().trim();
                 return cityMatch && projMatch && status !== "تحت المراجعة" && status !== "لم تعرض بعد";
             });
+
+            // تعديل: ترتيب الوحدات (المتاح أولاً ثم تم البيع في الآخر)
+            filtered.sort((a, b) => {
+                let statusA = (a[11]||"").toString().trim().includes("تم البيع") ? 1 : 0;
+                let statusB = (b[11]||"").toString().trim().includes("تم البيع") ? 1 : 0;
+                return statusA - statusB;
+            });
+
             document.getElementById('unitCounter').innerText = `متاح ${filtered.filter(r => !(r[11]||"").toString().includes("تم البيع")).length} وحدة حالياً`;
             let h = '';
             filtered.forEach(r => {
