@@ -108,8 +108,8 @@
                     <div id="mInstallSec" class="hidden">
                         <div class="grid-inputs"><input type="number" id="mPaid" class="m-input" placeholder="المدفوع"><input type="number" id="mOver" class="m-input" placeholder="الأوفر"></div>
                         <input type="number" id="mPricePerMeter" class="m-input" placeholder="سعر المتر">
-                        <div class="grid-inputs"><input type="number" id="mInstallValue" class="m-input" placeholder="دفعة التقسيط"><input type="number" id="mInstallYears" class="m-input" placeholder="سنوات التقسيط"></div>
-                        <input type="number" id="mYearsLeft" class="m-input" placeholder="متبقي كم سنة">
+                        <div class="grid-inputs"><input type="number" id="mInstallValue" class="m-input" placeholder="دفعة التقسيط"><input type="number" id="mInstallYears" class="m-input" placeholder="عدد الأقساط"></div>
+                        <input type="number" id="mYearsLeft" class="m-input" placeholder="متبقي كم قسط">
                     </div>
                     <button id="submitBtn" class="btn-send-data" disabled onclick="submitMUnit()">إرسال للمراجعة</button>
                     <div onclick="closeM()" style="color:#666; text-align:center; margin-top:15px; font-size:13px; cursor:pointer;">إلغاء</div>
@@ -226,9 +226,6 @@
             document.getElementById('unitCounter').innerText = `متاح ${filtered.filter(r => !(r[11]||"").toString().includes("تم البيع")).length} وحدة حالياً`;
             let h = '';
             filtered.forEach(r => {
-                // ترتيب الأعمدة حسب كلامك:
-                // C=عمارة(2), D=شقة(3), E=الدور(4), F=الاتجاه(5), G=المدفوع(6), H=الأوفر(7)
-                // N=المساحة(13), P=السعر الكلي(15), Q=المبلغ المتبقي(16), O=متبقي كم سنة(14)
                 let sold = (r[11]||"").toString().trim().includes("تم البيع"), 
                 img = (r[12] && r[12].includes('drive')) ? `https://drive.google.com/thumbnail?sz=1000&id=${r[12].split('id=')[1]}` : r[12];
                 const fmt = (v) => {
@@ -237,12 +234,21 @@
                 };
 
                 let paid = parseFloat(r[6]) || 0, over = parseFloat(r[7]) || 0, cashNow = paid + over;
-                let totalValue = r[15] || '0', remaining = r[16] || '0', yearsLeft = r[14] || '--';
+                let totalValue = r[15] || '0', remaining = r[16] || '0', installmentsLeft = r[14] || '--';
                 let phone = (r[17]||"").toString().replace(/\s/g, '') || '201212229797';
                 
                 let bldLabel = "عمارة", aptLabel = "شقة";
                 if(r[1].includes("زاهية")) { bldLabel = "منطقة"; aptLabel = "فيلا"; }
                 else if(r[1].includes("تجارية")) { bldLabel = "مبنى"; aptLabel = "محل/مكتب"; }
+
+                // شرط "المطلوب كاش فقط"
+                let cashLabel = "المطلوب كاش حالياً";
+                if (over === 0 || fmt(totalValue) === fmt(paid)) {
+                    cashLabel = "المطلوب كاش فقط";
+                }
+
+                // رسالة الواتساب التفصيلية
+                let waMsg = `تفاصيل المعاينة:%0Aالمدينة: ${window.curCity}%0Aالمشروع: ${r[1]}%0A${bldLabel}: ${r[2]}%0A${aptLabel}: ${r[3]}%0Aالدور: ${r[4]}%0Aالاتجاه: ${r[5]}%0Aالمساحة: ${r[13]} م²%0Aالسعر الكلي: ${fmt(totalValue)} ج.م%0Aالمدفوع: ${fmt(paid)} ج.م%0Aالأوفر: ${fmt(over)} ج.م%0Aالمتبقي للبنك: ${fmt(remaining)} ج.م%0Aعدد الأقساط: ${installmentsLeft} قسط`;
 
                 h += `<div class="apt-card ${sold ? 'is-sold' : 'is-available'}">
                     ${img ? `<div class="img-container"><img src="${img}" loading="lazy"></div>` : ''}
@@ -261,15 +267,15 @@
                             <div class="price-line" style="border-top:1px solid #333; margin-top:5px; padding-top:5px;">
                                 <span class="pl-label">المتبقي للبنك/الجهاز:</span><span class="pl-val" style="color:#c5a012">${fmt(remaining)} ج.م</span>
                             </div>
-                            <div class="price-line"><span class="pl-label">سنوات القسط المتبقية:</span><span class="pl-val">${yearsLeft} سنوات</span></div>
+                            <div class="price-line"><span class="pl-label">عدد الأقساط المتبقية:</span><span class="pl-val">${installmentsLeft} قسط</span></div>
                             
                             <div style="margin-top:15px; background:rgba(57,255,20,0.1); padding:15px; border-radius:12px; border:2px solid var(--available); text-align:center;">
-                                <div style="color:var(--available); font-weight:900; font-size:15px;">المطلوب كاش حالياً</div>
+                                <div style="color:var(--available); font-weight:900; font-size:15px;">${cashLabel}</div>
                                 <div style="color:#fff; font-size:24px; font-weight:900;">${fmt(cashNow)} ج.م</div>
                             </div>
                         </div>
                         ${sold ? '<div style="text-align:center; color:var(--sold); font-weight:900; font-size:24px;">تـم التعاقـد</div>' : 
-                        `<a href="https://wa.me/${phone}?text=استفسار عن وحدة ${bldLabel} ${r[2]} ${aptLabel} ${r[3]} في ${r[1]}" class="btn-preview-neon">طلب معاينة</a>`}
+                        `<a href="https://wa.me/${phone}?text=${waMsg}" class="btn-preview-neon">طلب معاينة</a>`}
                     </div>
                 </div>`;
             });
