@@ -154,7 +154,6 @@
             const city = document.getElementById('mCity').value, proj = document.getElementById('mProject'), zone = document.getElementById('mZone');
             proj.innerHTML = '<option value="" disabled selected>اختر المشروع/المنطقة</option>';
             zone.classList.add('hidden'); zone.required = false;
-            // حصر الإضافة في السكني فقط للجمهور
             let list = city === 'المنصورة الجديدة' ? ['جنة', 'سكن مصر', 'زاهية', 'إسكان ساحلي'] : ['جنة', 'سكن مصر', 'دار مصر', 'أهالي'];
             list.forEach(p => proj.innerHTML += `<option value="${p}">${p}</option>`);
             document.getElementById('mFloor').classList.remove('hidden'); document.getElementById('mFloor').required = true;
@@ -218,7 +217,6 @@
                 return cityMatch && projMatch && status !== "تحت المراجعة" && status !== "لم تعرض بعد";
             });
 
-            // تعديل: ترتيب الوحدات (المتاح أولاً ثم تم البيع في الآخر)
             filtered.sort((a, b) => {
                 let statusA = (a[11]||"").toString().trim().includes("تم البيع") ? 1 : 0;
                 let statusB = (b[11]||"").toString().trim().includes("تم البيع") ? 1 : 0;
@@ -228,16 +226,52 @@
             document.getElementById('unitCounter').innerText = `متاح ${filtered.filter(r => !(r[11]||"").toString().includes("تم البيع")).length} وحدة حالياً`;
             let h = '';
             filtered.forEach(r => {
-                let sold = (r[11]||"").toString().trim().includes("تم البيع"), img = (r[12] && r[12].includes('drive')) ? `https://drive.google.com/thumbnail?sz=1000&id=${r[12].split('id=')[1]}` : r[12];
-                const fmt = (v) => isNaN(parseFloat(v)) ? '0' : parseFloat(v).toLocaleString();
-                let paid = parseFloat(r[6]) || 0, over = parseFloat(r[7]) || 0, cashNow = paid + over, totalValue = parseFloat(r[15]) || 0;
+                // ترتيب الأعمدة حسب كلامك:
+                // C=عمارة(2), D=شقة(3), E=الدور(4), F=الاتجاه(5), G=المدفوع(6), H=الأوفر(7)
+                // N=المساحة(13), P=السعر الكلي(15), Q=المبلغ المتبقي(16), O=متبقي كم سنة(14)
+                let sold = (r[11]||"").toString().trim().includes("تم البيع"), 
+                img = (r[12] && r[12].includes('drive')) ? `https://drive.google.com/thumbnail?sz=1000&id=${r[12].split('id=')[1]}` : r[12];
+                const fmt = (v) => {
+                    let num = parseFloat(v.toString().replace(/[^0-9.]/g, ''));
+                    return isNaN(num) ? '0' : num.toLocaleString();
+                };
+
+                let paid = parseFloat(r[6]) || 0, over = parseFloat(r[7]) || 0, cashNow = paid + over;
+                let totalValue = r[15] || '0', remaining = r[16] || '0', yearsLeft = r[14] || '--';
                 let phone = (r[17]||"").toString().replace(/\s/g, '') || '201212229797';
                 
                 let bldLabel = "عمارة", aptLabel = "شقة";
                 if(r[1].includes("زاهية")) { bldLabel = "منطقة"; aptLabel = "فيلا"; }
                 else if(r[1].includes("تجارية")) { bldLabel = "مبنى"; aptLabel = "محل/مكتب"; }
 
-                h += `<div class="apt-card ${sold ? 'is-sold' : 'is-available'}">${img ? `<div class="img-container"><img src="${img}" loading="lazy"></div>` : ''}<div class="apt-content"><span class="apt-location">${r[1] || '---'}</span><div class="apt-title">${bldLabel} ${r[2] || '--'} • ${aptLabel} ${r[3] || '--'}</div><div class="apt-specs"><div class="spec-item"><span class="spec-label">الدور</span><span class="spec-value">${r[4]||'--'}</span></div><div class="spec-item"><span class="spec-label">الاتجاه</span><span class="spec-value">${r[5]||'--'}</span></div><div class="spec-item"><span class="spec-label">المساحة</span><span class="spec-value">${r[13]||'--'} م²</span></div><div class="spec-item"><span class="spec-label">السعر الكلي</span><span class="spec-value">${fmt(totalValue)} ج.م</span></div></div><div class="price-box-container"><div class="price-line"><span class="pl-label">المدفوع:</span><span class="pl-val" style="color:#eee">${fmt(paid)} ج.م</span></div>${over > 0 ? `<div class="price-line"><span class="pl-label">الأوفر:</span><span class="pl-val" style="color:#ef5350">+ ${fmt(over)} ج.م</span></div>` : ''}<div style="margin-top:15px; background:rgba(57,255,20,0.1); padding:15px; border-radius:12px; border:2px solid var(--available); text-align:center;"><div style="color:var(--available); font-weight:900; font-size:15px;">${over > 0 ? 'المطلوب كاش حالياً' : 'المطلوب كاش فقط'}</div><div style="color:#fff; font-size:22px; font-weight:900;">${fmt(cashNow)} ج.م</div></div></div>${sold ? '<div style="text-align:center; color:var(--sold); font-weight:900; font-size:24px;">تـم التعاقـد</div>' : `<a href="https://wa.me/${phone}?text=استفسار عن وحدة ${bldLabel} ${r[2]} ${aptLabel} ${r[3]}" class="btn-preview-neon">طلب معاينة</a>`}</div></div>`;
+                h += `<div class="apt-card ${sold ? 'is-sold' : 'is-available'}">
+                    ${img ? `<div class="img-container"><img src="${img}" loading="lazy"></div>` : ''}
+                    <div class="apt-content">
+                        <span class="apt-location">${r[1] || '---'}</span>
+                        <div class="apt-title">${bldLabel} ${r[2] || '--'} • ${aptLabel} ${r[3] || '--'}</div>
+                        <div class="apt-specs">
+                            <div class="spec-item"><span class="spec-label">الدور</span><span class="spec-value">${r[4]||'--'}</span></div>
+                            <div class="spec-item"><span class="spec-label">الاتجاه</span><span class="spec-value">${r[5]||'--'}</span></div>
+                            <div class="spec-item"><span class="spec-label">المساحة</span><span class="spec-value">${r[13]||'--'} م²</span></div>
+                            <div class="spec-item"><span class="spec-label">السعر الكلي</span><span class="spec-value">${fmt(totalValue)} ج.م</span></div>
+                        </div>
+                        <div class="price-box-container">
+                            <div class="price-line"><span class="pl-label">المدفوع:</span><span class="pl-val" style="color:#eee">${fmt(paid)} ج.م</span></div>
+                            <div class="price-line"><span class="pl-label">الأوفر:</span><span class="pl-val" style="color:#ef5350">+ ${fmt(over)} ج.م</span></div>
+                            <div class="price-line" style="border-top:1px solid #333; margin-top:5px; padding-top:5px;">
+                                <span class="pl-label">المتبقي للبنك/الجهاز:</span><span class="pl-val" style="color:#c5a012">${fmt(remaining)} ج.م</span>
+                            </div>
+                            <div class="price-line"><span class="pl-label">سنوات القسط المتبقية:</span><span class="pl-val">${yearsLeft} سنوات</span></div>
+                            
+                            <div style="margin-top:15px; background:rgba(57,255,20,0.1); padding:15px; border-radius:12px; border:2px solid var(--available); text-align:center;">
+                                <div style="color:var(--available); font-weight:900; font-size:15px;">المطلوب كاش حالياً</div>
+                                <div style="color:#fff; font-size:24px; font-weight:900;">${fmt(cashNow)} ج.م</div>
+                            </div>
+                        </div>
+                        ${sold ? '<div style="text-align:center; color:var(--sold); font-weight:900; font-size:24px;">تـم التعاقـد</div>' : 
+                        `<a href="https://wa.me/${phone}?text=استفسار عن وحدة ${bldLabel} ${r[2]} ${aptLabel} ${r[3]} في ${r[1]}" class="btn-preview-neon">طلب معاينة</a>`}
+                    </div>
+                </div>`;
             });
             list.innerHTML = h || '<div style="text-align:center; padding:50px; color:#888;">لا توجد وحدات متاحة حالياً</div>';
         }
