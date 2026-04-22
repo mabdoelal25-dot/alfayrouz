@@ -114,8 +114,7 @@
                     <div id="mInstallSec" class="hidden">
                         <div class="grid-inputs"><input type="number" id="mPaid" class="m-input" placeholder="المدفوع"><input type="number" id="mOver" class="m-input" placeholder="الأوفر"></div>
                         <input type="number" id="mPricePerMeter" class="m-input" placeholder="سعر المتر">
-                        <div class="grid-inputs"><input type="number" id="mInstallValue" class="m-input" placeholder="دفعة التقسيط"><input type="number" id="mInstallYears" class="m-input" placeholder="عدد الأقساط"></div>
-                        <input type="number" id="mYearsLeft" class="m-input" placeholder="متبقي كم قسط">
+                        <div class="grid-inputs"><input type="number" id="mInstallValue" class="m-input" placeholder="دفعة التقسيط"><input type="number" id="mInstallYears" class="m-input" placeholder="سنوات التقسيط"></div>
                     </div>
                     <button id="submitBtn" class="btn-send-data" disabled onclick="submitMUnit()">إرسال للمراجعة</button>
                     <div onclick="closeM()" style="color:#666; text-align:center; margin-top:15px; font-size:13px; cursor:pointer;">إلغاء</div>
@@ -191,7 +190,7 @@
             let finalPaid = document.getElementById('mPayType').value === 'كاش' ? document.getElementById('mTotalCash').value : document.getElementById('mPaid').value;
             let fullProject = document.getElementById('mProject').value;
             if(!document.getElementById('mZone').classList.contains('hidden')) fullProject += " - " + document.getElementById('mZone').value;
-            const data = { action: "addUnit", city: document.getElementById('mCity').value, project: fullProject, bld: document.getElementById('mBld').value, apt: document.getElementById('mApt').value, floor: document.getElementById('mFloor').value || "أرضي", view: document.getElementById('mView').value, paid: finalPaid || 0, over: document.getElementById('mOver').value || 0, status: "تحت المراجعة", size: document.getElementById('mSize').value || 0, pricePerMeter: document.getElementById('mPricePerMeter').value || 0, installYears: document.getElementById('mInstallYears').value || 0, installValue: document.getElementById('mInstallValue').value || 0, yearsLeft: document.getElementById('mYearsLeft').value || 0, phone: document.getElementById('mPhone').value };
+            const data = { action: "addUnit", city: document.getElementById('mCity').value, project: fullProject, bld: document.getElementById('mBld').value, apt: document.getElementById('mApt').value, floor: document.getElementById('mFloor').value || "أرضي", view: document.getElementById('mView').value, paid: finalPaid || 0, over: document.getElementById('mOver').value || 0, status: "تحت المراجعة", size: document.getElementById('mSize').value || 0, pricePerMeter: document.getElementById('mPricePerMeter').value || 0, installYears: document.getElementById('mInstallYears').value || 0, installValue: document.getElementById('mInstallValue').value || 0, phone: document.getElementById('mPhone').value };
             try { await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) }); showSuccess(); } catch(e) { showSuccess(); }
         }
 
@@ -235,24 +234,22 @@
                 let sold = (r[11]||"").toString().trim().includes("تم البيع"), 
                 img = (r[12] && r[12].includes('drive')) ? `https://drive.google.com/thumbnail?sz=1000&id=${r[12].split('id=')[1]}` : r[12];
                 const fmt = (v) => {
+                    if(!v) return '0';
                     let num = parseFloat(v.toString().replace(/[^0-9.]/g, ''));
                     return isNaN(num) ? '0' : num.toLocaleString();
                 };
 
                 let paid = parseFloat(r[6]) || 0, over = parseFloat(r[7]) || 0, cashNow = paid + over;
-                let totalValue = r[15] || '0', remaining = r[16] || '0', installmentsLeft = r[14] || '--';
+                let pricePerMeter = r[9] || '0', installYears = (r[10]||"").toString().trim(), installValue = r[11] || '0';
                 let phone = (r[17]||"").toString().replace(/\s/g, '') || '201212229797';
                 
                 let bldLabel = "عمارة", aptLabel = "شقة";
                 if(r[1].includes("زاهية")) { bldLabel = "منطقة"; aptLabel = "فيلا"; }
                 else if(r[1].includes("تجارية")) { bldLabel = "مبنى"; aptLabel = "محل/مكتب"; }
 
-                let cashLabel = "المطلوب كاش حالياً";
-                if (over === 0 || fmt(totalValue) === fmt(paid)) {
-                    cashLabel = "المطلوب كاش فقط";
-                }
+                let displayYears = (installYears === '0' || installYears === '٠') ? 'تحدد من خلال الجهاز' : installYears + ' سنوات';
 
-                let waMsg = `تفاصيل المعاينة:%0Aالمدينة: ${window.curCity}%0Aالمشروع: ${r[1]}%0A${bldLabel}: ${r[2]}%0A${aptLabel}: ${r[3]}%0Aالدور: ${r[4]}%0Aالاتجاه: ${r[5]}%0Aالمساحة: ${r[13]} م²%0Aالسعر الكلي: ${fmt(totalValue)} ج.م%0Aالمدفوع: ${fmt(paid)} ج.م%0Aالأوفر: ${fmt(over)} ج.م%0Aالمتبقي للبنك: ${fmt(remaining)} ج.م%0Aعدد الأقساط: ${installmentsLeft} قسط`;
+                let waMsg = `تفاصيل المعاينة:%0Aالمدينة: ${window.curCity}%0Aالمشروع: ${r[1]}%0A${bldLabel}: ${r[2]}%0A${aptLabel}: ${r[3]}%0Aالدور: ${r[4]}%0Aالاتجاه: ${r[5]}%0Aالمساحة: ${r[13]} م²%0Aالمدفوع: ${fmt(paid)} ج.م%0Aالأوفر: ${fmt(over)} ج.م%0Aسنوات التقسيط: ${displayYears}`;
 
                 h += `<div class="apt-card ${sold ? 'is-sold' : 'is-available'}">
                     ${img ? `<div class="img-container"><img src="${img}" loading="lazy"></div>` : ''}
@@ -263,18 +260,16 @@
                             <div class="spec-item"><span class="spec-label">الدور</span><span class="spec-value">${r[4]||'--'}</span></div>
                             <div class="spec-item"><span class="spec-label">الاتجاه</span><span class="spec-value">${r[5]||'--'}</span></div>
                             <div class="spec-item"><span class="spec-label">المساحة</span><span class="spec-value">${r[13]||'--'} م²</span></div>
-                            <div class="spec-item"><span class="spec-label">السعر الكلي</span><span class="spec-value">${fmt(totalValue)} ج.م</span></div>
+                            <div class="spec-item"><span class="spec-label">سعر المتر</span><span class="spec-value">${fmt(pricePerMeter)} ج.م</span></div>
+                            <div class="spec-item"><span class="spec-label">سنوات التقسيط</span><span class="spec-value">${displayYears}</span></div>
+                            <div class="spec-item"><span class="spec-label">دفعة التقسيط</span><span class="spec-value">${fmt(installValue)} ج.م</span></div>
                         </div>
                         <div class="price-box-container">
                             <div class="price-line"><span class="pl-label">المدفوع:</span><span class="pl-val" style="color:#eee">${fmt(paid)} ج.م</span></div>
                             <div class="price-line"><span class="pl-label">الأوفر:</span><span class="pl-val" style="color:#ef5350">+ ${fmt(over)} ج.م</span></div>
-                            <div class="price-line" style="border-top:1px solid #333; margin-top:5px; padding-top:5px;">
-                                <span class="pl-label">المتبقي للبنك/الجهاز:</span><span class="pl-val" style="color:#c5a012">${fmt(remaining)} ج.م</span>
-                            </div>
-                            <div class="price-line"><span class="pl-label">عدد الأقساط المتبقية:</span><span class="pl-val">${installmentsLeft} قسط</span></div>
                             
                             <div style="margin-top:15px; background:rgba(57,255,20,0.1); padding:15px; border-radius:12px; border:2px solid var(--available); text-align:center;">
-                                <div style="color:var(--available); font-weight:900; font-size:15px;">${cashLabel}</div>
+                                <div style="color:var(--available); font-weight:900; font-size:15px;">المطلوب كاش حالياً</div>
                                 <div style="color:#fff; font-size:24px; font-weight:900;">${fmt(cashNow)} ج.م</div>
                             </div>
                         </div>
@@ -294,3 +289,4 @@
     </script>
 </body>
 </html>
+
