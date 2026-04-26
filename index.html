@@ -279,12 +279,14 @@
                 let displayYears = (yearsCount === "0" || yearsCount === "") ? "حدد سنوات تقسيط بنفسك" : yearsCount + " سنوات";
                 let instPayment = r[10] || '--';
                 
-                let phone = (r[17]||"").toString().replace(/\s/g, '') || '201212229797';
+                // التعديل هنا: رقم الواتساب تم تثبيته لرقمك الشخصي فقط
+                let myAdminPhone = '201212229797'; 
+                
                 let bldLabel = "عمارة", aptLabel = "شقة";
                 if(r[1].includes("زاهية")) { bldLabel = "منطقة"; aptLabel = "فيلا"; }
                 else if(r[1].includes("تجارية")) { bldLabel = "مبنى"; aptLabel = "محل/مكتب"; }
 
-                let waMsg = `تفاصيل المعاينة:%0Aالمدينة: ${window.curCity}%0Aالمشروع: ${r[1]}%0A${bldLabel}: ${r[2]}%0A${aptLabel}: ${r[3]}%0Aالدور: ${r[4]}%0Aالاتجاه: ${r[5]}%0Aالمساحة: ${r[13]} م²%0Aالمدفوع: ${fmt(paid)} ج.م%0Aالأوفر: ${fmt(over)} ج.م`;
+                let waMsg = `طلب معاينة عقار:%0Aالمدينة: ${window.curCity}%0Aالمشروع: ${r[1]}%0A${bldLabel}: ${r[2]}%0A${aptLabel}: ${r[3]}%0Aالدور: ${r[4]}%0Aالاتجاه: ${r[5]}%0Aالمساحة: ${r[13]} م²%0Aالمطلوب كاش: ${fmt(cashNow)} ج.م`;
 
                 h += `<div class="apt-card ${sold ? 'is-sold' : 'is-available'}">
                     ${img ? `<div class="img-container"><img src="${img}" loading="lazy"></div>` : ''}
@@ -311,7 +313,7 @@
                             </div>
                         </div>
                         ${sold ? '<div style="text-align:center; color:var(--sold); font-weight:900; font-size:24px;">تـم التعاقـد</div>' : 
-                        `<a href="https://wa.me/${phone}?text=${waMsg}" class="btn-preview-neon">طلب معاينة</a>`}
+                        `<a href="https://wa.me/${myAdminPhone}?text=${waMsg}" class="btn-preview-neon">طلب معاينة</a>`}
                     </div>
                 </div>`;
             });
