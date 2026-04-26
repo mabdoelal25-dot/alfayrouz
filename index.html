@@ -12,159 +12,170 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     
-    <title>الفيروز للتسويق العقاري | المنصورة الجديدة ودمياط الجديدة</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;800;900&family=Montserrat:wght@900&display=swap" rel="stylesheet">
+    <title>الفيروز للتسويق العقاري | الموقع الرسمي لعقارات المنصورة الجديدة ودمياط الجديدة</title>
+    <meta name="description" content="شركة الفيروز للتسويق العقاري - المرجع الأول لحجز وحدات جنة، سكن مصر، زاهية، وإسكان ساحلي. احصل على أفضل أسعار المتر وأنظمة التقسيط لعام 2026.">
+    <meta name="keywords" content="الفيروز للعقارات, المنصورة الجديدة, دمياط الجديدة, شقق جنة, سكن مصر, فيلات زاهية, علي فراس الحميدان, عقارات مصر, استثمار عقاري">
+    <meta name="author" content="علي فراس الحميدان">
+    <link rel="canonical" href="https://al-fayrouz-realestate.com/">
+
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;800;900&family=Montserrat:wght@900&family=Reem+Kufi:wght@700&display=swap" rel="stylesheet">
     
     <style>
-        :root { --primary: #00838f; --secondary: #c5a012; --bg-dark: #0f1214; --card-bg: #1c2226; --available: #39FF14; }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
-        body { font-family: 'Cairo', sans-serif; color: #f0f0f0; background: var(--bg-dark); margin: 0; padding: 0; overflow-x: hidden; }
-        #loadingScreen { position: fixed; inset: 0; background: var(--bg-dark); z-index: 99999; display: flex; align-items: center; justify-content: center; }
-        .loader-logo { font-family: 'Montserrat'; font-size: 30px; font-weight: 900; color: var(--secondary); animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 0.4; transform: scale(0.9); } 50% { opacity: 1; transform: scale(1); } }
-        
-        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 50000; padding: 15px; backdrop-filter: blur(10px); align-items: center; justify-content: center; }
-        .modal-box { background: var(--card-bg); border-radius: 25px; padding: 20px; border: 1px solid var(--secondary); max-width: 420px; width: 100%; max-height: 90vh; overflow-y: auto; }
-        .m-input, .m-select { width: 100%; padding: 12px; margin-bottom: 12px; border-radius: 12px; border: 1px solid #333; background: #000; color: #fff; font-family: 'Cairo'; font-size: 14px; }
-        .grid-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .btn-send-data { background: var(--secondary); color: #000; width: 100%; padding: 15px; border-radius: 15px; font-weight: 900; border: none; cursor: pointer; font-size: 16px; margin-top: 10px; }
-        .btn-send-data:disabled { background: #222; color: #555; cursor: not-allowed; }
-        
-        #successState { display: none; text-align: center; padding: 40px 10px; }
-        .conf-circle { width: 70px; height: 70px; background: rgba(57, 255, 20, 0.1); border: 2px solid var(--available); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; animation: bounce 1s ease; }
-        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-15px);} 60% {transform: translateY(-7px);} }
-        .btn-home { background: #fff; color: #000; padding: 12px 25px; border-radius: 12px; text-decoration: none; display: inline-block; margin-top: 20px; font-weight: 900; }
-        
-        .header-bar { padding: 40px 10px 20px; text-align: center; }
-        .company-name { font-family: 'Montserrat'; font-size: 38px; font-weight: 900; color: #fff; margin: 0; }
-        .company-subtitle { color: var(--secondary); font-weight: 700; }
-        .container { max-width: 450px; margin: auto; padding: 15px; }
-        .card-city { background: #1c2226; border-radius: 20px; padding: 25px; text-align: center; border: 1px solid #333; margin-bottom: 15px; cursor: pointer; }
-        .card-city h3 { color: var(--secondary); margin: 0; font-size: 24px; }
-        .project-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .card-project { background: #1c2226; padding: 20px; border-radius: 15px; text-align: center; border: 1px solid #333; cursor: pointer; font-weight: 800; }
+        :root { --primary: #00838f; --secondary: #c5a012; --bg-dark: #0f1214; --card-bg: #1c2226; --sold: #ff1100; --available: #39FF14; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; touch-action: pan-y; }
+        html, body { overflow-x: hidden; width: 100%; height: 100%; margin: 0; padding: 0; position: fixed; }
+        body { font-family: 'Cairo', sans-serif; color: #f0f0f0; background: var(--bg-dark); position: relative; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+        #loadingScreen { position: fixed; inset: 0; background: var(--bg-dark); z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .loader-logo { font-family: 'Montserrat'; font-size: 35px; font-weight: 900; color: var(--secondary); animation: pulse-text 1.5s infinite ease-in-out; letter-spacing: 3px; }
+        @keyframes pulse-text { 0%, 100% { opacity: 0.3; transform: scale(0.95); } 50% { opacity: 1; transform: scale(1.05); } }
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 50000; padding: 15px; backdrop-filter: blur(10px); align-items: center; justify-content: center; }
+        .modal-box { background: var(--card-bg); border-radius: 25px; padding: 20px; border: 1px solid var(--secondary); max-width: 420px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; }
+        .modal-box h3 { color: var(--secondary); text-align: center; margin-bottom: 20px; font-weight: 900; }
+        .m-input, .m-select { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 10px; border: 1px solid #333; background: #000; color: #fff; font-family: 'Cairo'; font-size: 14px; text-align: right; }
+        .grid-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .btn-send-data { background: var(--secondary); color: #000; width: 100%; padding: 15px; border-radius: 12px; font-weight: 900; border: none; cursor: pointer; font-size: 16px; margin-top: 10px; transition: 0.3s; }
+        .btn-send-data:disabled { background: #333; color: #666; cursor: not-allowed; opacity: 0.7; }
+        #successState { display: none; text-align: center; padding: 30px 10px; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .conf-circle { width: 80px; height: 80px; background: rgba(57, 255, 20, 0.1); border: 2px solid var(--available); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; position: relative; }
+        .conf-circle::after { content: ''; position: absolute; inset: -5px; border: 1px solid var(--available); border-radius: 50%; animation: pulse-text 1.5s infinite; opacity: 0.5; }
+        .success-icon { font-size: 35px; }
+        .btn-home { background: #fff; color: #000; padding: 12px 25px; border-radius: 10px; text-decoration: none; display: inline-block; margin-top: 25px; font-weight: 900; box-shadow: 0 4px 15px rgba(255,255,255,0.2); }
+        .add-unit-btn { background: linear-gradient(135deg, rgba(197, 160, 18, 0.2), rgba(255,255,255,0.05)); border: 2px solid var(--secondary); border-radius: 15px; padding: 15px; text-align: center; cursor: pointer; margin-bottom: 20px; font-weight: 900; color: var(--secondary); }
+        .header-bar { padding: 50px 10px 30px; text-align: center; }
+        .company-name { font-family: 'Montserrat', sans-serif; font-size: 42px; font-weight: 900; color: #fff; margin: 0; text-transform: uppercase; letter-spacing: 2px; }
+        .company-subtitle { font-family: 'Reem Kufi', sans-serif; font-size: 22px; color: var(--secondary); margin-top: 10px; display: block; }
+        .container { width: 100%; max-width: 450px; margin: auto; padding: 15px; }
+        .section-title { font-size: 22px; color: #fff; font-weight: 900; text-align: center; margin-bottom: 25px; }
+        .card-city { background: #1c2226; border-radius: 20px; padding: 30px 20px; text-align: center; border: 2px solid rgba(197, 160, 18, 0.3); cursor: pointer; margin-bottom: 15px; }
+        .card-city h3 { font-size: 28px; color: var(--secondary); margin: 0; }
+        .project-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .card-project { background: var(--card-bg); border-radius: 15px; padding: 25px 10px; text-align: center; border: 1px solid rgba(255,255,255,0.05); cursor: pointer; font-weight: 900; min-height: 80px; display: flex; align-items: center; justify-content: center; }
+        .apt-card { background: #1c2226; border-radius: 22px; margin-bottom: 25px; overflow: hidden; border-right: 8px solid var(--available); }
+        .img-container { width: 100%; height: 220px; background: #000; }
+        .img-container img { width: 100%; height: 100%; object-fit: cover; }
+        .apt-content { padding: 20px; }
+        .apt-title { font-size: 20px; font-weight: 900; color: #fff; }
+        .apt-location { font-size: 14px; color: var(--secondary); font-weight: 800; display: block; margin-bottom: 15px; }
+        .apt-specs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .spec-item { background: rgba(255,255,255,0.03); padding: 8px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); }
+        .spec-label { display: block; font-size: 10px; color: #777; }
+        .spec-value { display: block; font-size: 12px; color: #eee; font-weight: 800; }
+        .price-box-container { background: rgba(0,0,0,0.2); padding: 12px; border-radius: 12px; margin-bottom: 15px; border: 1px solid rgba(197, 160, 18, 0.1); }
+        .price-line { display: flex; justify-content: space-between; margin-bottom: 5px; }
+        .pl-label { font-size: 12px; color: #aaa; }
+        .pl-val { font-size: 14px; color: var(--secondary); font-weight: 900; }
+        .btn-preview-neon { background: var(--available); color: #000; text-align: center; padding: 16px; border-radius: 15px; cursor: pointer; font-weight: 900; display: flex; align-items: center; justify-content: center; width: 100%; text-decoration: none; }
         .hidden { display: none !important; }
+        .units-counter { background: rgba(197, 160, 18, 0.1); color: var(--secondary); text-align: center; padding: 12px; border-radius: 12px; margin-bottom: 20px; font-weight: 900; border: 1px dashed var(--secondary); }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false;">
     <div id="loadingScreen"><div class="loader-logo">AL-FAYROUZ</div></div>
 
     <div id="addUnitModal" class="modal-overlay">
         <div class="modal-box">
             <div id="formContent">
-                <h3 style="text-align:center; color:var(--secondary);">إضافة وحدة جديدة</h3>
+                <h3>أضف وحدتك العقارية مجاناً ✨</h3>
                 <form id="unitForm">
-                    <select id="mCity" class="m-select" required onchange="updateMProjects()">
+                    <select id="mCity" class="m-select" required onchange="updateMProjects(); validateForm();">
                         <option value="" disabled selected>اختر المدينة</option>
                         <option value="المنصورة الجديدة">المنصورة الجديدة</option>
                         <option value="دمياط الجديدة">دمياط الجديدة</option>
                     </select>
-                    <select id="mProject" class="m-select" required>
-                        <option value="" disabled selected>اختر المشروع</option>
+                    <select id="mProject" class="m-select" required onchange="updateSubZones(); validateForm();">
+                        <option value="" disabled selected>اختر المشروع/المنطقة</option>
+                    </select>
+                    <select id="mZone" class="m-select hidden" onchange="validateForm();">
+                        <option value="" disabled selected>اختر المنطقة/المرحلة</option>
                     </select>
                     <div class="grid-inputs">
-                        <input type="text" id="mBld" class="m-input" placeholder="رقم العمارة" required>
-                        <input type="text" id="mApt" class="m-input" placeholder="رقم الشقة" required>
+                        <input type="text" id="mBld" class="m-input" placeholder="رقم العمارة" required oninput="validateForm()">
+                        <input type="text" id="mApt" class="m-input" placeholder="رقم الشقة" required oninput="validateForm()">
                     </div>
                     <div class="grid-inputs">
-                        <input type="text" id="mFloor" class="m-input" placeholder="الدور" required>
-                        <input type="text" id="mView" class="m-input" placeholder="الاتجاه" required>
+                        <input type="text" id="mFloor" class="m-input" placeholder="الدور" required oninput="validateForm()">
+                        <input type="text" id="mView" class="m-input" placeholder="الاتجاه" required oninput="validateForm()">
                     </div>
                     <div class="grid-inputs">
-                        <input type="number" id="mSize" class="m-input" placeholder="المساحة (م²)" required>
-                        <input type="tel" id="mPhone" class="m-input" placeholder="رقم الهاتف" required>
+                        <input type="number" id="mSize" class="m-input" placeholder="المساحة (م²)" required oninput="validateForm()">
+                        <input type="tel" id="mPhone" class="m-input" placeholder="رقم الهاتف" required oninput="validateForm()">
                     </div>
-                    <select id="mPayType" class="m-select" required onchange="togglePayFields()">
+                    <select id="mPayType" class="m-select" required onchange="togglePayFields(); validateForm();">
                         <option value="" disabled selected>نظام السداد</option>
                         <option value="كاش">كاش</option>
                         <option value="أقساط">أقساط</option>
                     </select>
-
                     <div id="mCashSec" class="hidden">
-                        <input type="number" id="mTotalCash" class="m-input" placeholder="السعر المطلوب كاش">
+                        <input type="number" id="mTotalCash" class="m-input" placeholder="السعر المطلوب كاش" oninput="validateForm()">
                     </div>
-
                     <div id="mInstallSec" class="hidden">
                         <div class="grid-inputs">
-                            <input type="number" id="mPaid" class="m-input" placeholder="المدفوع">
-                            <input type="number" id="mOver" class="m-input" placeholder="الأوفر">
+                            <input type="number" id="mPaid" class="m-input" placeholder="المدفوع" oninput="validateForm()">
+                            <input type="number" id="mOver" class="m-input" placeholder="الأوفر" oninput="validateForm()">
                         </div>
                         <div class="grid-inputs">
-                            <input type="number" id="mInstallValue" class="m-input" placeholder="قيمة القسط">
-                            <input type="number" id="mInstallYears" class="m-input" placeholder="سنوات التقسيط">
+                            <input type="number" id="mInstallValue" class="m-input" placeholder="قيمة القسط" oninput="validateForm()">
+                            <input type="number" id="mInstallYears" class="m-input" placeholder="سنوات التقسيط" oninput="validateForm()">
                         </div>
                     </div>
-
-                    <button type="button" id="submitBtn" class="btn-send-data" disabled onclick="submitMUnit()">إرسال للمراجعة</button>
-                    <div onclick="closeM()" style="color:#666; text-align:center; margin-top:15px; cursor:pointer;">إلغاء</div>
+                    <button id="submitBtn" class="btn-send-data" disabled onclick="submitMUnit()">إرسال للمراجعة</button>
+                    <div onclick="closeM()" style="color:#666; text-align:center; margin-top:15px; font-size:13px; cursor:pointer;">إلغاء</div>
                 </form>
             </div>
-
             <div id="successState">
-                <div class="conf-circle"><span style="font-size:30px;">✅</span></div>
-                <h2 style="color:var(--available);">تم الإرسال بنجاح</h2>
-                <p style="color:#888;">سيتم مراجعة الوحدة ونشرها خلال دقائق</p>
-                <a href="javascript:location.reload()" class="btn-home">حسناً</a>
+                <div class="conf-circle"><span class="success-icon">✨</span></div>
+                <h2 style="color:var(--available); font-weight:900; margin-bottom:10px;">تم استلام بياناتك</h2>
+                <p style="color:#888; font-size:14px; line-height:1.6;">سيتم مراجعة الوحدة ونشرها فوراً<br>شكراً لثقتك في الفيروز للعقارات</p>
+                <a href="javascript:location.reload()" class="btn-home">العودة للرئيسية</a>
             </div>
         </div>
     </div>
 
-    <div class="header-bar">
-        <h1 class="company-name">Al-Fayrouz</h1>
-        <div class="company-subtitle">للتطوير العقاري والمقاولات</div>
-    </div>
+    <div class="header-bar"><h1 class="company-name">Al-Fayrouz</h1><span class="company-subtitle">الفيروز للتسويق العقاري</span></div>
 
     <div class="container">
         <div id="step1">
-            <div onclick="openM()" style="background:rgba(197, 160, 18, 0.1); border:1px dashed var(--secondary); padding:15px; border-radius:15px; text-align:center; color:var(--secondary); font-weight:900; margin-bottom:20px; cursor:pointer;">🏡 أضف وحدتك معنا مجاناً</div>
+            <div class="add-unit-btn" onclick="openM()">🏡 أضف وحدتك العقارية معنا مجاناً</div>
+            <h2 class="section-title">اختر المدينة</h2>
             <div class="card-city" onclick="goToStep2('المنصورة الجديدة')"><h3>المنصورة الجديدة</h3></div>
             <div class="card-city" onclick="goToStep2('دمياط الجديدة')"><h3>دمياط الجديدة</h3></div>
         </div>
-        <div id="step2" class="hidden">
-            <button onclick="goBack(1)" style="color:#fff; background:none; border:1px solid #444; padding:8px 20px; border-radius:10px; margin-bottom:15px;">رجوع</button>
-            <div id="projectButtons" class="project-grid"></div>
-        </div>
-        <div id="step3" class="hidden">
-            <button onclick="goBack(2)" style="color:#fff; background:none; border:1px solid #444; padding:8px 20px; border-radius:10px; margin-bottom:15px;">رجوع</button>
-            <div id="apartmentList"></div>
-        </div>
+        <div id="step2" class="hidden"><button onclick="goBack(1)" style="background:#1c2226; border:1.5px solid #444; color:#fff; padding:10px 20px; border-radius:15px; margin-bottom:20px;">رجوع</button><div id="projectButtons" class="project-grid"></div></div>
+        <div id="step3" class="hidden"><button onclick="goBack(2)" style="background:#1c2226; border:1.5px solid #444; color:#fff; padding:10px 20px; border-radius:15px; margin-bottom:20px;">رجوع</button><div id="unitCounter" class="units-counter"></div><div id="apartmentList"></div></div>
     </div>
 
     <script>
         const API_URL = "https://script.google.com/macros/s/AKfycbxQsS6y6NgU_HdYXZOKsiV7xyzh7EBvYWLUeOacsqf7ERu93gnVyiOnNDUxqG6UUzcA/exec";
-        
-        function openM() { document.getElementById('addUnitModal').style.display = 'flex'; }
-        function closeM() { document.getElementById('addUnitModal').style.display = 'none'; }
+        const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQWKx4v-nn6JEM3O4En9ELAAKvDxF-NyAnNLPS1c3dLk3Hqvx9MLK9mEfGRP0XTT33P9QC6SOLUt9jM/pub?output=csv";
+        let allData = [];
 
-        // التحقق من البيانات لفتح زر الإرسال
-        function validate() {
+        function validateForm() {
             const city = document.getElementById('mCity').value;
             const project = document.getElementById('mProject').value;
             const bld = document.getElementById('mBld').value;
             const apt = document.getElementById('mApt').value;
-            const phone = document.getElementById('mPhone').value;
+            const floor = document.getElementById('mFloor').value;
+            const view = document.getElementById('mView').value;
             const size = document.getElementById('mSize').value;
+            const phone = document.getElementById('mPhone').value;
             const payType = document.getElementById('mPayType').value;
             
-            let isCommonValid = city && project && bld && apt && phone && size && payType;
+            let isBasicValid = city && project && bld && apt && (floor || document.getElementById('mFloor').classList.contains('hidden')) && view && size && phone && payType;
             let isPayValid = false;
 
             if (payType === 'كاش') {
                 isPayValid = document.getElementById('mTotalCash').value !== "";
             } else if (payType === 'أقساط') {
-                isPayValid = document.getElementById('mPaid').value !== "" && 
-                             document.getElementById('mOver').value !== "" && 
-                             document.getElementById('mInstallValue').value !== "" && 
-                             document.getElementById('mInstallYears').value !== "";
+                isPayValid = document.getElementById('mPaid').value !== "" && document.getElementById('mOver').value !== "" && 
+                             document.getElementById('mInstallValue').value !== "" && document.getElementById('mInstallYears').value !== "";
             }
 
-            document.getElementById('submitBtn').disabled = !(isCommonValid && isPayValid);
+            document.getElementById('submitBtn').disabled = !(isBasicValid && isPayValid);
         }
 
-        // ربط الـ validate بكل المدخلات
-        document.querySelectorAll('.m-input, .m-select').forEach(el => {
-            el.addEventListener('input', validate);
-        });
+        function openM() { document.getElementById('addUnitModal').style.display = 'flex'; }
+        function closeM() { document.getElementById('addUnitModal').style.display = 'none'; }
 
         function updateMProjects() {
             const city = document.getElementById('mCity').value, proj = document.getElementById('mProject');
@@ -173,51 +184,47 @@
             list.forEach(p => proj.innerHTML += `<option value="${p}">${p}</option>`);
         }
 
+        function updateSubZones() {
+            const city = document.getElementById('mCity').value, proj = document.getElementById('mProject').value, zone = document.getElementById('mZone');
+            zone.classList.add('hidden'); zone.required = false;
+            if (city === 'المنصورة الجديدة' && (proj === 'جنة' || proj === 'سكن مصر' || proj === 'زاهية')) {
+                zone.innerHTML = '<option value="" disabled selected>اختر المنطقة/المرحلة</option>';
+                for(let i=1; i<=6; i++) zone.innerHTML += `<option value="منطقة ${i}">منطقة ${i}</option>`;
+                zone.classList.remove('hidden'); zone.required = true;
+            }
+        }
+
         function togglePayFields() {
             const type = document.getElementById('mPayType').value;
             document.getElementById('mCashSec').classList.toggle('hidden', type !== 'كاش');
             document.getElementById('mInstallSec').classList.toggle('hidden', type !== 'أقساط');
-            validate();
         }
 
         async function submitMUnit() {
-            const btn = document.getElementById('submitBtn');
-            btn.disabled = true;
-            btn.innerText = "جاري الإرسال...";
-            
-            // تحويل فوري لصفحة النجاح لتحسين تجربة المستخدم
             document.getElementById('formContent').style.display = 'none';
             document.getElementById('successState').style.display = 'block';
-
-            const data = {
-                action: "addUnit",
-                city: document.getElementById('mCity').value,
-                project: document.getElementById('mProject').value,
-                bld: document.getElementById('mBld').value,
-                apt: document.getElementById('mApt').value,
-                phone: document.getElementById('mPhone').value,
-                payType: document.getElementById('mPayType').value,
-                cash: document.getElementById('mTotalCash').value,
-                paid: document.getElementById('mPaid').value,
-                over: document.getElementById('mOver').value,
-                years: document.getElementById('mInstallYears').value,
-                instVal: document.getElementById('mInstallValue').value
-            };
-
-            try {
-                fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) });
-            } catch(e) { console.log("Sent"); }
+            
+            const data = { action: "addUnit", city: document.getElementById('mCity').value, project: document.getElementById('mProject').value, bld: document.getElementById('mBld').value, apt: document.getElementById('mApt').value, floor: document.getElementById('mFloor').value, view: document.getElementById('mView').value, phone: document.getElementById('mPhone').value, payType: document.getElementById('mPayType').value };
+            try { fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) }); } catch(e) {}
         }
 
-        function goToStep2(c) { window.curCity = c; document.getElementById('step1').classList.add('hidden'); document.getElementById('step2').classList.remove('hidden'); updateStep2Buttons(); }
-        function updateStep2Buttons() {
-            let projects = window.curCity === 'المنصورة الجديدة' ? ['جنة', 'سكن مصر', 'زاهية'] : ['جنة', 'سكن مصر', 'دار مصر'];
-            let h = ''; projects.forEach(p => h += `<div class="card-project" onclick="alert('سيتم عرض الوحدات قريباً')">${p}</div>`);
+        async function fetchD() {
+            try {
+                const response = await fetch(`${CSV_URL}&cb=${Date.now()}`);
+                const text = await response.text();
+                allData = text.split('\n').map(row => row.split(',')).slice(1);
+                document.getElementById('loadingScreen').style.display = 'none';
+            } catch(e) { document.getElementById('loadingScreen').style.display = 'none'; }
+        }
+
+        function goToStep2(c) { window.curCity = c; document.getElementById('step1').classList.add('hidden'); document.getElementById('step2').classList.remove('hidden'); 
+            let projects = c === 'المنصورة الجديدة' ? ['جنة', 'سكن مصر', 'زاهية'] : ['جنة', 'سكن مصر', 'دار مصر'];
+            let h = ''; projects.forEach(p => h += `<div class="card-project" onclick="showU('${p}')">${p}</div>`);
             document.getElementById('projectButtons').innerHTML = h;
         }
-        function goBack(s) { document.getElementById('step2').classList.add('hidden'); document.getElementById('step3').classList.add('hidden'); document.getElementById('step'+s).classList.remove('hidden'); }
-        
-        window.onload = () => { document.getElementById('loadingScreen').style.display = 'none'; };
+        function showU(kw) { document.getElementById('step2').classList.add('hidden'); document.getElementById('step3').classList.remove('hidden'); render(kw); }
+        function goBack(s) { ['step1','step2','step3'].forEach(x => document.getElementById(x).classList.add('hidden')); document.getElementById('step'+s).classList.remove('hidden'); }
+        window.onload = fetchD;
     </script>
 </body>
 </html>
