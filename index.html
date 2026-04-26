@@ -253,18 +253,24 @@
                 let cityMatch = (r[0]||"").toString().trim() === window.curCity;
                 let projMatch = (r[1]||"").toString().includes(kw);
                 let status = (r[11]||"").toString().trim();
-                // تعديل: إخفاء الوحدات المباعة تماماً من الترتيب والعرض
-                return cityMatch && projMatch && status !== "تحت المراجعة" && status !== "لم تعرض بعد" && !status.includes("تم البيع");
+                return cityMatch && projMatch && status !== "تحت المراجعة" && status !== "لم تعرض بعد";
             });
 
-            // تعديل: الترتيب من الأقل كاش للأعلى كاش (المدفوع + الأوفر)
+            // --- التعديل الجراحي للترتيب هنا ---
             filtered.sort((a, b) => {
+                let statusA = (a[11]||"").toString().trim().includes("تم البيع") ? 1 : 0;
+                let statusB = (b[11]||"").toString().trim().includes("تم البيع") ? 1 : 0;
+                
+                // أولاً: دفع المباع للآخر (المباع قيمته 1 والمتاح 0)
+                if (statusA !== statusB) return statusA - statusB;
+
+                // ثانياً: إذا كان الاثنان متاحين، رتب بالأرخص (المدفوع + الأوفر)
                 let cashA = (parseFloat(a[6]) || 0) + (parseFloat(a[7]) || 0);
                 let cashB = (parseFloat(b[6]) || 0) + (parseFloat(b[7]) || 0);
                 return cashA - cashB;
             });
 
-            document.getElementById('unitCounter').innerText = `متاح ${filtered.length} وحدة حالياً`;
+            document.getElementById('unitCounter').innerText = `متاح ${filtered.filter(r => !(r[11]||"").toString().includes("تم البيع")).length} وحدة حالياً`;
             let h = '';
             filtered.forEach(r => {
                 let sold = (r[11]||"").toString().trim().includes("تم البيع"), 
@@ -289,7 +295,7 @@
 
                 let waMsg = `طلب معاينة عقار:%0Aالمدينة: ${window.curCity}%0Aالمشروع: ${r[1]}%0A${bldLabel}: ${r[2]}%0A${aptLabel}: ${r[3]}%0Aالدور: ${r[4]}%0Aالاتجاه: ${r[5]}%0Aالمساحة: ${r[13]} م²%0Aالمطلوب كاش: ${fmt(cashNow)} ج.م`;
 
-                h += `<div class="apt-card is-available">
+                h += `<div class="apt-card ${sold ? 'is-sold' : 'is-available'}">
                     ${img ? `<div class="img-container"><img src="${img}" loading="lazy"></div>` : ''}
                     <div class="apt-content">
                         <span class="apt-location">${r[1] || '---'}</span>
@@ -313,7 +319,8 @@
                                 <div style="color:#fff; font-size:24px; font-weight:900;">${fmt(cashNow)} ج.م</div>
                             </div>
                         </div>
-                        <a href="https://wa.me/${myAdminPhone}?text=${waMsg}" class="btn-preview-neon">طلب معاينة</a>
+                        ${sold ? '<div style="text-align:center; color:var(--sold); font-weight:900; font-size:24px;">تـم التعاقـد</div>' : 
+                        `<a href="https://wa.me/${myAdminPhone}?text=${waMsg}" class="btn-preview-neon">طلب معاينة</a>`}
                     </div>
                 </div>`;
             });
@@ -328,3 +335,4 @@
     </script>
 </body>
 </html>
+
