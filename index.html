@@ -13,6 +13,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     
     <title>الفيروز للتسويق العقاري | الموقع الرسمي لعقارات المنصورة الجديدة ودمياط الجديدة</title>
+    <meta name="description" content="شركة الفيروز للتسويق العقاري - المرجع الأول لحجز وحدات جنة، سكن مصر، زاهية، وإسكان ساحلي. احصل على أفضل أسعار المتر وأنظمة التقسيط لعام 2026.">
+    <meta name="keywords" content="الفيروز للعقارات, المنصورة الجديدة, دمياط الجديدة, شقق جنة, سكن مصر, فيلات زاهية, علي فراس الحميدان, عقارات مصر, استثمار عقاري">
+    <meta name="author" content="علي فراس الحميدان">
+    <link rel="canonical" href="https://al-fayrouz-realestate.com/">
+
+    <meta property="og:title" content="الفيروز للتسويق العقاري - المنصورة الجديدة">
+    <meta property="og:description" content="ابحث عن شقتك في جنة أو سكن مصر بأفضل الأسعار وأقل أوفر. تواصل معنا للمعاينة الفورية.">
+    <meta property="og:url" content="https://al-fayrouz-realestate.com/">
+    <meta property="og:image" content="https://al-fayrouz-realestate.com/logo.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "RealEstateAgent",
+      "name": "الفيروز للتسويق العقاري",
+      "alternateName": "Al-Fayrouz Real Estate",
+      "url": "https://al-fayrouz-realestate.com/",
+      "logo": "https://al-fayrouz-realestate.com/logo.png",
+      "telephone": "+201212229797",
+      "priceRange": "EGP",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "المنصورة الجديدة",
+        "addressCountry": "EG"
+      },
+      "founder": {
+        "@type": "Person",
+        "name": "علي فراس الحميدان"
+      }
+    }
+    </script>
+
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;800;900&family=Montserrat:wght@900&family=Reem+Kufi:wght@700&display=swap" rel="stylesheet">
     
     <style>
@@ -30,14 +66,15 @@
         .grid-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
         .btn-send-data { background: var(--secondary); color: #000; width: 100%; padding: 15px; border-radius: 12px; font-weight: 900; border: none; cursor: pointer; font-size: 16px; margin-top: 10px; transition: 0.3s; }
         .btn-send-data:disabled { background: #333; color: #666; cursor: not-allowed; opacity: 0.7; }
+        
         #successState { display: none; text-align: center; padding: 30px 10px; animation: fadeIn 0.5s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .conf-circle { width: 80px; height: 80px; background: rgba(57, 255, 20, 0.1); border: 2px solid var(--available); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; position: relative; }
         .conf-circle::after { content: ''; position: absolute; inset: -5px; border: 1px solid var(--available); border-radius: 50%; animation: pulse-text 1.5s infinite; opacity: 0.5; }
         .success-icon { font-size: 35px; }
+        
         .btn-home { background: #fff; color: #000; padding: 12px 25px; border-radius: 10px; text-decoration: none; display: inline-block; margin-top: 25px; font-weight: 900; box-shadow: 0 4px 15px rgba(255,255,255,0.2); }
         .add-unit-btn { background: linear-gradient(135deg, rgba(197, 160, 18, 0.2), rgba(255,255,255,0.05)); border: 2px solid var(--secondary); border-radius: 15px; padding: 15px; text-align: center; cursor: pointer; margin-bottom: 20px; font-weight: 900; color: var(--secondary); }
-        /* ... (باقي الستايل بتاعك بدون تغيير) ... */
         .social-menu { position: fixed; bottom: 25px; left: 25px; z-index: 10000; display: flex; flex-direction: column-reverse; align-items: center; gap: 15px; }
         .social-btn { width: 55px; height: 55px; background: var(--secondary); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5); border: 2px solid #fff; cursor: pointer; transition: 0.3s; z-index: 10001; }
         .sub-menu { display: flex; flex-direction: column-reverse; gap: 12px; opacity: 0; visibility: hidden; transform: translateY(20px); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
@@ -56,6 +93,7 @@
         .card-project { background: var(--card-bg); border-radius: 15px; padding: 25px 10px; text-align: center; border: 1px solid rgba(255,255,255,0.05); cursor: pointer; font-weight: 900; transition: 0.3s; display: flex; align-items: center; justify-content: center; min-height: 80px; }
         .apt-card { background: #1c2226; border-radius: 22px; margin-bottom: 25px; overflow: hidden; position: relative; }
         .is-available { border-right: 8px solid var(--available); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .is-sold { border-right: 15px solid var(--sold); opacity: 0.6; filter: grayscale(0.7); }
         .img-container { width: 100%; height: 220px; background: #000; overflow: hidden; }
         .img-container img { width: 100%; height: 100%; object-fit: cover; }
         .apt-content { padding: 20px; }
@@ -113,6 +151,7 @@
                     <div id="mCashSec" class="hidden"><input type="number" id="mTotalCash" class="m-input" placeholder="السعر المطلوب كاش"></div>
                     <div id="mInstallSec" class="hidden">
                         <div class="grid-inputs"><input type="number" id="mPaid" class="m-input" placeholder="المدفوع"><input type="number" id="mOver" class="m-input" placeholder="الأوفر"></div>
+                        <input type="number" id="mPricePerMeter" class="m-input" placeholder="سعر المتر">
                         <div class="grid-inputs">
                             <input type="number" id="mInstallValue" class="m-input" placeholder="قيمة القسط">
                             <input type="number" id="mInstallYears" class="m-input" placeholder="سنوات التقسيط">
@@ -159,7 +198,7 @@
 
         function toggleSocial() { const menu = document.getElementById('subSocialMenu'); const btn = document.getElementById('mainSocialBtn'); menu.classList.toggle('active'); btn.style.transform = menu.classList.contains('active') ? 'rotate(45deg)' : 'rotate(0deg)'; }
         
-        // تعديل الـ validate لربط قفل الزرار
+        // تعديل الـ validate لربط قفل الزرار بالتأكد من ملء البيانات المناسبة لنوع الدفع
         function validateForm() { 
             const form = document.getElementById('unitForm'); 
             const btn = document.getElementById('submitBtn'); 
@@ -167,12 +206,12 @@
             
             let isPayReady = false;
             if (payType === 'كاش') {
-                isPayReady = document.getElementById('mTotalCash').value !== "";
+                isPayReady = document.getElementById('mTotalCash').value.trim() !== "";
             } else if (payType === 'أقساط') {
-                isPayReady = document.getElementById('mPaid').value !== "" && 
-                             document.getElementById('mOver').value !== "" && 
-                             document.getElementById('mInstallValue').value !== "" && 
-                             document.getElementById('mInstallYears').value !== "";
+                isPayReady = document.getElementById('mPaid').value.trim() !== "" && 
+                             document.getElementById('mOver').value.trim() !== "" && 
+                             document.getElementById('mInstallValue').value.trim() !== "" && 
+                             document.getElementById('mInstallYears').value.trim() !== "";
             }
 
             btn.disabled = !(form.checkValidity() && isPayReady); 
@@ -187,15 +226,24 @@
             zone.classList.add('hidden'); zone.required = false;
             let list = city === 'المنصورة الجديدة' ? ['جنة', 'سكن مصر', 'زاهية', 'إسكان ساحلي'] : ['جنة', 'سكن مصر', 'دار مصر', 'أهالي'];
             list.forEach(p => proj.innerHTML += `<option value="${p}">${p}</option>`);
+            document.getElementById('mFloor').classList.remove('hidden'); document.getElementById('mFloor').required = true;
+            document.getElementById('mBld').placeholder = "رقم العمارة"; document.getElementById('mApt').placeholder = "رقم الشقة";
             validateForm();
         }
 
         function updateSubZones() {
-            const city = document.getElementById('mCity').value, proj = document.getElementById('mProject').value, zone = document.getElementById('mZone');
+            const city = document.getElementById('mCity').value, proj = document.getElementById('mProject').value, zone = document.getElementById('mZone'), floorInput = document.getElementById('mFloor'), bldInput = document.getElementById('mBld'), aptInput = document.getElementById('mApt');
             zone.innerHTML = '<option value="" disabled selected>اختر المنطقة/المرحلة</option>';
             let showZone = false;
-            if (city === 'المنصورة الجديدة' && (proj === 'جنة' || proj === 'سكن مصر')) { for(let i=1; i<=6; i++) zone.innerHTML += `<option value="منطقة ${i}">منطقة ${i}</option>`; showZone = true; } 
-            else if (city === 'دمياط الجديدة' && (proj === 'جنة' || proj === 'سكن مصر' || proj === 'دار مصر')) { for(let i=1; i<=3; i++) zone.innerHTML += `<option value="منطقة ${i}">منطقة ${i}</option>`; showZone = true; }
+            bldInput.placeholder = "رقم العمارة"; aptInput.placeholder = "رقم الشقة";
+            floorInput.classList.remove('hidden'); floorInput.required = true;
+
+            if (city === 'المنصورة الجديدة') {
+                if (proj === 'جنة' || proj === 'سكن مصر') { for(let i=1; i<=6; i++) zone.innerHTML += `<option value="منطقة ${i}">منطقة ${i}</option>`; showZone = true; } 
+                else if (proj === 'زاهية') { for(let i=1; i<=4; i++) zone.innerHTML += `<option value="المرحلة ${i}">المرحلة ${i}</option>`; showZone = true; floorInput.classList.add('hidden'); floorInput.required = false; bldInput.placeholder = "رقم المنطقة"; aptInput.placeholder = "رقم الفيلا"; }
+            } else if (city === 'دمياط الجديدة') { 
+                if (proj === 'جنة' || proj === 'سكن مصر' || proj === 'دار مصر') { for(let i=1; i<=3; i++) zone.innerHTML += `<option value="منطقة ${i}">منطقة ${i}</option>`; showZone = true; } 
+            }
             if(showZone) { zone.classList.remove('hidden'); zone.required = true; } else { zone.classList.add('hidden'); zone.required = false; }
             validateForm();
         }
@@ -204,55 +252,112 @@
 
         async function submitMUnit() {
             const btn = document.getElementById('submitBtn'); btn.disabled = true; btn.innerText = "جاري الإرسال...";
-            // إظهار صفحة النجاح فوراً
+            // إظهار صفحة النجاح فوراً لتسريع تجربة المستخدم
             showSuccess();
-            
+
             let finalPaid = document.getElementById('mPayType').value === 'كاش' ? document.getElementById('mTotalCash').value : document.getElementById('mPaid').value;
-            const data = { action: "addUnit", city: document.getElementById('mCity').value, project: document.getElementById('mProject').value, bld: document.getElementById('mBld').value, apt: document.getElementById('mApt').value, floor: document.getElementById('mFloor').value, view: document.getElementById('mView').value, paid: finalPaid, over: document.getElementById('mOver').value || 0, size: document.getElementById('mSize').value, phone: document.getElementById('mPhone').value, years: document.getElementById('mInstallYears').value || 0, instVal: document.getElementById('mInstallValue').value || 0 };
+            let fullProject = document.getElementById('mProject').value;
+            if(!document.getElementById('mZone').classList.contains('hidden')) fullProject += " - " + document.getElementById('mZone').value;
+            
+            const data = { action: "addUnit", city: document.getElementById('mCity').value, project: fullProject, bld: document.getElementById('mBld').value, apt: document.getElementById('mApt').value, floor: document.getElementById('mFloor').value || "أرضي", view: document.getElementById('mView').value, paid: finalPaid || 0, over: document.getElementById('mOver').value || 0, status: "تحت المراجعة", size: document.getElementById('mSize').value || 0, pricePerMeter: document.getElementById('mPricePerMeter').value || 0, installYears: document.getElementById('mInstallYears').value || 0, installValue: document.getElementById('mInstallValue').value || 0, yearsLeft: document.getElementById('mInstallYears').value || 0, phone: document.getElementById('mPhone').value };
+            
             try { await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) }); } catch(e) {}
         }
 
         function showSuccess() { document.getElementById('formContent').style.display = 'none'; document.getElementById('successState').style.display = 'block'; }
 
-        // ... (باقي سكربتات الـ fetchD والـ render الخاصة بك بدون أي تغيير) ...
         async function fetchD() {
+            const cached = localStorage.getItem('fayrouz_cache');
+            if (cached) { allData = JSON.parse(cached); document.getElementById('loadingScreen').style.display = 'none'; if(window.currentKw) render(window.currentKw); }
             try {
                 const response = await fetch(`${CSV_URL}&cb=${Date.now()}`);
                 const text = await response.text();
-                allData = text.split('\n').map(row => row.split(',')).slice(1);
+                const newData = text.split('\n').map(row => row.split(',')).slice(1);
+                allData = newData;
+                localStorage.setItem('fayrouz_cache', JSON.stringify(allData));
+                if(window.currentKw) render(window.currentKw);
                 document.getElementById('loadingScreen').style.display = 'none';
             } catch(e) { document.getElementById('loadingScreen').style.display = 'none'; }
         }
 
         function render(kw) {
             window.currentKw = kw; const list = document.getElementById('apartmentList');
-            let filtered = allData.filter(r => (r[0]||"").toString().trim() === window.curCity && (r[1]||"").toString().includes(kw));
+            if(allData.length === 0) { list.innerHTML = '<div style="text-align:center; padding:50px; color:#888;">جاري تحميل الوحدات...</div>'; return; }
+            
+            let filtered = allData.filter(r => {
+                if(!r[0]) return false;
+                let cityMatch = (r[0]||"").toString().trim() === window.curCity;
+                let projMatch = (r[1]||"").toString().includes(kw);
+                let status = (r[11]||"").toString().trim();
+                return cityMatch && projMatch && status !== "تحت المراجعة" && status !== "لم تعرض بعد" && !status.includes("تم البيع");
+            });
+
+            filtered.sort((a, b) => {
+                let cashA = (parseFloat(a[6]) || 0) + (parseFloat(a[7]) || 0);
+                let cashB = (parseFloat(b[6]) || 0) + (parseFloat(b[7]) || 0);
+                return cashA - cashB;
+            });
+
             document.getElementById('unitCounter').innerText = `متاح ${filtered.length} وحدة حالياً`;
             let h = '';
             filtered.forEach(r => {
                 let img = (r[12] && r[12].includes('drive')) ? `https://drive.google.com/thumbnail?sz=1000&id=${r[12].split('id=')[1]}` : r[12];
+                const fmt = (v) => {
+                    let val = (v||"").toString().replace(/[^0-9.]/g, '');
+                    let num = parseFloat(val);
+                    return isNaN(num) ? '0' : num.toLocaleString();
+                };
+
+                let paid = parseFloat(r[6]) || 0, over = parseFloat(r[7]) || 0, cashNow = paid + over;
+                let pricePerMeter = r[8] || '--', totalValue = r[15] || '0';
+                let yearsCount = (r[9]||"").toString().trim();
+                let displayYears = (yearsCount === "0" || yearsCount === "") ? "حدد سنوات تقسيط بنفسك" : yearsCount + " سنوات";
+                let instPayment = r[10] || '--';
+                
+                let myAdminPhone = '201212229797'; 
+                
+                let bldLabel = "عمارة", aptLabel = "شقة";
+                if(r[1].includes("زاهية")) { bldLabel = "منطقة"; aptLabel = "فيلا"; }
+                else if(r[1].includes("تجارية")) { bldLabel = "مبنى"; aptLabel = "محل/مكتب"; }
+
+                let waMsg = `طلب معاينة عقار:%0Aالمدينة: ${window.curCity}%0Aالمشروع: ${r[1]}%0A${bldLabel}: ${r[2]}%0A${aptLabel}: ${r[3]}%0Aالدور: ${r[4]}%0Aالاتجاه: ${r[5]}%0Aالمساحة: ${r[13]} م²%0Aالمطلوب كاش: ${fmt(cashNow)} ج.م`;
+
                 h += `<div class="apt-card is-available">
-                    ${img ? `<div class="img-container"><img src="${img}"></div>` : ''}
+                    ${img ? `<div class="img-container"><img src="${img}" loading="lazy"></div>` : ''}
                     <div class="apt-content">
                         <span class="apt-location">${r[1] || '---'}</span>
-                        <div class="apt-title">عمارة ${r[2] || '--'} • شقة ${r[3] || '--'}</div>
+                        <div class="apt-title">${bldLabel} ${r[2] || '--'} • ${aptLabel} ${r[3] || '--'}</div>
                         <div class="apt-specs">
                             <div class="spec-item"><span class="spec-label">الدور</span><span class="spec-value">${r[4]||'--'}</span></div>
+                            <div class="spec-item"><span class="spec-label">الاتجاه</span><span class="spec-value">${r[5]||'--'}</span></div>
                             <div class="spec-item"><span class="spec-label">المساحة</span><span class="spec-value">${r[13]||'--'} م²</span></div>
+                            <div class="spec-item"><span class="spec-label">السعر الكلي</span><span class="spec-value">${fmt(totalValue)} ج.م</span></div>
+                            
+                            <div class="spec-item"><span class="spec-label">سعر المتر</span><span class="spec-value">${fmt(pricePerMeter)} ج.م</span></div>
+                            <div class="spec-item"><span class="spec-label">سنوات التقسيط</span><span class="spec-value">${displayYears}</span></div>
+                            <div class="spec-item" style="grid-column: span 2;"><span class="spec-label">دفعة التقسيط</span><span class="spec-value">${fmt(instPayment)} ج.م</span></div>
                         </div>
-                        <a href="https://wa.me/201212229797" class="btn-preview-neon">طلب معاينة</a>
+                        <div class="price-box-container">
+                            <div class="price-line"><span class="pl-label">المدفوع:</span><span class="pl-val" style="color:#eee">${fmt(paid)} ج.م</span></div>
+                            <div class="price-line"><span class="pl-label">الأوفر:</span><span class="pl-val" style="color:#ef5350">+ ${fmt(over)} ج.م</span></div>
+                            
+                            <div style="margin-top:15px; background:rgba(57,255,20,0.1); padding:15px; border-radius:12px; border:2px solid var(--available); text-align:center;">
+                                <div style="color:var(--available); font-weight:900; font-size:15px;">المطلوب كاش حالياً</div>
+                                <div style="color:#fff; font-size:24px; font-weight:900;">${fmt(cashNow)} ج.م</div>
+                            </div>
+                        </div>
+                        <a href="https://wa.me/${myAdminPhone}?text=${waMsg}" class="btn-preview-neon">طلب معاينة</a>
                     </div>
                 </div>`;
             });
             list.innerHTML = h || '<div style="text-align:center; padding:50px; color:#888;">لا توجد وحدات متاحة حالياً</div>';
         }
 
-        function goToStep2(c) { window.curCity = c; switchStep('step2'); let projects = c === 'المنصورة الجديدة' ? ['جنة', 'سكن مصر', 'زاهية'] : ['جنة', 'سكن مصر', 'دار مصر']; let html = ''; projects.forEach(p => html += `<div class="card-project" onclick="showU('${p}')">${p}</div>`); document.getElementById('projectButtons').innerHTML = html; }
+        function goToStep2(c) { window.curCity = c; switchStep('step2'); let projects = c === 'المنصورة الجديدة' ? ['جنة', 'سكن مصر', 'زاهية', 'إسكان ساحلي', 'تجارية وإدارية'] : ['جنة', 'سكن مصر', 'دار مصر', 'أهالي', 'تجارية وإدارية']; let html = ''; projects.forEach(p => html += `<div class="card-project" onclick="showU('${p}')">${p}</div>`); document.getElementById('projectButtons').innerHTML = html; }
         function showU(kw) { switchStep('step3'); render(kw); }
-        function switchStep(id) { ['step1','step2','step3'].forEach(s => document.getElementById(s).classList.add('hidden')); document.getElementById(id).classList.remove('hidden'); }
+        function switchStep(id) { ['step1','step2','step3'].forEach(s => document.getElementById(s).classList.add('hidden')); document.getElementById(id).classList.remove('hidden'); window.scrollTo(0,0); }
         function goBack(s) { switchStep('step' + s); }
         window.onload = fetchD;
     </script>
 </body>
 </html>
-
