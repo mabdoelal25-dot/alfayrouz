@@ -66,9 +66,15 @@
         .grid-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
         .btn-send-data { background: var(--secondary); color: #000; width: 100%; padding: 15px; border-radius: 12px; font-weight: 900; border: none; cursor: pointer; font-size: 16px; margin-top: 10px; transition: 0.3s; }
         .btn-send-data:disabled { background: #333; color: #666; cursor: not-allowed; opacity: 0.7; }
-        #successState { display: none; text-align: center; padding: 20px; }
-        .success-icon { font-size: 60px; margin-bottom: 15px; display: block; }
-        .btn-home { background: #fff; color: #000; padding: 12px 25px; border-radius: 10px; text-decoration: none; display: inline-block; margin-top: 20px; font-weight: 900; }
+        
+        /* تصميم صفحة التأكيد الجديد */
+        #successState { display: none; text-align: center; padding: 30px 10px; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .conf-circle { width: 80px; height: 80px; background: rgba(57, 255, 20, 0.1); border: 2px solid var(--available); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; position: relative; }
+        .conf-circle::after { content: ''; position: absolute; inset: -5px; border: 1px solid var(--available); border-radius: 50%; animation: pulse-text 1.5s infinite; opacity: 0.5; }
+        .success-icon { font-size: 35px; }
+        
+        .btn-home { background: #fff; color: #000; padding: 12px 25px; border-radius: 10px; text-decoration: none; display: inline-block; margin-top: 25px; font-weight: 900; box-shadow: 0 4px 15px rgba(255,255,255,0.2); }
         .add-unit-btn { background: linear-gradient(135deg, rgba(197, 160, 18, 0.2), rgba(255,255,255,0.05)); border: 2px solid var(--secondary); border-radius: 15px; padding: 15px; text-align: center; cursor: pointer; margin-bottom: 20px; font-weight: 900; color: var(--secondary); }
         .social-menu { position: fixed; bottom: 25px; left: 25px; z-index: 10000; display: flex; flex-direction: column-reverse; align-items: center; gap: 15px; }
         .social-btn { width: 55px; height: 55px; background: var(--secondary); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5); border: 2px solid #fff; cursor: pointer; transition: 0.3s; z-index: 10001; }
@@ -147,14 +153,22 @@
                     <div id="mInstallSec" class="hidden">
                         <div class="grid-inputs"><input type="number" id="mPaid" class="m-input" placeholder="المدفوع"><input type="number" id="mOver" class="m-input" placeholder="الأوفر"></div>
                         <input type="number" id="mPricePerMeter" class="m-input" placeholder="سعر المتر">
-                        <div class="grid-inputs"><input type="number" id="mInstallValue" class="m-input" placeholder="دفعة التقسيط"><input type="number" id="mInstallYears" class="m-input" placeholder="عدد الأقساط"></div>
-                        <input type="number" id="mYearsLeft" class="m-input" placeholder="متبقي كم قسط">
+                        <div class="grid-inputs">
+                            <input type="number" id="mInstallValue" class="m-input" placeholder="قيمة القسط">
+                            <input type="number" id="mInstallYears" class="m-input" placeholder="التقسيط على كم سنة؟">
+                        </div>
+                        <input type="number" id="mYearsLeft" class="m-input" placeholder="متبقي كم سنة تقسيط؟">
                     </div>
                     <button id="submitBtn" class="btn-send-data" disabled onclick="submitMUnit()">إرسال للمراجعة</button>
                     <div onclick="closeM()" style="color:#666; text-align:center; margin-top:15px; font-size:13px; cursor:pointer;">إلغاء</div>
                 </form>
             </div>
-            <div id="successState"><span class="success-icon">✅</span><h2 style="color:var(--available)">تم الإرسال بنجاح</h2><a href="javascript:location.reload()" class="btn-home">العودة للرئيسية</a></div>
+            <div id="successState">
+                <div class="conf-circle"><span class="success-icon">✨</span></div>
+                <h2 style="color:var(--available); font-weight:900; margin-bottom:10px;">تم استلام بياناتك</h2>
+                <p style="color:#888; font-size:14px; line-height:1.6;">سيتم مراجعة الوحدة ونشرها فوراً<br>شكراً لثقتك في الفيروز للعقارات</p>
+                <a href="javascript:location.reload()" class="btn-home">العودة للرئيسية</a>
+            </div>
         </div>
     </div>
 
@@ -253,28 +267,19 @@
                 let cityMatch = (r[0]||"").toString().trim() === window.curCity;
                 let projMatch = (r[1]||"").toString().includes(kw);
                 let status = (r[11]||"").toString().trim();
-                return cityMatch && projMatch && status !== "تحت المراجعة" && status !== "لم تعرض بعد";
+                return cityMatch && projMatch && status !== "تحت المراجعة" && status !== "لم تعرض بعد" && !status.includes("تم البيع");
             });
 
-            // --- التعديل الجراحي للترتيب هنا ---
             filtered.sort((a, b) => {
-                let statusA = (a[11]||"").toString().trim().includes("تم البيع") ? 1 : 0;
-                let statusB = (b[11]||"").toString().trim().includes("تم البيع") ? 1 : 0;
-                
-                // أولاً: دفع المباع للآخر (المباع قيمته 1 والمتاح 0)
-                if (statusA !== statusB) return statusA - statusB;
-
-                // ثانياً: إذا كان الاثنان متاحين، رتب بالأرخص (المدفوع + الأوفر)
                 let cashA = (parseFloat(a[6]) || 0) + (parseFloat(a[7]) || 0);
                 let cashB = (parseFloat(b[6]) || 0) + (parseFloat(b[7]) || 0);
                 return cashA - cashB;
             });
 
-            document.getElementById('unitCounter').innerText = `متاح ${filtered.filter(r => !(r[11]||"").toString().includes("تم البيع")).length} وحدة حالياً`;
+            document.getElementById('unitCounter').innerText = `متاح ${filtered.length} وحدة حالياً`;
             let h = '';
             filtered.forEach(r => {
-                let sold = (r[11]||"").toString().trim().includes("تم البيع"), 
-                img = (r[12] && r[12].includes('drive')) ? `https://drive.google.com/thumbnail?sz=1000&id=${r[12].split('id=')[1]}` : r[12];
+                let img = (r[12] && r[12].includes('drive')) ? `https://drive.google.com/thumbnail?sz=1000&id=${r[12].split('id=')[1]}` : r[12];
                 const fmt = (v) => {
                     let val = (v||"").toString().replace(/[^0-9.]/g, '');
                     let num = parseFloat(val);
@@ -295,7 +300,7 @@
 
                 let waMsg = `طلب معاينة عقار:%0Aالمدينة: ${window.curCity}%0Aالمشروع: ${r[1]}%0A${bldLabel}: ${r[2]}%0A${aptLabel}: ${r[3]}%0Aالدور: ${r[4]}%0Aالاتجاه: ${r[5]}%0Aالمساحة: ${r[13]} م²%0Aالمطلوب كاش: ${fmt(cashNow)} ج.م`;
 
-                h += `<div class="apt-card ${sold ? 'is-sold' : 'is-available'}">
+                h += `<div class="apt-card is-available">
                     ${img ? `<div class="img-container"><img src="${img}" loading="lazy"></div>` : ''}
                     <div class="apt-content">
                         <span class="apt-location">${r[1] || '---'}</span>
@@ -319,8 +324,7 @@
                                 <div style="color:#fff; font-size:24px; font-weight:900;">${fmt(cashNow)} ج.م</div>
                             </div>
                         </div>
-                        ${sold ? '<div style="text-align:center; color:var(--sold); font-weight:900; font-size:24px;">تـم التعاقـد</div>' : 
-                        `<a href="https://wa.me/${myAdminPhone}?text=${waMsg}" class="btn-preview-neon">طلب معاينة</a>`}
+                        <a href="https://wa.me/${myAdminPhone}?text=${waMsg}" class="btn-preview-neon">طلب معاينة</a>
                     </div>
                 </div>`;
             });
@@ -335,3 +339,4 @@
     </script>
 </body>
 </html>
+
